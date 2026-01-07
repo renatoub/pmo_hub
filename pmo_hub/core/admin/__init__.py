@@ -26,10 +26,10 @@ from .tarefas import TarefasAdmin
 
 # Registro unificado
 admin.site.register(Rotulos, RotulosAdmin)
+admin.site.register(Tarefas, TarefasAdmin)
 admin.site.register(Demanda, DemandaAdmin)
 admin.site.register(Situacao, SituacaoAdmin)
 admin.site.register(Contato, ContatoAdmin)
-admin.site.register(Tarefas, TarefasAdmin)
 admin.site.register(AnexoDemanda, AnexoDemandaAdmin)
 
 # Modelos Auxiliares

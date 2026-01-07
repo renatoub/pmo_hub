@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -18,12 +20,30 @@ class Tarefas(TimeStampedModel):
     pendencia = models.TextField(blank=True, verbose_name="Descrição da Pendência")
     pendencia_data = models.DateField(null=True, blank=True)
     responsabilidade_pendencia = models.CharField(
-        max_length=10, blank=True, choices=ResponsabilidadeChoices.choices
+        max_length=10,
+        blank=True,
+        choices=ResponsabilidadeChoices.choices,
+        verbose_name="Responsáveis por concluir a pendência",
     )
     responsaveis = models.ManyToManyField(
         User, blank=True, related_name="tarefas_atribuidas"
     )
-    concluida = models.BooleanField(default=False)
+    concluida = models.BooleanField(default=False, verbose_name="Concluída")
+    criado_em = models.DateTimeField(auto_now_add=True, verbose_name="Data de Criação")
+    atualizado_em = models.DateTimeField(
+        auto_now=True, verbose_name="Data de Atualização"
+    )
+    concluido_em = models.DateTimeField(
+        null=True, blank=True, verbose_name="Data de Conclusão"
+    )
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            old_status = Tarefas.objects.get(pk=self.pk).concluida
+            if not old_status and self.concluida:  # Foi concluída agora
+                self.concluido_em = datetime.now()
+
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = "Tarefa"

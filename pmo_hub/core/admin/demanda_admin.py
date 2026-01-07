@@ -36,6 +36,7 @@ class DemandaAdmin(SimpleHistoryAdmin):
         "acoes_rapidas",
         "exibir_rotulos",
         "porcentagem_concluida",
+        "tarefas",
         "data_prazo",
     )
     list_filter = ("tema", "situacao", "responsavel")
@@ -78,6 +79,13 @@ class DemandaAdmin(SimpleHistoryAdmin):
         ),
         ("Datas", {"fields": ("data_inicio", "data_prazo", "data_fechamento")}),
     )
+
+    def tarefas(self, obj):
+        total = obj.tarefas.count()
+        concluidas = obj.tarefas.filter(concluida=True).count()
+        return f"{concluidas}/{total}" if total else "-"
+
+    tarefas.short_description = "Tarefas"
 
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related("rotulos")
