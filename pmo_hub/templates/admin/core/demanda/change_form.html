@@ -1,0 +1,14 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+
+{% block object-tools-items %}
+    {% if has_view_permission %}
+        <li>
+            {% url opts|admin_urlname:'history' original.pk|admin_urlquote as history_url %}
+            <a href="{% add_preserved_filters history_url %}" class="historylink btn btn-sm btn-outline-info">
+                <!-- <i class="fas fa-history"></i> -->
+            </a>
+        </li>
+    {% endif %}
+    {{ block.super }}
+{% endblock %}

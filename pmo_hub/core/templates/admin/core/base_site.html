@@ -1,0 +1,27 @@
+{% extends "admin/base.html" %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <style type="text/css">
+        /* Força contraste no botão de histórico do django-simple-history */
+        .historylink {
+            background-color: #264b5e !important; /* Azul Escuro */
+            color: #ffffff !important;           /* Branco Absoluto */
+            padding: 4px 10px !important;
+            border-radius: 4px;
+            display: inline-block;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .historylink:hover {
+            background-color: #1a3340 !important;
+            color: #ffffff !important;
+        }
+
+        /* Garante que o texto dentro do link também seja branco */
+        #content-main .object-tools a.historylink {
+            color: #ffffff !important;
+        }
+    </style>
+{% endblock %}
