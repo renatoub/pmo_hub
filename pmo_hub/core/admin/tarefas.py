@@ -5,7 +5,7 @@ from django.utils.html import format_html
 
 class TarefasAdmin(admin.ModelAdmin):
     search_fields = ("nome", "demanda__titulo")
-    list_filter = ("concluida", "criado_em")
+    list_filter = ("concluida", "criado_em", "demanda__titulo", "responsaveis")
     list_display = (
         "nome",
         "link_demanda",
@@ -13,6 +13,7 @@ class TarefasAdmin(admin.ModelAdmin):
         "get_responsaveis",
         "concluida",
         "criado_em",
+        "concluido_em",
     )
     readonly_fields = (
         "pendencia",
@@ -20,6 +21,7 @@ class TarefasAdmin(admin.ModelAdmin):
         "responsabilidade_pendencia",
         "criado_em",
         "atualizado_em",
+        "concluido_em",
     )
 
     def link_demanda(self, obj):
