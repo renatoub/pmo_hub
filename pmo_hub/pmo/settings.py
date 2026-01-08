@@ -3,6 +3,8 @@ from pathlib import Path
 
 from django.utils import html
 
+from pmo import __version__ as APP_VERSION
+
 orig_format_html = html.format_html
 
 
@@ -23,6 +25,8 @@ SECRET_KEY = "django-insecure-+8!lj9_fo5v!r)7o88hp-w4ia6hwr(u9cy_c-^zm-2&2mla_f^
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+APP_VERSION = os.getenv("APP_VERSION", "dev-local")
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -132,7 +136,7 @@ JAZZMIN_SETTINGS = {
     # "site_icon": "img/logo.png",
     # "site_logo_classes": "img-circle",
     "welcome_sign": "Bem-vindo ao PMO Hub - Gerenciamento de core",
-    "copyright": "PMO Hub Ltda",
+    "copyright": f"PMO Hub Ltda v{APP_VERSION}",
     "search_model": ["core.Demanda"],
     "user_avatar": None,
     # Links no menu superior
