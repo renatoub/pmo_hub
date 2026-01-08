@@ -41,7 +41,7 @@ class Demanda(TimeStampedModel):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        verbose_name="Situação",
+        verbose_name="Bucket",
     )
 
     riscos = models.ManyToManyField(Riscos, blank=True)

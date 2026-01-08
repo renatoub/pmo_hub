@@ -15,7 +15,7 @@
             <div class="alert alert-success">Sucesso! Fechando janela...</div>
         {% else %}
             <h5>Registrar Pendência para: {{ demanda.titulo }}</h5>
-            <p>Situação: <strong>{{ target.nome }}</strong></p>
+            <p>Bucket: <strong>{{ target.nome }}</strong></p>
             <form method="post" action="{{ action_url }}">
                 {% csrf_token %}
                 <div class="mb-3">

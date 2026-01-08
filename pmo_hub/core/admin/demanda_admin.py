@@ -234,12 +234,12 @@ class DemandaAdmin(SimpleHistoryAdmin):
             for proxima in obj.situacao.proximas_situacoes.all():
                 url = reverse("alterar_status", args=[obj.pk, proxima.id])
 
-                if "pend" in proxima.nome.lower():
+                if proxima.pendente:
                     html.append(
                         format_html(
                             '<a href="{}" '
                             "onclick=\"window.open(this.href, 'popup', 'width=600,height=500,scrollbars=yes,resizable=yes'); return false;\" "
-                            'style="white-space: nowrap !important; font-size:10px; padding:1px 4px; border:1px solid #ffc107; color:#856404; background:#fff3cd; text-decoration:none; margin-right:2px;">'
+                            'style="white-space: nowrap !important;font-size:10px; padding:1px 4px; border:1px solid #ffc107; color:#856404; background:#fff3cd; text-decoration:none; margin-right:2px;">'
                             "{}</a>",
                             url,
                             proxima.nome,
@@ -248,13 +248,13 @@ class DemandaAdmin(SimpleHistoryAdmin):
                 else:
                     html.append(
                         format_html(
-                            '<a href="{}" style="white-space: nowrap !important; font-size:10px; padding:1px 4px; border:1px solid #ccc; color:#666; text-decoration:none; margin-right:2px;">'
+                            '<a href="{}" style="white-space: nowrap !important;font-size:10px; padding:1px 4px; border:1px solid #ccc; color:#666; text-decoration:none; margin-right:2px;">'
                             "{}</a>",
                             url,
                             proxima.nome,
                         )
                     )
-        return mark_safe("".join(html))
+        return mark_safe(" ".join(html))
 
     acoes_rapidas.short_description = "Ações"
 
