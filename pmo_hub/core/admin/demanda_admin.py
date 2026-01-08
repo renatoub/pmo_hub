@@ -211,7 +211,7 @@ class DemandaAdmin(SimpleHistoryAdmin):
         # Botão + Sub
         html.append(
             format_html(
-                '<a class="btn" href="{}" style="background:#17a2b8; color:white; padding:2px 5px; font-size:10px; margin-right:3px; border-radius:3px; text-decoration:none;">+ Sub</a>',
+                '<a class="btn" href="{}" style="background:#17a2b8; display: inline-block; color:white; padding:2px 5px; font-size:10px; margin-right:3px; border-radius:3px; text-decoration:none;">+ Sub</a>',
                 reverse("criar_subatividade", args=[obj.pk]),
             )
         )
@@ -224,7 +224,7 @@ class DemandaAdmin(SimpleHistoryAdmin):
             )
             html.append(
                 format_html(
-                    '<a class="btn" href="{}" style="background:#28a745; color:white; padding:2px 5px; font-size:10px; margin-right:3px; border-radius:3px; text-decoration:none;">Assumir</a>',
+                    '<a class="btn" href="{}" style="background:#28a745; display: inline-block; color:white; padding:2px 5px; font-size:10px; margin-right:3px; border-radius:3px; text-decoration:none;">Assumir</a>',
                     assumir_url,
                 )
             )
@@ -239,7 +239,7 @@ class DemandaAdmin(SimpleHistoryAdmin):
                         format_html(
                             '<a href="{}" '
                             "onclick=\"window.open(this.href, 'popup', 'width=600,height=500,scrollbars=yes,resizable=yes'); return false;\" "
-                            'style="font-size:10px; padding:1px 4px; border:1px solid #ffc107; color:#856404; background:#fff3cd; text-decoration:none; margin-right:2px;">'
+                            'style="white-space: nowrap !important; font-size:10px; padding:1px 4px; border:1px solid #ffc107; color:#856404; background:#fff3cd; text-decoration:none; margin-right:2px;">'
                             "{}</a>",
                             url,
                             proxima.nome,
@@ -248,7 +248,7 @@ class DemandaAdmin(SimpleHistoryAdmin):
                 else:
                     html.append(
                         format_html(
-                            '<a href="{}" style="font-size:10px; padding:1px 4px; border:1px solid #ccc; color:#666; text-decoration:none; margin-right:2px;">'
+                            '<a href="{}" style="white-space: nowrap !important; font-size:10px; padding:1px 4px; border:1px solid #ccc; color:#666; text-decoration:none; margin-right:2px;">'
                             "{}</a>",
                             url,
                             proxima.nome,
