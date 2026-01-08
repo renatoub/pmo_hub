@@ -1,5 +1,5 @@
 @echo off
-cd C:\EQTONE\DataHub\
+cd C:\EQTONE\pmo_hub\pmo_hub_%BRANCH%
 
 echo --- Fazendo Backup ---
 copy pmo_hub\db.sqlite3 ..\pmo_hub.sqlite3
@@ -15,4 +15,4 @@ echo --- Aplicando Migrations ---
 call uv run python pmo_hub\manage.py migrate
 
 echo --- Iniciando Servidor ---
-call uv run python pmo_hub\manage.py runserver 0.0.0.0:12345
+call uv run python pmo_hub\manage.py runserver 0.0.0.0:%PORT%
