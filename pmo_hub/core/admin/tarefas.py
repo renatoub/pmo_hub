@@ -1,5 +1,5 @@
 from django.urls import reverse
-from django.utils.html import format_html
+from django.utils.html import format_html, mark_safe
 from simple_history.admin import SimpleHistoryAdmin
 
 
@@ -42,7 +42,9 @@ class TarefasAdmin(SimpleHistoryAdmin):
         )
 
     def get_responsaveis(self, obj):
-        # Usando 'responsaveis' conforme a melhoria do modelo anterior
-        return ", ".join([u.username for u in obj.responsaveis.all()])
+        nomes = ", ".join([u.username for u in obj.responsaveis.all()])
+        if not nomes:
+            return mark_safe('<span class="text-muted">Nenhum</span>')
+        return nomes
 
     get_responsaveis.short_description = "Responsáveis"

@@ -93,6 +93,5 @@ class TarefasInline(admin.TabularInline):
             url_pending,
             icon_color,
         )
-        return mark_safe(" ".join(html))
 
     edit_tarefas.short_description = "Ações rápidas"
