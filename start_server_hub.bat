@@ -15,4 +15,4 @@ echo --- Aplicando Migrations ---
 call uv run python pmo_hub\manage.py migrate
 
 echo --- Iniciando Servidor ---
-call uv run python pmo_hub\manage.py runserver 0.0.0.0:12345
+call uv run python pmo_hub\manage.py runserver 0.0.0.0:%PORT%

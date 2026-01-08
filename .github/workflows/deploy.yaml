@@ -16,24 +16,11 @@ jobs:
       # Execução para a branch DEV
       - name: Deploy Ambiente Dev
         if: github.ref == 'refs/heads/dev'
-        shell: cmd
+        shell: powershell
         run: |
-          echo "Iniciando Deploy em DEV na porta"
-          call c:\eqtone\pmo_hub\pmo_hub_dev\start_server_hub_dev.bat
-          # Inicia o Django sem travar o console
-          Start-Process c:\eqtone\pmo_hub\pmo_hub_dev\start_server_hub_dev.bat
-          
-          # Aguarda 60 segundos para o servidor subir
-          Start-Sleep -Seconds 60
-          
-          # Tenta uma requisição local para confirmar se deu certo (Healthcheck)
-          $response = Invoke-WebRequest -Uri "http://localhost:23456" -UseBasicParsing
-          if ($response.StatusCode -eq 200) {
-              Write-Host "Django subiu com sucesso!"
-          } else {
-              Write-Error "Falha ao iniciar Django"
-              exit 1
-          }
+          # Reinicia o serviço e aguarda a conclusão
+          Restart-Service -Name "DataHub-EqtOne-Dev" -Force
+          Write-Host "Serviço de Produção reiniciado com sucesso."
 
       # Execução para a branch MAIN
       - name: Reiniciar Serviço de Produção
