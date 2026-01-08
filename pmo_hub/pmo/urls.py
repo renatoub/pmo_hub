@@ -1,4 +1,9 @@
-from core.views import alterar_status_view, criar_subatividade_view, dashboard_view
+from core.views import (
+    adicionar_pendencia_tarefa_view,
+    alterar_status_view,
+    criar_subatividade_view,
+    dashboard_view,
+)
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -10,6 +15,11 @@ urlpatterns = [
         "acoes/status/<int:pk>/<int:situacao_id>/",
         alterar_status_view,
         name="alterar_status",
+    ),
+    path(
+        "acoes/pendencia/<int:tarefa_id>/",
+        adicionar_pendencia_tarefa_view,
+        name="adicionar_pendencia_tarefa",
     ),
     path(
         "acoes/nova-sub/<int:pk>/", criar_subatividade_view, name="criar_subatividade"

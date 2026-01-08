@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils import timezone
 
 from .forms import UploadForm
-from .models import AnexoDemanda, Demanda, Pendencia, Situacao
+from .models import AnexoDemanda, Demanda, Pendencia, Situacao, Tarefas
 
 
 def upload_arquivos(request, demanda_id=None):
@@ -119,6 +119,38 @@ def alterar_status_view(request, pk, situacao_id):
     )
 
     return redirect(request.META.get("HTTP_REFERER", "dashboard"))
+
+
+def adicionar_pendencia_tarefa_view(request, tarefa_id):
+    tarefa = get_object_or_404(Tarefas, pk=tarefa_id)
+
+    if request.method == "POST":
+        descricao = request.POST.get("pendencia_descricao", "").strip()
+        responsabilidade = request.POST.get("responsabilidade", "Interno")
+
+        if descricao:
+            # 1. Atualiza os campos de texto e data
+            tarefa.pendencia = descricao
+            tarefa.pendencia_data = timezone.now().date()
+            tarefa.responsabilidade_pendencia = responsabilidade
+            tarefa.resolvida = False
+            tarefa.concluida = False
+            tarefa.save()  # Salva primeiro os campos simples
+
+            # 2. Adiciona o usuário atual aos responsáveis (ManyToMany)
+            # O método .add() não sobrescreve os atuais, apenas inclui o novo
+            if request.user.is_authenticated:
+                tarefa.responsaveis.add(request.user)
+
+            return render(
+                request, "core/pendencia_tarefa_form.html", {"msg_sucesso": True}
+            )
+
+    return render(
+        request,
+        "core/pendencia_tarefa_form.html",
+        {"tarefa": tarefa, "choices": Tarefas.ResponsabilidadeChoices.choices},
+    )
 
 
 def criar_subatividade_view(request, pk):

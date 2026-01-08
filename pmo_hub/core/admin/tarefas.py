@@ -1,16 +1,15 @@
-from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
+from simple_history.admin import SimpleHistoryAdmin
 
 
-class TarefasAdmin(admin.ModelAdmin):
+class TarefasAdmin(SimpleHistoryAdmin):
     search_fields = ("nome", "demanda__titulo")
     list_filter = ("concluida", "criado_em", "demanda__titulo", "responsaveis")
     list_display = (
         "nome",
         "link_demanda",
         "pendencia",
-        "get_responsaveis",
         "concluida",
         "criado_em",
         "concluido_em",
@@ -18,6 +17,7 @@ class TarefasAdmin(admin.ModelAdmin):
     readonly_fields = (
         "pendencia",
         "pendencia_data",
+        "pendencia_resolvida_em",
         "responsabilidade_pendencia",
         "criado_em",
         "atualizado_em",

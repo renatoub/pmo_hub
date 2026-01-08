@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.db import models
+from simple_history.models import HistoricalRecords
 
 from .base import TimeStampedModel
 from .demanda import Demanda
@@ -16,15 +17,21 @@ class Tarefas(TimeStampedModel):
         Demanda, on_delete=models.CASCADE, related_name="tarefas"
     )
     nome = models.CharField(max_length=255)
-    descricao = models.TextField(blank=True)
+    descricao = models.TextField(blank=True, verbose_name="Descrição da Tarefa")
     pendencia = models.TextField(blank=True, verbose_name="Descrição da Pendência")
-    pendencia_data = models.DateField(null=True, blank=True)
+    pendencia_data = models.DateField(
+        null=True, blank=True, verbose_name="Data da Pendência"
+    )
+    pendencia_resolvida_em = models.DateTimeField(
+        null=True, blank=True, verbose_name="Data de Resolução da Pendência"
+    )
     responsabilidade_pendencia = models.CharField(
         max_length=10,
         blank=True,
         choices=ResponsabilidadeChoices.choices,
         verbose_name="Responsáveis por concluir a pendência",
     )
+    resolvida = models.BooleanField(default=False, verbose_name="Pendência Resolvida")
     responsaveis = models.ManyToManyField(
         User, blank=True, related_name="tarefas_atribuidas"
     )
@@ -39,11 +46,26 @@ class Tarefas(TimeStampedModel):
 
     def save(self, *args, **kwargs):
         if self.pk:
-            old_status = Tarefas.objects.get(pk=self.pk).concluida
-            if not old_status and self.concluida:  # Foi concluída agora
+            # Busca a versão atual do banco para comparar status
+            old_instance = Tarefas.objects.get(pk=self.pk)
+
+            # Se a tarefa foi marcada como concluída AGORA
+            if not old_instance.concluida and self.concluida:
                 self.concluido_em = datetime.now()
 
+                # Se havia uma pendência aberta, resolve automaticamente
+                if not self.resolvida:
+                    self.resolvida = True
+                    self.pendencia_resolvida_em = datetime.now()
+
+            # Caso a pendência seja marcada como resolvida manualmente (sem concluir a tarefa)
+            if not old_instance.resolvida and self.resolvida:
+                if not self.pendencia_resolvida_em:
+                    self.pendencia_resolvida_em = datetime.now()
+
         super().save(*args, **kwargs)
+
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = "Tarefa"
