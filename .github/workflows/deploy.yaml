@@ -1,0 +1,31 @@
+name: Deploy por Branch
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+  deploy-job:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout do Código
+        uses: actions/checkout@v4
+
+      # Execução para a branch DEV
+      - name: Deploy Ambiente Dev
+        if: github.ref == 'refs/heads/dev'
+        shell: cmd
+        run: |
+          echo "Iniciando Deploy em DEV na porta"
+          call c:\eqtone\pmo_hub\pmo_hub_dev\start_server_hub_dev.bat
+
+      # Execução para a branch MAIN
+      - name: Reiniciar Serviço de Produção
+        if: github.ref == 'refs/heads/main'
+        shell: powershell
+        run: |
+          # Reinicia o serviço e aguarda a conclusão
+          Restart-Service -Name "DataHub-EqtOne" -Force
+          Write-Host "Serviço de Produção reiniciado com sucesso."
