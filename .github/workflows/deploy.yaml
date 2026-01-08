@@ -18,6 +18,11 @@ jobs:
       BASE_PATH: "C:\\EQTONE\\pmo_hub\\pmo_hub_${{ github.ref_name }}"
 
     steps:
+      - name: 0. Configurar Git Safe Directory
+        shell: cmd
+        run: |
+          git config --global --add safe.directory ${{ env.BASE_PATH }}
+
       - name: 1. Gerar Timestamp e Status do Deploy
         shell: powershell
         run: |
