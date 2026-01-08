@@ -1,0 +1,72 @@
+name: Deploy Unificado
+run-name: Deploy ${{ github.ref_name }}
+
+on:
+  push:
+    branches: [main, dev]
+
+env:
+  TARGET_PORT: ${{ github.ref_name == 'main' && '1234' || '2345' }}
+  SERVICE_NAME: ${{ github.ref_name == 'main' && 'DataHub-EqtOne' || 'DataHub-EqtOne-Dev' }}
+  BASE_PATH: "C:\\EQTONE\\pmo_hub\\pmo_hub_${{ github.ref_name }}"
+
+jobs:
+  setup:
+    name: 1. Configurar Ambiente
+    runs-on: self-hosted
+    outputs:
+      backup_date: ${{ steps.vars.outputs.BACKUP_DATE }}
+    steps:
+      - id: vars
+        shell: powershell
+        run: |
+          git config --global --add safe.directory *
+          $TIMESTAMP = Get-Date -Format "yyyyMMdd_HHmm"
+          echo "BACKUP_DATE=$TIMESTAMP" >> $env:GITHUB_OUTPUT
+          Write-Host "Iniciando deploy na branch ${{ github.ref_name }}"
+
+  backup:
+    name: 2. Backup do Banco
+    needs: setup
+    runs-on: self-hosted
+    steps:
+      - shell: cmd
+        working-directory: ${{ env.BASE_PATH }}
+        run: |
+          if not exist "..\backups" mkdir "..\backups"
+          copy pmo_hub\db.sqlite3 ..\backups\db_${{ github.ref_name }}_${{ needs.setup.outputs.backup_date }}.sqlite3
+          uv run python .\pmo_hub\manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 2 > ..\backups\dump_${{ github.ref_name }}_${{ needs.setup.outputs.backup_date }}.json
+
+  update_code:
+    name: 3. Git Pull
+    needs: backup
+    runs-on: self-hosted
+    steps:
+      - shell: cmd
+        working-directory: ${{ env.BASE_PATH }}
+        run: |
+          git fetch origin ${{ github.ref_name }}
+          git reset --hard origin/${{ github.ref_name }}
+          git pull origin ${{ github.ref_name }}
+
+  migrations:
+    name: 4. Migrations
+    needs: update_code
+    runs-on: self-hosted
+    steps:
+      - shell: cmd
+        working-directory: ${{ env.BASE_PATH }}
+        run: uv run python pmo_hub\manage.py migrate --noinput
+
+  restart:
+    name: 5. Restart Service
+    needs: migrations
+    runs-on: self-hosted
+    steps:
+      - shell: powershell
+        run: |
+          Stop-Service -Name "$env:SERVICE_NAME" -Force -ErrorAction SilentlyContinue
+          Start-Sleep -Seconds 5
+          Start-Service -Name "$env:SERVICE_NAME"
+          Start-Sleep -Seconds 5
+          if ((Get-Service -Name "$env:SERVICE_NAME").Status -ne "Running") { exit 1 }

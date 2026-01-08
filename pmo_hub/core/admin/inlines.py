@@ -1,3 +1,4 @@
+# pmo_hub/core/admin/inlines.py
 from django.contrib import admin
 from django.urls import reverse
 from django.utils import timezone
@@ -20,7 +21,7 @@ class AnexoDemandaInline(admin.TabularInline):
             return format_html(
                 '<a href="{}" target="_blank">📄 Baixar</a>', obj.arquivo.url
             )
-        return "-"
+        return mark_safe("-")
 
 
 class PendenciaInline(admin.TabularInline):

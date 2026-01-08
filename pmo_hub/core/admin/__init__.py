@@ -1,3 +1,4 @@
+# pmo_hub/core/admin/__init__.py
 from django.contrib import admin
 
 from ..models import (

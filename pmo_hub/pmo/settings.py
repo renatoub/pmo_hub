@@ -1,6 +1,18 @@
 ﻿import os
 from pathlib import Path
 
+from django.utils import html
+
+orig_format_html = html.format_html
+
+
+def patched_format_html(format_string, *args, **kwargs):
+    if not args and not kwargs:
+        return html.mark_safe(format_string)
+    return orig_format_html(format_string, *args, **kwargs)
+
+
+html.format_html = patched_format_html
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = "/media/"
