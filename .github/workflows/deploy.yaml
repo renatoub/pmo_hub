@@ -7,28 +7,25 @@ on:
 
 jobs:
   deploy:
-    # O nome dinâmico agora usa o github.ref_name para evitar erro de matriz
     name: deploy (${{ github.ref_name }})
     runs-on: self-hosted
     
     env:
-      # Lógica de variáveis baseada na branch do push
       TARGET_PORT: ${{ github.ref_name == 'main' && '1234' || '2345' }}
       SERVICE_NAME: ${{ github.ref_name == 'main' && 'DataHub-EqtOne' || 'DataHub-EqtOne-Dev' }}
       BASE_PATH: "C:\\EQTONE\\pmo_hub\\pmo_hub_${{ github.ref_name }}"
 
     steps:
-      - name: 0. Configurar Git Safe Directory
-        shell: cmd
-        run: |
-          git config --global --add safe.directory ${{ env.BASE_PATH }}
-
-      - name: 1. Gerar Timestamp e Status do Deploy
+      - name: 1. Configurar Ambiente e Git Safe
         shell: powershell
         run: |
+          # Resolve o erro de Dubious Ownership globalmente para o usuário SYSTEM
+          git config --global --add safe.directory *
+          
+          # Gera o Timestamp
           $TIMESTAMP = Get-Date -Format "yyyyMMdd_HHmm"
           echo "BACKUP_DATE=$TIMESTAMP" >> $env:GITHUB_ENV
-          Write-Host "Iniciando deploy na pasta $env:BASE_PATH na porta $env:TARGET_PORT"
+          Write-Host "Iniciando deploy na branch ${{ github.ref_name }}"
 
       - name: 2. Criando backup do banco de dados
         shell: cmd
@@ -54,15 +51,10 @@ jobs:
       - name: 5. Restart Service via NSSM
         shell: powershell
         run: |
-          Write-Host "Reiniciando $env:SERVICE_NAME..."
           Stop-Service -Name "$env:SERVICE_NAME" -Force -ErrorAction SilentlyContinue
           Start-Sleep -Seconds 5
           Start-Service -Name "$env:SERVICE_NAME"
           
-          # Validação final
           Start-Sleep -Seconds 5
           $status = (Get-Service -Name "$env:SERVICE_NAME").Status
-          if ($status -ne "Running") { 
-            Write-Error "O serviço não subiu corretamente. Status: $status"
-            exit 1
-          }
+          if ($status -ne "Running") { exit 1 }
