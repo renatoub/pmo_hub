@@ -1,32 +1,66 @@
-name: Deploy por Branch
+name: Deploy Unificado
+run-name: Deploy ${{ github.ref_name }}
 
 on:
   push:
-    branches:
-      - main
-      - dev
+    branches: [main, dev]
 
 jobs:
-  deploy-job:
+  # O nome que aparece no painel lateral será "deploy (main)" ou "deploy (dev)"
+  deploy:
+    name: deploy (${{ matrix.branch }})
     runs-on: self-hosted
+    strategy:
+      matrix:
+        branch: [main, dev]
+    # Este 'if' garante que o job da matrix só rode se for a branch do push
+    if: github.ref_name == matrix.branch
+    
+    env:
+      TARGET_PORT: ${{ matrix.branch == 'main' && '1234' || '2345' }}
+      SERVICE_NAME: ${{ matrix.branch == 'main' && 'DataHub-EqtOne' || 'DataHub-EqtOne-Dev' }}
+      BASE_PATH: "C:\\EQTONE\\pmo_hub\\pmo_hub_${{ matrix.branch }}"
+
     steps:
-      - name: Checkout do Código
-        uses: actions/checkout@v4
-
-      # Execução para a branch DEV
-      - name: Deploy Ambiente Dev
-        if: github.ref == 'refs/heads/dev'
+      - name: 1. Gerar Timestamp e Status do Deploy
         shell: powershell
         run: |
-          # Reinicia o serviço e aguarda a conclusão
-          Restart-Service -Name "DataHub-EqtOne-Dev" -Force
-          Write-Host "Serviço de Produção reiniciado com sucesso."
+          # Gera data no formato: AnoMesDia_HoraMinuto (ex: 20231027_1430)
+          $TIMESTAMP = Get-Date -Format "yyyyMMdd_HHmm"
+          # Exporta para o ambiente do GitHub Actions para uso nos próximos steps
+          echo "BACKUP_DATE=$TIMESTAMP" >> $env:GITHUB_ENV
+          Write-Host "Iniciando deploy na pasta ${{ env.BASE_PATH }} na porta ${{ env.TARGET_PORT }}"
 
-      # Execução para a branch MAIN
-      - name: Reiniciar Serviço de Produção
-        if: github.ref == 'refs/heads/main'
+      - name: 2. Criando backup do banco de dados
+        shell: cmd
+        working-directory: ${{ env.BASE_PATH }}
+        run: |
+          # Criando a pasta de backups se não existir (opcional, para organização)
+          if not exist "..\backups" mkdir "..\backups"
+          
+          # Cópia do SQLite com data
+          copy pmo_hub\db.sqlite3 ..\backups\db_${{ matrix.branch }}_%BACKUP_DATE%.sqlite3
+          
+          # Dump JSON com data
+          uv run python .\pmo_hub\manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 2 > ..\backups\dump_${{ matrix.branch }}_%BACKUP_DATE%.json
+
+      - name: 3. Atualizar Código (Git Pull)
+        shell: cmd
+        working-directory: ${{ env.BASE_PATH }}
+        run: |
+          git fetch origin ${{ matrix.branch }}
+          git reset --hard origin/${{ matrix.branch }}
+          git pull origin ${{ matrix.branch }}
+
+      - name: 4. Migrations
+        shell: cmd
+        working-directory: ${{ env.BASE_PATH }}
+        run: uv run python pmo_hub\manage.py migrate --noinput
+
+      - name: 5. Restart Service
         shell: powershell
         run: |
-          # Reinicia o serviço e aguarda a conclusão
-          Restart-Service -Name "DataHub-EqtOne" -Force
-          Write-Host "Serviço de Produção reiniciado com sucesso."
+          & "C:\tools\nssm.exe" set ${{ env.SERVICE_NAME }} AppParameters "pmo_hub\manage.py runserver 0.0.0.0:$($env:TARGET_PORT) --noreload"
+          Stop-Service -Name ${{ env.SERVICE_NAME }} -Force -ErrorAction SilentlyContinue
+          Start-Sleep -Seconds 5
+          Start-Service -Name ${{ env.SERVICE_NAME }}
