@@ -6,61 +6,58 @@ on:
     branches: [main, dev]
 
 jobs:
-  # O nome que aparece no painel lateral será "deploy (main)" ou "deploy (dev)"
   deploy:
-    name: deploy (${{ matrix.branch }})
+    # O nome dinâmico agora usa o github.ref_name para evitar erro de matriz
+    name: deploy (${{ github.ref_name }})
     runs-on: self-hosted
-    strategy:
-      matrix:
-        branch: [main, dev]
-    # Este 'if' garante que o job da matrix só rode se for a branch do push
-    if: github.ref_name == matrix.branch
     
     env:
-      TARGET_PORT: ${{ matrix.branch == 'main' && '1234' || '2345' }}
-      SERVICE_NAME: ${{ matrix.branch == 'main' && 'DataHub-EqtOne' || 'DataHub-EqtOne-Dev' }}
-      BASE_PATH: "C:\\EQTONE\\pmo_hub\\pmo_hub_${{ matrix.branch }}"
+      # Lógica de variáveis baseada na branch do push
+      TARGET_PORT: ${{ github.ref_name == 'main' && '1234' || '2345' }}
+      SERVICE_NAME: ${{ github.ref_name == 'main' && 'DataHub-EqtOne' || 'DataHub-EqtOne-Dev' }}
+      BASE_PATH: "C:\\EQTONE\\pmo_hub\\pmo_hub_${{ github.ref_name }}"
 
     steps:
       - name: 1. Gerar Timestamp e Status do Deploy
         shell: powershell
         run: |
-          # Gera data no formato: AnoMesDia_HoraMinuto (ex: 20231027_1430)
           $TIMESTAMP = Get-Date -Format "yyyyMMdd_HHmm"
-          # Exporta para o ambiente do GitHub Actions para uso nos próximos steps
           echo "BACKUP_DATE=$TIMESTAMP" >> $env:GITHUB_ENV
-          Write-Host "Iniciando deploy na pasta ${{ env.BASE_PATH }} na porta ${{ env.TARGET_PORT }}"
+          Write-Host "Iniciando deploy na pasta $env:BASE_PATH na porta $env:TARGET_PORT"
 
       - name: 2. Criando backup do banco de dados
         shell: cmd
         working-directory: ${{ env.BASE_PATH }}
         run: |
-          # Criando a pasta de backups se não existir (opcional, para organização)
           if not exist "..\backups" mkdir "..\backups"
-          
-          # Cópia do SQLite com data
-          copy pmo_hub\db.sqlite3 ..\backups\db_${{ matrix.branch }}_%BACKUP_DATE%.sqlite3
-          
-          # Dump JSON com data
-          uv run python .\pmo_hub\manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 2 > ..\backups\dump_${{ matrix.branch }}_%BACKUP_DATE%.json
+          copy pmo_hub\db.sqlite3 ..\backups\db_${{ github.ref_name }}_%BACKUP_DATE%.sqlite3
+          uv run python .\pmo_hub\manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 2 > ..\backups\dump_${{ github.ref_name }}_%BACKUP_DATE%.json
 
       - name: 3. Atualizar Código (Git Pull)
         shell: cmd
         working-directory: ${{ env.BASE_PATH }}
         run: |
-          git fetch origin ${{ matrix.branch }}
-          git reset --hard origin/${{ matrix.branch }}
-          git pull origin ${{ matrix.branch }}
+          git fetch origin ${{ github.ref_name }}
+          git reset --hard origin/${{ github.ref_name }}
+          git pull origin ${{ github.ref_name }}
 
       - name: 4. Migrations
         shell: cmd
         working-directory: ${{ env.BASE_PATH }}
         run: uv run python pmo_hub\manage.py migrate --noinput
 
-      - name: 5. Restart Service
+      - name: 5. Restart Service via NSSM
         shell: powershell
         run: |
-          & "C:\tools\nssm.exe" set ${{ env.SERVICE_NAME }} AppParameters "pmo_hub\manage.py runserver 0.0.0.0:$($env:TARGET_PORT) --noreload"
-          Stop-Service -Name ${{ env.SERVICE_NAME }} -Force -ErrorAction SilentlyContinue
+          Write-Host "Reiniciando $env:SERVICE_NAME..."
+          Stop-Service -Name "$env:SERVICE_NAME" -Force -ErrorAction SilentlyContinue
           Start-Sleep -Seconds 5
-          Start-Service -Name ${{ env.SERVICE_NAME }}
+          Start-Service -Name "$env:SERVICE_NAME"
+          
+          # Validação final
+          Start-Sleep -Seconds 5
+          $status = (Get-Service -Name "$env:SERVICE_NAME").Status
+          if ($status -ne "Running") { 
+            Write-Error "O serviço não subiu corretamente. Status: $status"
+            exit 1
+          }
