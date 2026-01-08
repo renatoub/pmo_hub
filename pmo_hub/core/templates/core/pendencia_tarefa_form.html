@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adicionar Pendência</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: sans-serif; padding: 20px; background-color: #f4f7f6; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h2 { color: #333; font-size: 18px; margin-top: 0; }
+        textarea { width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 10px; box-sizing: border-box; }
+        .btn { 
+            background-color: #ffbf00; border: none; color: white; padding: 10px 20px; 
+            border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px; width: 100%;
+        }
+        .success-msg { text-align: center; color: #28a745; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        {% if msg_sucesso %}
+            <div class="success-msg">
+                <i class="fa-solid fa-circle-check fa-3x"></i>
+                <p>Pendência registrada com sucesso!</p>
+                <script>
+                    setTimeout(function() {
+                        if (window.opener && !window.opener.closed) {
+                            window.opener.location.reload(); // Recarrega o Admin pai
+                        }
+                        window.close(); // Fecha a popup
+                    }, 1500);
+                </script>
+            </div>
+        {% else %}
+            <h2><i class="fa-solid fa-triangle-exclamation"></i> Registrar Pendência</h2>
+            <p>Tarefa: <strong>{{ tarefa.nome }}</strong></p>
+            <form method="post">
+                {% csrf_token %}
+                <label>Descrição do impedimento:</label>
+                <textarea name="pendencia_descricao" rows="4" required></textarea>
+                
+                <label style="display:block; margin-top:10px;">Responsabilidade:</label>
+                <select name="responsabilidade" style="width:100%; padding:8px; margin-bottom:15px;">
+                    {% for value, label in choices %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+                
+                <button type="submit" class="btn">REGISTRAR NA TAREFA</button>
+            </form>
+        {% endif %}
+    </div>
+</body>
+</html>
