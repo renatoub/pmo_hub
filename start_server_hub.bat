@@ -1,5 +1,5 @@
 @echo off
-cd C:\EQTONE\DataHub\
+cd C:\EQTONE\pmo_hub\pmo_hub_%BRANCH%
 
 echo --- Fazendo Backup ---
 copy pmo_hub\db.sqlite3 ..\pmo_hub.sqlite3
