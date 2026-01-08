@@ -1,3 +1,4 @@
+# pmo_hub/core/models/base.py
 from django.db import models
 
 

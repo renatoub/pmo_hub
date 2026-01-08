@@ -1,3 +1,4 @@
+# pmo_hub/core/admin/tarefas.py
 from django.urls import reverse
 from django.utils.html import format_html, mark_safe
 from simple_history.admin import SimpleHistoryAdmin

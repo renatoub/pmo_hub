@@ -1,3 +1,4 @@
+# pmo_hub/core/models/auxiliares.py
 import os
 
 from django.db import models

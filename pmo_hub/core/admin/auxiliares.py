@@ -1,3 +1,4 @@
+# pmo_hub/core/admin/auxiliares.py
 import os
 
 from django.contrib import admin

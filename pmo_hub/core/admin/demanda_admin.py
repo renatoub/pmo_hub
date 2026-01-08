@@ -1,3 +1,4 @@
+# pmo_hub/core/admin/demanda_admin.py
 from datetime import date
 
 from django.contrib import messages
@@ -394,13 +395,3 @@ class DemandaAdmin(SimpleHistoryAdmin):
                 "css/admin_fix.css",
             )
         }
-
-    # def changelist_view(self, request, extra_context=None):
-    #     # Injeção direta de CSS no cabeçalho sem usar classe Media
-    #     extra_context = extra_context or {}
-    #     extra_context["custom_css"] = format_html(
-    #         "<style>"
-    #         ".historylink { background-color: #264b5e !important; color: #fff !important; padding: 5px 10px; border-radius: 5px; }"
-    #         "</style>"
-    #     )
-    #     return super().changelist_view(request, extra_context=extra_context)
