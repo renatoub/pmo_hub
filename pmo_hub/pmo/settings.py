@@ -1,7 +1,10 @@
-﻿import os
+﻿# pmo_hub/pmo/settings.py
+import os
 from pathlib import Path
 
 from django.utils import html
+
+from pmo import __version__ as APP_VERSION
 
 orig_format_html = html.format_html
 
@@ -132,7 +135,7 @@ JAZZMIN_SETTINGS = {
     # "site_icon": "img/logo.png",
     # "site_logo_classes": "img-circle",
     "welcome_sign": "Bem-vindo ao PMO Hub - Gerenciamento de core",
-    "copyright": "PMO Hub Ltda",
+    "copyright": f"PMO Hub Ltda v{APP_VERSION}",
     "search_model": ["core.Demanda"],
     "user_avatar": None,
     # Links no menu superior
@@ -145,7 +148,8 @@ JAZZMIN_SETTINGS = {
         {
             "name": "Painel PMO",
             "url": "admin:core_demanda_pmo",
-        },  # Link direto para a nova view
+        },
+        {"name": "Linha do Tempo", "url": "admin:tarefas-timeline"},
         {
             "name": "Dashboard",
             "url": "/",

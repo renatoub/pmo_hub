@@ -1,4 +1,8 @@
+# pmo_hub\core\views.py
+from datetime import timedelta
+
 from django.db.models import Count
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -158,3 +162,33 @@ def criar_subatividade_view(request, pk):
     url = reverse("admin:core_demanda_add")
     params = f"?parent={pai.id}&tema={pai.tema.id if pai.tema else ''}"
     return redirect(url + params)
+
+
+def gantt_data(request):
+    # Filtrar apenas quem tem data de início para o Gantt não quebrar
+    demandas = Demanda.objects.prefetch_related("tarefas").filter(
+        data_inicio__isnull=False
+    )
+    tasks = []
+
+    for d in demandas:
+        start_str = d.data_inicio.strftime("%Y-%m-%d")
+
+        # O Gantt exige que 'end' seja estritamente maior que 'start' para desenhar a barra
+        if d.data_prazo and d.data_prazo > d.data_inicio:
+            end_str = d.data_prazo.strftime("%Y-%m-%d")
+        else:
+            # Se não houver prazo ou for no mesmo dia, forçamos +1 dia para a barra existir
+            end_str = (d.data_inicio + timedelta(days=1)).strftime("%Y-%m-%d")
+
+        tasks.append(
+            {
+                "id": str(d.id),
+                "name": d.titulo,
+                "start": start_str,
+                "end": end_str,
+                "progress": d.progresso_total,  # Agora usa a property com peso de horas
+                "custom_class": "bar-demanda",
+            }
+        )
+    return JsonResponse(tasks, safe=False)

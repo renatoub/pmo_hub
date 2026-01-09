@@ -1,4 +1,4 @@
-# seu_app/models/__init__.py
+# pmo_hub/core/models/__init__.py
 from .auxiliares import (
     Contato,
     ResultadosEsperados,
