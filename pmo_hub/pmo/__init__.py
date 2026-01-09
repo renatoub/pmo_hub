@@ -1,1 +1,2 @@
-__version__ = "0.9.6"
+# pmo_hub/pmo/__init__.py
+__version__ = "0.9.7"

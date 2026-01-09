@@ -44,6 +44,9 @@ class Tarefas(TimeStampedModel):
     concluido_em = models.DateTimeField(
         null=True, blank=True, verbose_name="Data de Conclusão"
     )
+    horas_estimadas = models.PositiveIntegerField(
+        default=0, verbose_name="Horas Estimadas"
+    )
 
     def save(self, *args, **kwargs):
         if self.pk:

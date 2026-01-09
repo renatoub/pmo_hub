@@ -1,5 +1,6 @@
 # pmo_hub/core/admin/tarefas.py
-from django.urls import reverse
+from django.template.response import TemplateResponse
+from django.urls import path, reverse
 from django.utils.html import format_html, mark_safe
 from simple_history.admin import SimpleHistoryAdmin
 
@@ -49,3 +50,20 @@ class TarefasAdmin(SimpleHistoryAdmin):
         return nomes
 
     get_responsaveis.short_description = "Responsáveis"
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                "timeline/",
+                self.admin_site.admin_view(self.timeline_view),
+                name="tarefas-timeline",
+            ),
+        ]
+        return custom_urls + urls
+
+    def timeline_view(self, request):
+        context = dict(self.admin_site.each_context(request))
+        # Passamos a URL da rota que acabamos de criar no urls.py
+        context["gantt_data_url"] = "/gantt-data/"
+        return TemplateResponse(request, "admin/timeline.html", context)

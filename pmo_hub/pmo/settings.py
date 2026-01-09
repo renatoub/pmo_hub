@@ -1,4 +1,5 @@
-﻿import os
+﻿# pmo_hub/pmo/settings.py
+import os
 from pathlib import Path
 
 from django.utils import html
@@ -25,8 +26,6 @@ SECRET_KEY = "django-insecure-+8!lj9_fo5v!r)7o88hp-w4ia6hwr(u9cy_c-^zm-2&2mla_f^
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-APP_VERSION = os.getenv("APP_VERSION", "dev-local")
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -149,7 +148,8 @@ JAZZMIN_SETTINGS = {
         {
             "name": "Painel PMO",
             "url": "admin:core_demanda_pmo",
-        },  # Link direto para a nova view
+        },
+        {"name": "Linha do Tempo", "url": "admin:tarefas-timeline"},
         {
             "name": "Dashboard",
             "url": "/",

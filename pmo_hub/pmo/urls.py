@@ -1,8 +1,10 @@
+# pmo_hub/pmo/urls.py
 from core.views import (
     adicionar_pendencia_tarefa_view,
     alterar_status_view,
     criar_subatividade_view,
     dashboard_view,
+    gantt_data,
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -24,6 +26,7 @@ urlpatterns = [
     path(
         "acoes/nova-sub/<int:pk>/", criar_subatividade_view, name="criar_subatividade"
     ),
+    path("gantt-data/", gantt_data, name="gantt_data_json"),
     path("admin/", admin.site.urls),
     path("", dashboard_view, name="dashboard"),
 ]

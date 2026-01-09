@@ -84,6 +84,20 @@ class Demanda(TimeStampedModel):
         verbose_name_plural="Históricos", verbose_name="Histórico"
     )
 
+    @property
+    def progresso_total(self):
+        # Usar 'tarefas' conforme definido no related_name do model Tarefas
+        stats = self.tarefas.aggregate(
+            total=models.Sum("horas_estimadas"),
+            concluidas=models.Sum("horas_estimadas", filter=models.Q(concluida=True)),
+        )
+        total = stats["total"] or 0
+        concluidas = stats["concluidas"] or 0
+
+        if total == 0:
+            return 0
+        return round((concluidas / total) * 100, 2)
+
     def save(self, *args, **kwargs):
         if not self.pk and not self.situacao:
             # Import local para evitar importação circular
