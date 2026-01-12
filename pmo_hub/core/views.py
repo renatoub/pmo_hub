@@ -192,3 +192,7 @@ def gantt_data(request):
             }
         )
     return JsonResponse(tasks, safe=False)
+
+
+def gantt_view(request):
+    return render(request, "core/gantt.html")

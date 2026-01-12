@@ -99,13 +99,18 @@ class Demanda(TimeStampedModel):
         return round((concluidas / total) * 100, 2)
 
     def save(self, *args, **kwargs):
-        if not self.pk and not self.situacao:
-            # Import local para evitar importação circular
-            from .auxiliares import Situacao
+        from .auxiliares import Situacao
 
+        if not self.pk and not self.situacao:
             situacao_padrao = Situacao.objects.filter(padrao=True).first()
             if situacao_padrao:
                 self.situacao = situacao_padrao
+
+        if self.situacao:
+            if self.situacao.fechado and not self.data_fechamento:
+                self.data_fechamento = timezone.now()
+        else:
+            self.data_fechamento = None
 
         super().save(*args, **kwargs)
 

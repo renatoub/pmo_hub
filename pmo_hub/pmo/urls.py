@@ -5,6 +5,7 @@ from core.views import (
     criar_subatividade_view,
     dashboard_view,
     gantt_data,
+    gantt_view,
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -27,6 +28,7 @@ urlpatterns = [
         "acoes/nova-sub/<int:pk>/", criar_subatividade_view, name="criar_subatividade"
     ),
     path("gantt-data/", gantt_data, name="gantt_data_json"),
+    path("gantt/", gantt_view, name="gantt_view"),
     path("admin/", admin.site.urls),
     path("", dashboard_view, name="dashboard"),
 ]
