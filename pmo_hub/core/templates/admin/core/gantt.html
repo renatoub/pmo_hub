@@ -1,1 +1,68 @@
 <!-- pmo_hub\core\templates\admin\core\gantt.html -->
+ <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Timeline - Frappe Gantt</title>
+
+    <!-- Frappe Gantt -->
+    <link rel="stylesheet" href="https://unpkg.com/frappe-gantt/dist/frappe-gantt.css">
+    <script src="https://unpkg.com/frappe-gantt/dist/frappe-gantt.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .bar-demanda .bar {
+            fill: #2563eb;
+        }
+
+        .bar-demanda .bar-progress {
+            fill: #1e40af;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Timeline de Demandas</h2>
+
+<div id="gantt"></div>
+
+<script>
+    const ENDPOINT_URL = "/gantt-data/"; // ajuste para o seu endpoint real
+
+    fetch(ENDPOINT_URL)
+        .then(response => response.json())
+        .then(tasks => {
+
+            // Frappe Gantt exige Date ou string ISO válida
+            const formattedTasks = tasks.map(t => ({
+                id: t.id,
+                name: t.name,
+                start: t.start,
+                end: t.end,
+                progress: t.progress,
+                custom_class: t.custom_class
+            }));
+
+            new Gantt("#gantt", formattedTasks, {
+                view_mode: "Day",
+                language: "pt",
+                date_format: "YYYY-MM-DD",
+                on_click: task => {
+                    console.log("Task:", task);
+                },
+                on_date_change: (task, start, end) => {
+                    console.log(task, start, end);
+                }
+            });
+        })
+        .catch(error => {
+            console.error("Erro ao carregar dados do Gantt:", error);
+        });
+</script>
+
+</body>
+</html>

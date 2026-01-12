@@ -10,15 +10,17 @@
         .content-wrapper { background: #f4f6f9 !important; z-index: 1; }
         .content { padding: 10px !important; }
         
-        .gantt-wrapper {
+        #gantt-svg {
+            display: block;
             width: 100%;
-            overflow-x: auto;
-            background: #fff;
-            min-height: 75vh;
-            border: 1px solid #dee2e6;
+            min-width: 1200px; /* Garante que o grid não esprema as barras */
         }
 
-        #gantt-svg { width: 100%; min-height: 700px; }
+        .gantt-wrapper {
+            width: 100%;
+            overflow-x: auto; /* Permite scroll horizontal se o min-width for atingido */
+            position: relative;
+        }
 
         /* Estilo das barras conforme sua imagem de referência */
         .bar-demanda .bar { fill: #a3c2ff; stroke: #3b82f6; stroke-width: 1; }

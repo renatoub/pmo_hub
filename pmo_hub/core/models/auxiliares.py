@@ -52,6 +52,9 @@ class Situacao(models.Model):
     proximas_situacoes = models.ManyToManyField(
         "self", symmetrical=False, blank=True, verbose_name="Buckets seguintes"
     )
+    fechado = models.BooleanField(
+        default=False, help_text="Indica se é um estado final (fechado)"
+    )
 
     class Meta:
         verbose_name = "Bucket"

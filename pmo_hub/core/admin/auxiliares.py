@@ -14,7 +14,12 @@ class AuxiliarAdmin(admin.ModelAdmin):
 
 class SituacaoAdmin(admin.ModelAdmin):
     form = SituacaoForm
-    list_display = ("nome", "padrao", "pendente")
+    list_display = (
+        "nome",
+        "padrao",
+        "pendente",
+        "fechado",
+    )
     search_fields = ["nome"]
 
 
