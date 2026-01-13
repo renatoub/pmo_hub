@@ -1,9 +1,11 @@
 # pmo_hub/core/admin/demanda_admin.py
-from datetime import date
+from datetime import date, datetime, timedelta
 
 from django.contrib import messages
 from django.db.models import Max, Q
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
+from django.template.response import TemplateResponse
 from django.urls import path, reverse
 from django.utils import timezone
 from django.utils.html import format_html
@@ -11,6 +13,7 @@ from django.utils.safestring import mark_safe
 from simple_history.admin import SimpleHistoryAdmin
 
 from ..models import AnexoDemanda, Demanda, Pendencia, Situacao, Tema
+from ..models.demanda import Demanda
 from .forms import DemandaForm
 from .inlines import (
     AnexoDemandaInline,
@@ -260,7 +263,8 @@ class DemandaAdmin(SimpleHistoryAdmin):
     acoes_rapidas.short_description = "Ações"
 
     def get_urls(self):
-        return [
+        urls = super().get_urls()
+        custom_urls = [
             path(
                 "<int:pk>/assumir/",
                 self.admin_site.admin_view(self.assumir_demanda),
@@ -276,7 +280,84 @@ class DemandaAdmin(SimpleHistoryAdmin):
                 self.admin_site.admin_view(self.pmo_view),
                 name="core_demanda_pmo",
             ),
-        ] + super().get_urls()
+            path(
+                "gantt-data/",
+                self.admin_site.admin_view(self.get_gantt_data),
+                name="demanda-gantt-data",
+            ),
+            path(
+                "gantt-view/",
+                self.admin_site.admin_view(self.gantt_view),
+                name="demanda-gantt-view",
+            ),
+        ]
+
+        return custom_urls + urls
+
+    def get_gantt_data(self, request):
+        # Filtra demandas que possuem data de início e prazo
+        queryset = Demanda.objects.exclude(
+            data_prazo__isnull=True
+        ).order_status_by_date()  # ou seu queryset padrão
+
+        data = []
+        for d in queryset:
+            data.append(
+                {
+                    "id": str(d.id),
+                    "name": d.titulo,
+                    "start": d.data_inicio.isoformat(),
+                    "end": d.data_prazo.isoformat(),
+                    "progress": d.progresso_total,  # Usando sua @property
+                    "type": str(d.tipo.nome) if d.tipo else "N/A",
+                    "custom_class": self._get_status_class(d.situacao),
+                }
+            )
+        return JsonResponse(data, safe=False)
+
+    def _get_status_class(self, situacao):
+        # Mapeia sua situação para classes CSS do Tailwind/Custom
+        if not situacao:
+            return "bar-default"
+        if situacao.fechado:
+            return "bar-done"
+        return "bar-progress"
+
+    def gantt_view(self, request):
+        # Captura datas do filtro ou define padrão (semana atual)
+        hoje = timezone.now().date()
+        padrao_inicio = hoje - timedelta(days=hoje.weekday())
+        padrao_fim = padrao_inicio + timedelta(days=13)  # 2 semanas por padrão
+
+        str_inicio = request.GET.get("data_inicio")
+        str_fim = request.GET.get("data_fim")
+
+        try:
+            start_date = (
+                datetime.strptime(str_inicio, "%Y-%m-%d").date()
+                if str_inicio
+                else padrao_inicio
+            )
+            end_date = (
+                datetime.strptime(str_fim, "%Y-%m-%d").date() if str_fim else padrao_fim
+            )
+        except ValueError:
+            start_date, end_date = padrao_inicio, padrao_fim
+
+        # Cálculo de dias para o grid JS
+        delta_days = (end_date - start_date).days + 1
+        if delta_days <= 0:
+            delta_days = 1
+
+        context = {
+            **self.admin_site.each_context(request),
+            "title": "Gantt Personalizado",
+            "start_iso": start_date.isoformat(),
+            "end_iso": end_date.isoformat(),
+            "delta_days": delta_days,
+            "hoje_iso": hoje.isoformat(),
+        }
+        return TemplateResponse(request, "admin/gantt_view.html", context)
 
     def pmo_view(self, request):
         ano_corrente = 2026

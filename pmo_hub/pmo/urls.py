@@ -27,7 +27,8 @@ urlpatterns = [
     path(
         "acoes/nova-sub/<int:pk>/", criar_subatividade_view, name="criar_subatividade"
     ),
-    path("gantt-data/", gantt_data, name="gantt_data_json"),
+    # path("gantt-data/", gantt_data, name="gantt_data_json"),
+    path("admin/core/demanda/gantt-data/", gantt_data, name="gantt_data_json"),
     path("gantt/", gantt_view, name="gantt_view"),
     path("admin/", admin.site.urls),
     path("", dashboard_view, name="dashboard"),

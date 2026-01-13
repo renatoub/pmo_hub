@@ -149,7 +149,7 @@ JAZZMIN_SETTINGS = {
             "name": "Painel PMO",
             "url": "admin:core_demanda_pmo",
         },
-        {"name": "Linha do Tempo", "url": "admin:tarefas-timeline"},
+        {"name": "Linha do Tempo", "url": "/admin/core/demanda/gantt-view/"},
         {
             "name": "Dashboard",
             "url": "/",
