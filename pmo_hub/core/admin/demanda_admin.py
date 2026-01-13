@@ -39,7 +39,7 @@ class DemandaAdmin(SimpleHistoryAdmin):
         "responsavel",
         "acoes_rapidas",
         "exibir_rotulos",
-        "porcentagem_concluida",
+        "progresso_total",
         "tarefas",
         "data_prazo",
     )

@@ -2,114 +2,87 @@
 {% block extrahead %}
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-    /* Estilos de Cores */
-    .bar-fill-dynamic {
-        /* O gradiente cria a divisão visual: cor escura até o progresso, cor clara no restante */
-        background: linear-gradient(to right, 
-            var(--bg-fill) 0%, 
-            var(--bg-fill) var(--p), 
-            var(--bg-empty) var(--p), 
-            var(--bg-empty) 100%) !important;
+    /* Indicador Esquerdo */
+    .out-left::before {
+        content: ''; position: absolute; left: -12px; top: 50%;
+        transform: translateY(-50%);
+        border-top: 7px solid transparent; border-bottom: 7px solid transparent;
+        border-right: 12px solid var(--bg-fill); z-index: 50;
     }
-
-    /* Variáveis para Demanda Comum */
+    .out-right::after {
+        content: ''; position: absolute; right: -12px; top: 50%;
+        transform: translateY(-50%);
+        border-top: 7px solid transparent; border-bottom: 7px solid transparent;
+        border-left: 12px solid var(--bg-fill); z-index: 50;
+    }
+    .bar-fill-dynamic {
+        background: linear-gradient(to right, 
+            var(--bg-fill) 0%, var(--bg-fill) var(--p), 
+            var(--bg-empty) var(--p), var(--bg-empty) 100%) !important;
+    }
     .bar-demanda {
-        --bg-fill: #2563eb;   /* Azul forte */
-        --bg-empty: #dbeafe;  /* Azul claro */
-        border: 1px solid #2563eb !important;
-        color: white !important;
+        --bg-fill: #2563eb; --bg-empty: #dbeafe;
+        border: 1px solid #2563eb !important; color: white !important;
         text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
     }
-
-    /* Variáveis para Demanda Concluída */
     .bar-done {
-        --bg-fill: #059669;   /* Verde forte */
-        --bg-empty: #dcfce7;  /* Verde claro */
-        border: 1px solid #059669 !important;
-        color: white !important;
+        --bg-fill: #059669; --bg-empty: #dcfce7;
+        border: 1px solid #059669 !important; color: white !important;
     }
-    /* Forçar o corpo do admin a não ter scroll duplo */
     #content { padding: 0 !important; overflow: hidden !important; }
-
-    /* Container de Filtros Fixo */
     .filter-header {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        background: #f8fafc;
-        border-bottom: 1px solid #e2e8f0;
-        padding: 1rem;
-        width: 100%;
+        position: sticky; top: 0; z-index: 100;
+        background: #f8fafc; border-bottom: 1px solid #e2e8f0;
+        padding: 1rem; width: 100%;
     }
-
-    /* Área de Scroll Principal */
+    .gantt-row { display: flex; min-height: 4rem; height: auto; align-items: stretch; }
+    
+    /* COLUNA DE NOMES - LARGURA FIXA 384px */
+    .name-cell {
+        width: 24rem; padding: 1rem; border-right: 1px solid #e2e8f0;
+        background-color: white; position: sticky; left: 0; z-index: 40;
+        display: flex; flex-direction: column; justify-content: center;
+        word-wrap: break-word; white-space: normal;
+    }
     .gantt-scroll-container {
-        width: 100%;
-        height: calc(100vh - 150px); /* Ajusta conforme a altura do seu header admin */
-        overflow: auto !important;
-        background: #fff;
+        width: 100%; height: calc(100vh - 150px);
+        overflow: auto !important; background: #fff;
     }
-
-    /* O container interno que define a largura real baseada nos dias */
-    #gantt-canvas {
-        position: relative;
-        display: block;
-    }
-
+    #gantt-canvas { position: relative; display: block; }
     .day-col { 
-        border-right: 1px solid #e2e8f0; 
-        flex: 1; 
-        text-align: center; 
-        font-size: 9px; 
-        padding: 10px 0;
-        min-width: 60px; /* Garante que o dia nunca esprema */
+        border-right: 1px solid #e2e8f0; flex: 1; text-align: center; 
+        font-size: 10px; padding: 10px 0; min-width: 65px; 
     }
-
     .weekend { background-color: #f1f5f9; }
     .today-line { 
-        position: absolute; 
-        top: 0; 
-        bottom: 0; 
-        width: 2px; 
-        background: #ef4444; 
-        z-index: 10; 
-        pointer-events: none; 
+        position: absolute; top: 0; bottom: 0; width: 2px; 
+        background: #ef4444; z-index: 10; pointer-events: none; 
     }
-
-    /* Custom Scrollbar */
-    .gantt-scroll-container::-webkit-scrollbar { height: 12px; width: 12px; }
-    .gantt-scroll-container::-webkit-scrollbar-track { background: #f1f5f9; }
-    .gantt-scroll-container::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 6px; border: 3px solid #f1f5f9; }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="filter-header">
     <form method="get" class="flex items-end gap-4 max-w-full overflow-x-auto">
-        <div class="min-w-[150px]">
+        <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Início</label>
-            <input type="date" name="data_inicio" value="{{ start_iso }}" class="w-full border rounded px-2 py-1 text-sm">
+            <input type="date" name="data_inicio" value="{{ start_iso }}" class="border rounded px-2 py-1 text-sm">
         </div>
-        <div class="min-w-[150px]">
+        <div>
             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Fim</label>
-            <input type="date" name="data_fim" value="{{ end_iso }}" class="w-full border rounded px-2 py-1 text-sm">
+            <input type="date" name="data_fim" value="{{ end_iso }}" class="border rounded px-2 py-1 text-sm">
         </div>
-        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-1.5 rounded text-sm font-bold shadow-sm">
-            Filtrar Período
-        </button>
-        <a href="?" class="text-slate-400 hover:text-slate-600 text-xs underline mb-2">Padrão</a>
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-1.5 rounded text-sm font-bold shadow-sm">Filtrar</button>
+        <a href="?" class="text-slate-400 text-xs underline mb-2">Padrão</a>
     </form>
 </div>
 
 <div class="gantt-scroll-container">
     <div id="gantt-canvas">
         <div class="flex border-b border-slate-200 bg-white sticky top-0 z-50">
-            <div class="w-80 p-4 font-bold border-r border-slate-200 bg-slate-50 sticky left-0 z-[60] text-slate-700">
-                Título da Demanda
-            </div>
+            <div class="w-[24rem] p-4 font-bold border-r border-slate-200 bg-slate-50 sticky left-0 z-[60] text-slate-700">Título da Demanda</div>
             <div id="day-labels" class="flex-1 flex bg-white"></div>
         </div>
-
         <div id="gantt-body" class="divide-y divide-slate-100 relative">
             <div id="today-marker" class="today-line" style="display: none;"></div>
         </div>
@@ -122,6 +95,12 @@
     const HOJE_ISO = "{{ hoje_iso }}";
     const TOTAL_DAYS = parseInt("{{ delta_days }}") || 14;
 
+    function formatarDataBR(dateStr) {
+        if(!dateStr) return "";
+        const [year, month, day] = dateStr.split('-');
+        return `${day}/${month}/${year}`;
+    }
+
     function getPos(dateStr) {
         const d = new Date(dateStr + "T00:00:00");
         const diffTime = d - START_VIEW;
@@ -130,77 +109,70 @@
 
     async function initGantt() {
         try {
-            // AJUSTE DE LARGURA: Força o canvas a ter o tamanho total dos dias
-            const dayWidth = 70; // Largura fixa de cada coluna de dia em pixels
-            const minWidth = (TOTAL_DAYS * dayWidth) + 320; 
+            const dayWidth = 70;
+            // AJUSTE: 384px = 24rem
+            const minWidth = (TOTAL_DAYS * dayWidth) + 384; 
             document.getElementById('gantt-canvas').style.width = minWidth + "px";
 
             const res = await fetch('../gantt-data/');
             const allDemands = await res.json();
 
-            // 1. Renderizar Colunas de Dias
+            // 1. Dias
             let dayHtml = '';
             for(let i=0; i < TOTAL_DAYS; i++) {
                 const curr = new Date(START_VIEW);
                 curr.setDate(curr.getDate() + i);
                 const isWknd = curr.getDay() === 0 || curr.getDay() === 6;
-                dayHtml += `
-                    <div class="day-col ${isWknd ? 'weekend text-rose-400' : 'text-slate-500'}">
-                        <span class="block font-bold text-xs">${curr.getDate()}/${curr.getMonth()+1}</span>
-                        <span class="opacity-50 uppercase text-[9px] font-medium">${['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][curr.getDay()]}</span>
-                    </div>`;
+                dayHtml += `<div class="day-col ${isWknd ? 'weekend text-rose-400' : 'text-slate-500'}">
+                    <span class="block font-bold text-xs">${curr.getDate()}/${curr.getMonth()+1}</span>
+                    <span class="opacity-50 uppercase text-[9px]">${['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][curr.getDay()]}</span>
+                </div>`;
             }
             document.getElementById('day-labels').innerHTML = dayHtml;
 
-            // 2. Marcador de Hoje
+            // 2. Marcador Hoje
             const hojeDate = new Date(HOJE_ISO + "T00:00:00");
             if (hojeDate >= START_VIEW && hojeDate <= END_VIEW) {
                 const marker = document.getElementById('today-marker');
-                const posPercent = getPos(HOJE_ISO);
-                marker.style.left = `calc(${posPercent}% + 320px)`;
+                // AJUSTE: 384px = 24rem
+                marker.style.left = `calc(${getPos(HOJE_ISO)}% + 384px)`;
                 marker.style.display = 'block';
             }
 
-            // 3. Renderizar Demandas
-            const demands = allDemands.filter(d => {
+            // 3. Render
+            document.getElementById('gantt-body').innerHTML += allDemands.filter(d => {
                 const s = new Date(d.start + "T00:00:00");
                 const e = new Date(d.end + "T23:59:59");
                 return s <= END_VIEW && e >= START_VIEW;
-            });
-
-            document.getElementById('gantt-body').innerHTML += demands.map(d => {
-                const sPercent = getPos(d.start);
-                const ePercent = getPos(d.end) + (100 / TOTAL_DAYS);
-                const vStart = Math.max(0, sPercent);
-                const vEnd = Math.min(100, ePercent);
+            }).map(d => {
+                const dStart = new Date(d.start + "T00:00:00");
+                const dEnd = new Date(d.end + "T23:59:59");
+                const isOutLeft = dStart < START_VIEW;
+                const isOutRight = dEnd > END_VIEW;
+                const vStart = isOutLeft ? 0 : getPos(d.start);
+                const vEnd = isOutRight ? 100 : (getPos(d.end) + (100/TOTAL_DAYS));
                 let width = vEnd - vStart;
+                if (width <= 0) width = 0.5;
 
                 return `
-                    <div class="flex group hover:bg-slate-50 transition-all border-b border-slate-100">
-                        <div class="w-80 p-4 border-r border-slate-200 bg-white group-hover:bg-slate-50 sticky left-0 z-40 shadow-sm">
-                            <div class="text-sm font-bold text-slate-800 truncate">${d.name}</div>
-                            <div class="text-[10px] text-slate-400 mt-1 uppercase">${d.start} - ${d.end}</div>
+                    <div class="gantt-row group hover:bg-slate-50 border-b">
+                        <div class="name-cell shadow-sm">
+                            <div class="text-sm font-bold text-slate-800 leading-tight mb-2">${d.name}</div>
+                            <div class="flex flex-wrap gap-1 mb-2">
+                                ${d.rotulos.map(r => `<span class="px-2 py-0.5 rounded-md text-[8px] font-black uppercase text-white" style="background-color: ${r.cor}">${r.nome}</span>`).join('')}
+                            </div>
+                            <div class="text-[8px] text-slate-500 font-bold italic">📅 ${formatarDataBR(d.start)} — ${formatarDataBR(d.end)}</div>
                         </div>
-                        <div class="flex-1 relative h-16 flex items-center bg-white">
-                            ${hojeDate >= START_VIEW && hojeDate <= END_VIEW ? 
-                                `<div class="today-line" style="left: ${getPos(HOJE_ISO)}%"></div>` : ''}
-                            
-                            ${Array.from({length: TOTAL_DAYS}).map((_, i) => `
-                                <div class="absolute h-full border-r border-slate-100/50" style="left:${(i/TOTAL_DAYS)*100}%; width: 1px;"></div>
-                            `).join('')}
-                            
-                            <div class="h-9 rounded shadow-sm flex items-center px-3 text-[11px] font-bold border transition-all bar-fill-dynamic ${d.custom_class || 'bar-demanda'}"
-                                style="margin-left: ${vStart}%; width: ${width}%; --p: ${d.progress}%; z-index: 20; position: absolute; white-space: nowrap;">
-                                <span class="truncate">${d.progress}%</span>
+                        <div class="flex-1 relative flex items-center min-h-[80px]">
+                            ${Array.from({length: TOTAL_DAYS}).map((_, i) => `<div class="absolute h-full border-r border-slate-100/50" style="left:${(i/TOTAL_DAYS)*100}%"></div>`).join('')}
+                            <div class="h-9 rounded shadow-sm flex items-center px-3 text-[11px] font-bold border bar-fill-dynamic ${d.custom_class} ${isOutLeft ? 'out-left' : ''} ${isOutRight ? 'out-right' : ''}"
+                                 style="margin-left: ${vStart}%; width: ${width}%; --p: ${d.progress}%; z-index: 20; position: absolute;">
+                                <span class="truncate text-white ${isOutLeft ? 'ml-3' : ''}">${d.progress}%</span>
                             </div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             }).join('');
-
-        } catch (err) {
-            console.error("Erro Gantt:", err);
-        }
+        } catch (err) { console.error(err); }
     }
     document.addEventListener('DOMContentLoaded', initGantt);
 </script>
