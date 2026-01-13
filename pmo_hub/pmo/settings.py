@@ -16,6 +16,26 @@ def patched_format_html(format_string, *args, **kwargs):
 
 
 html.format_html = patched_format_html
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+ENVIRONMENT = os.getenv("BRANCH", "localhost")
+
+ENVIRONMENT_NAME = (
+    "Desenvolvimento"
+    if ENVIRONMENT == "dev"
+    else "Localhost"
+    if ENVIRONMENT == "localhost"
+    else None
+)
+ENVIRONMENT_COLOR = (
+    "#28a745"
+    if ENVIRONMENT == "dev"
+    else "#17a2b8"
+    if ENVIRONMENT == "localhost"
+    else None
+)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = "/media/"
@@ -23,9 +43,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-+8!lj9_fo5v!r)7o88hp-w4ia6hwr(u9cy_c-^zm-2&2mla_f^"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -71,6 +88,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "core.context_processors.environment_info",
             ],
         },
     },

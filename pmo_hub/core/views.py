@@ -1,5 +1,5 @@
 # pmo_hub\core\views.py
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from django.db.models import Count
 from django.http import JsonResponse
@@ -165,32 +165,60 @@ def criar_subatividade_view(request, pk):
 
 
 def gantt_data(request):
-    # Filtrar apenas quem tem data de início para o Gantt não quebrar
-    demandas = Demanda.objects.prefetch_related("tarefas").filter(
-        data_inicio__isnull=False
-    )
+    # Captura datas do filtro vindas da URL (enviadas pelo JS do template)
+    str_inicio = request.GET.get("data_inicio")
+    str_fim = request.GET.get("data_fim")
+
+    # Base do QuerySet com prefetch para performance
+    queryset = Demanda.objects.prefetch_related(
+        "rotulos", "tarefas__responsaveis"
+    ).filter(data_inicio__isnull=False)
+
+    # Filtro de Interseção: Garante que demandas que começaram antes mas terminam dentro
+    # ou após o período sejam incluídas.
+    if str_inicio and str_fim:
+        try:
+            d_start = datetime.strptime(str_inicio, "%Y-%m-%d").date()
+            d_end = datetime.strptime(str_fim, "%Y-%m-%d").date()
+            queryset = queryset.filter(data_inicio__lte=d_end, data_prazo__gte=d_start)
+        except ValueError:
+            pass
+
     tasks = []
+    for demanda in queryset:
+        # Coleta consolidada de responsáveis das tarefas (sem duplicatas)
+        resp_map = {}
+        for tarefa in demanda.tarefas.all():
+            for resp in tarefa.responsaveis.all():
+                resp_map[resp.username] = resp.username
 
-    for d in demandas:
-        start_str = d.data_inicio.strftime("%Y-%m-%d")
+        # Formatação de datas
+        start_str = demanda.data_inicio.strftime("%Y-%m-%d")
+        end_date = (
+            demanda.data_prazo
+            if demanda.data_prazo and demanda.data_prazo > demanda.data_inicio
+            else (demanda.data_inicio + timedelta(days=1))
+        )
+        end_str = end_date.strftime("%Y-%m-%d")
 
-        # O Gantt exige que 'end' seja estritamente maior que 'start' para desenhar a barra
-        if d.data_prazo and d.data_prazo > d.data_inicio:
-            end_str = d.data_prazo.strftime("%Y-%m-%d")
-        else:
-            # Se não houver prazo ou for no mesmo dia, forçamos +1 dia para a barra existir
-            end_str = (d.data_inicio + timedelta(days=1)).strftime("%Y-%m-%d")
+        # Define classe de cor baseada no progresso
+        c_class = "bar-done" if demanda.progresso_total >= 100 else "bar-demanda"
 
         tasks.append(
             {
-                "id": str(d.id),
-                "name": d.titulo,
+                "id": str(demanda.id),
+                "name": demanda.titulo,
+                "rotulos": [
+                    {"nome": r.nome, "cor": r.cor_hex} for r in demanda.rotulos.all()
+                ],
+                "responsaveis": list(resp_map.values()),
                 "start": start_str,
                 "end": end_str,
-                "progress": d.progresso_total,  # Agora usa a property com peso de horas
-                "custom_class": "bar-demanda",
+                "progress": demanda.progresso_total,
+                "custom_class": c_class,
             }
         )
+
     return JsonResponse(tasks, safe=False)
 
 
