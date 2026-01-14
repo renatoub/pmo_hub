@@ -90,23 +90,35 @@ jobs:
           git push https://x-access-token:%GH_TOKEN%@github.com/${{ github.repository }}.git ${{ github.ref_name }}
 
   database_sync:
-    name: 3. Sincronizar Banco de Dados
+    name: 3. Sincronizar ou Backup do Banco
     needs: [setup_and_stop, update_code_and_version]
     runs-on: self-hosted
     steps:
-      - name: Sync Main to Dev ou Backup Main
-        shell: cmd
+      - name: Sync ou Backup
+        shell: powershell
         working-directory: ${{ env.BASE_PATH }}
         run: |
-          if "${{ github.ref_name }}" == "dev" (
-              echo Sincronizando banco da MAIN para DEV...
-              copy /Y "${{ env.MAIN_PATH }}\pmo_hub\db.sqlite3" "pmo_hub\db.sqlite3"
-          ) else (
-              echo Realizando backup de PRODUCAO (MAIN)...
-              if not exist "..\backups" mkdir "..\backups"
-              copy /Y pmo_hub\db.sqlite3 ..\backups\db_main_${{ needs.setup_and_stop.outputs.backup_date }}.sqlite3
-              uv run python .\pmo_hub\manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 2 > ..\backups\dump_main_${{ needs.setup_and_stop.outputs.backup_date }}.json
-          )
+          if ("${{ github.ref_name }}" -eq "dev") {
+              Write-Host "Sincronizando banco da MAIN para DEV..."
+              $source = "${{ env.MAIN_PATH }}\pmo_hub\db.sqlite3"
+              $dest = "pmo_hub\db.sqlite3"
+              if (Test-Path $source) {
+                  Copy-Item -Path $source -Destination $dest -Force
+              } else {
+                  Write-Error "Banco de dados da MAIN não encontrado em $source"
+                  exit 1
+              }
+          } else {
+              Write-Host "Realizando backup de PRODUCAO (MAIN)..."
+              $backupDir = "..\backups"
+              if (!(Test-Path $backupDir)) { New-Item -ItemType Directory -Path $backupDir }
+              
+              # Backup do arquivo físico
+              Copy-Item -Path "pmo_hub\db.sqlite3" -Destination "$backupDir\db_main_${{ needs.setup_and_stop.outputs.backup_date }}.sqlite3" -Force
+              
+              # Dump JSON usando uv
+              uv run python .\pmo_hub\manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 2 | Out-File -FilePath "$backupDir\dump_main_${{ needs.setup_and_stop.outputs.backup_date }}.json" -Encoding utf8
+          }
 
   migrations:
     name: 4. Migrations
