@@ -6,13 +6,13 @@ on:
     branches: [main, dev]
 
 env:
-  TARGET_PORT: ${{ github.ref_name == 'main' && '1234' || '2345' }}
+  TARGET_PORT: ${{ github.ref_name == 'main' && '12345' || '23456' }}
   SERVICE_NAME: ${{ github.ref_name == 'main' && 'DataHub-EqtOne' || 'DataHub-EqtOne-Dev' }}
   BASE_PATH: "C:\\EQTONE\\pmo_hub\\pmo_hub_${{ github.ref_name }}"
 
 jobs:
-  setup:
-    name: 1. Configurar Ambiente
+  setup_and_stop:
+    name: 1. Parar Serviço e Preparar
     runs-on: self-hosted
     outputs:
       backup_date: ${{ steps.vars.outputs.BACKUP_DATE }}
@@ -23,35 +23,101 @@ jobs:
           git config --global --add safe.directory *
           $TIMESTAMP = Get-Date -Format "yyyyMMdd_HHmm"
           echo "BACKUP_DATE=$TIMESTAMP" >> $env:GITHUB_OUTPUT
-          Write-Host "Iniciando deploy na branch ${{ github.ref_name }}"
+          
+          Write-Host "Parando o serviço $env:SERVICE_NAME..."
+          Stop-Service -Name "$env:SERVICE_NAME" -Force -ErrorAction SilentlyContinue
+          Start-Sleep -Seconds 3
 
-  backup:
-    name: 2. Backup do Banco
-    needs: setup
+  update_code_and_version:
+    name: 2. Git Pull e Incremento de Versão
+    needs: setup_and_stop
     runs-on: self-hosted
     steps:
-      - shell: cmd
-        working-directory: ${{ env.BASE_PATH }}
-        run: |
-          if not exist "..\backups" mkdir "..\backups"
-          copy pmo_hub\db.sqlite3 ..\backups\db_${{ github.ref_name }}_${{ needs.setup.outputs.backup_date }}.sqlite3
-          uv run python .\pmo_hub\manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 2 > ..\backups\dump_${{ github.ref_name }}_${{ needs.setup.outputs.backup_date }}.json
-
-  update_code:
-    name: 3. Git Pull
-    needs: backup
-    runs-on: self-hosted
-    steps:
-      - shell: cmd
+      - name: Checkout Code
+        shell: cmd
         working-directory: ${{ env.BASE_PATH }}
         run: |
           git fetch origin ${{ github.ref_name }}
           git reset --hard origin/${{ github.ref_name }}
           git pull origin ${{ github.ref_name }}
 
+      - name: Incrementar Versão Semântica (Git Flow)
+        shell: python
+        working-directory: ${{ env.BASE_PATH }}
+        run: |
+          import re
+          import os
+
+          # Caminho para o arquivo de versão
+          init_path = os.path.join("pmo_hub", "pmo", "__init__.py")
+          
+          if not os.path.exists(init_path):
+              raise Exception(f"Arquivo {init_path} não encontrado!")
+
+          with open(init_path, "r", encoding="utf-8") as f:
+              content = f.read()
+
+          # Captura a versão atual
+          version_match = re.search(r'__version__\s*=\s*"(.*?)"', content)
+          if not version_match:
+              raise Exception("Tag __version__ não encontrada no arquivo!")
+          
+          current_version = version_match.group(1)
+          major, minor, patch = map(int, current_version.split('.'))
+          branch = "${{ github.ref_name }}"
+
+          # LÓGICA SEMVER + GIT FLOW
+          if branch == "main":
+              if "# major" in content.lower():
+                  major += 1
+                  minor = 0
+                  patch = 0
+              elif "# minor" in content.lower():
+                  minor += 1
+                  patch = 0
+              else:
+                  # Merges na main sem comentário são tratados como Hotfix (Patch)
+                  patch += 1
+          else:
+              # Branch dev sempre incrementa Patch (Desenvolvimento contínuo)
+              patch += 1
+
+          new_version = f"{major}.{minor}.{patch}"
+
+          # Substitui a versão e remove os comentários de gatilho para limpar o arquivo
+          new_content = re.sub(r'__version__\s*=\s*".*?"', f'__version__ = "{new_version}"', content)
+          new_content = re.sub(r'#\s*(major|minor)', '', new_content, flags=re.IGNORECASE).strip() + "\n"
+          
+          with open(init_path, "w", encoding="utf-8") as f:
+              f.write(new_content)
+          
+          print(f"Versão atualizada na branch {branch}: {current_version} -> {new_version}")
+
+      - name: Persistir Versão no Repositório
+        shell: cmd
+        working-directory: ${{ env.BASE_PATH }}
+        run: |
+          git config user.name "github-actions"
+          git config user.email "action@github.com"
+          git add pmo_hub/pmo/__init__.py
+          git commit -m "chore: bump version [skip ci]"
+          git push origin ${{ github.ref_name }}
+
+  backup:
+    name: 3. Backup do Banco
+    needs: [setup_and_stop, update_code_and_version]
+    runs-on: self-hosted
+    steps:
+      - shell: cmd
+        working-directory: ${{ env.BASE_PATH }}
+        run: |
+          if not exist "..\backups" mkdir "..\backups"
+          copy pmo_hub\db.sqlite3 ..\backups\db_${{ github.ref_name }}_${{ needs.setup_and_stop.outputs.backup_date }}.sqlite3
+          uv run python .\pmo_hub\manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 2 > ..\backups\dump_${{ github.ref_name }}_${{ needs.setup_and_stop.outputs.backup_date }}.json
+
   migrations:
     name: 4. Migrations
-    needs: update_code
+    needs: backup
     runs-on: self-hosted
     steps:
       - shell: cmd
@@ -59,14 +125,16 @@ jobs:
         run: uv run python pmo_hub\manage.py migrate --noinput
 
   restart:
-    name: 5. Restart Service
+    name: 5. Iniciar Serviço
     needs: migrations
     runs-on: self-hosted
     steps:
       - shell: powershell
         run: |
-          Stop-Service -Name "$env:SERVICE_NAME" -Force -ErrorAction SilentlyContinue
-          Start-Sleep -Seconds 5
+          Write-Host "Iniciando o serviço $env:SERVICE_NAME..."
           Start-Service -Name "$env:SERVICE_NAME"
           Start-Sleep -Seconds 5
-          if ((Get-Service -Name "$env:SERVICE_NAME").Status -ne "Running") { exit 1 }
+          if ((Get-Service -Name "$env:SERVICE_NAME").Status -ne "Running") { 
+            Write-Error "O serviço não iniciou corretamente!"
+            exit 1 
+          }

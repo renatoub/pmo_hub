@@ -1,0 +1,9 @@
+{% extends "admin/change_list.html" %}
+{% block object-tools-items %}
+    <li>
+        <a href="{% url 'admin:core_demanda_dashboard' %}" class="addlink" style="background-color: #28a745;">
+            <i class="fas fa-columns"></i> Abrir Kanban
+        </a>
+    </li>
+    {{ block.super }}
+{% endblock %}

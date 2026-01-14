@@ -2,7 +2,7 @@
 {% block extrahead %}
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-    /* Indicador Esquerdo */
+    /* Estilos originais preservados */
     .out-left::before {
         content: ''; position: absolute; left: -12px; top: 50%;
         transform: translateY(-50%);
@@ -20,67 +20,79 @@
             var(--bg-fill) 0%, var(--bg-fill) var(--p), 
             var(--bg-empty) var(--p), var(--bg-empty) 100%) !important;
     }
-    .bar-demanda {
-        --bg-fill: #2563eb; --bg-empty: #dbeafe;
-        border: 1px solid #2563eb !important; color: white !important;
-        text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-    }
-    .bar-done {
-        --bg-fill: #059669; --bg-empty: #dcfce7;
-        border: 1px solid #059669 !important; color: white !important;
-    }
+    .bar-demanda { --bg-fill: #2563eb; --bg-empty: #dbeafe; border: 1px solid #2563eb !important; color: white !important; }
+    .bar-done { --bg-fill: #059669; --bg-empty: #dcfce7; border: 1px solid #059669 !important; color: white !important; }
     #content { padding: 0 !important; overflow: hidden !important; }
-    .filter-header {
-        position: sticky; top: 0; z-index: 100;
-        background: #f8fafc; border-bottom: 1px solid #e2e8f0;
-        padding: 1rem; width: 100%;
-    }
+    .filter-header { position: sticky; top: 0; z-index: 100; background: #f8fafc; border-bottom: 1px solid #e2e8f0; padding: 1rem; width: 100%; }
     .gantt-row { display: flex; min-height: 4rem; height: auto; align-items: stretch; }
-    
-    /* COLUNA DE NOMES - LARGURA FIXA 384px */
-    .name-cell {
-        width: 24rem; padding: 1rem; border-right: 1px solid #e2e8f0;
-        background-color: white; position: sticky; left: 0; z-index: 40;
-        display: flex; flex-direction: column; justify-content: center;
-        word-wrap: break-word; white-space: normal;
-    }
-    .gantt-scroll-container {
-        width: 100%; height: calc(100vh - 150px);
-        overflow: auto !important; background: #fff;
-    }
+    .name-cell { width: 24rem; padding: 1rem; border-right: 1px solid #e2e8f0; background-color: white; position: sticky; left: 0; z-index: 40; display: flex; flex-direction: column; justify-content: center; word-wrap: break-word; white-space: normal; }
+    .gantt-scroll-container { width: 100%; height: calc(100vh - 200px); overflow: auto !important; background: #fff; }
     #gantt-canvas { position: relative; display: block; }
-    .day-col { 
-        border-right: 1px solid #e2e8f0; flex: 1; text-align: center; 
-        font-size: 10px; padding: 10px 0; min-width: 65px; 
-    }
+    .day-col { border-right: 1px solid #e2e8f0; flex: 1; text-align: center; font-size: 10px; padding: 10px 0; min-width: 65px; }
     .weekend { background-color: #f1f5f9; }
-    .today-line { 
-        position: absolute; top: 0; bottom: 0; width: 2px; 
-        background: #ef4444; z-index: 10; pointer-events: none; 
+    .today-line { position: absolute; top: 0; bottom: 0; width: 2px; background: #ef4444; z-index: 10; pointer-events: none; }
+    
+    /* Novo estilo para o dropdown de multi-seleção */
+    .multi-select-container {
+        position: relative;
+        display: inline-block;
+        width: 200px;
     }
+    .multi-select-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 250px;
+        max-height: 300px;
+        overflow-y: auto;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 110;
+        border: 1px solid #e2e8f0;
+        padding: 10px;
+        border-radius: 4px;
+    }
+    .multi-select-container:hover .multi-select-content { display: block; }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="filter-header">
-    <form method="get" class="flex items-end gap-4 max-w-full overflow-x-auto">
-        <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Início</label>
-            <input type="date" name="data_inicio" value="{{ start_iso }}" class="border rounded px-2 py-1 text-sm">
+    <div class="flex items-end gap-6 max-w-full">
+        <form method="get" class="flex items-end gap-4">
+            <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Período</label>
+                <div class="flex gap-2">
+                    <input type="date" name="data_inicio" value="{{ start_iso }}" class="border rounded px-2 py-1 text-sm">
+                    <input type="date" name="data_fim" value="{{ end_iso }}" class="border rounded px-2 py-1 text-sm">
+                </div>
+            </div>
+            <button type="submit" class="bg-slate-800 hover:bg-black text-white px-4 py-1.5 rounded text-sm font-bold shadow-sm">Atualizar Eixo</button>
+        </form>
+
+        <div class="h-10 w-px bg-slate-300 self-end"></div>
+
+        <div class="multi-select-container">
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Filtrar Temas</label>
+            <div class="border rounded px-2 py-1.5 text-sm bg-white cursor-pointer select-none">Selecionar Temas...</div>
+            <div id="container-temas" class="multi-select-content">
+                </div>
         </div>
-        <div>
-            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Fim</label>
-            <input type="date" name="data_fim" value="{{ end_iso }}" class="border rounded px-2 py-1 text-sm">
+
+        <div class="multi-select-container">
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Filtrar Rótulos</label>
+            <div class="border rounded px-2 py-1.5 text-sm bg-white cursor-pointer select-none">Selecionar Rótulos...</div>
+            <div id="container-rotulos" class="multi-select-content">
+                </div>
         </div>
-        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-1.5 rounded text-sm font-bold shadow-sm">Filtrar</button>
-        <a href="?" class="text-slate-400 text-xs underline mb-2">Padrão</a>
-    </form>
+
+        <a href="?" class="text-blue-600 font-bold text-xs underline mb-2">Resetar</a>
+    </div>
 </div>
 
 <div class="gantt-scroll-container">
     <div id="gantt-canvas">
         <div class="flex border-b border-slate-200 bg-white sticky top-0 z-50">
-            <div class="w-[24rem] p-4 font-bold border-r border-slate-200 bg-slate-50 sticky left-0 z-[60] text-slate-700">Título da Demanda</div>
+            <div class="w-[24rem] p-4 font-bold border-r border-slate-200 bg-slate-50 sticky left-0 z-[60] text-slate-700 text-sm">Título da Demanda</div>
             <div id="day-labels" class="flex-1 flex bg-white"></div>
         </div>
         <div id="gantt-body" class="divide-y divide-slate-100 relative">
@@ -94,12 +106,7 @@
     const END_VIEW = new Date("{{ end_iso }}T23:59:59");
     const HOJE_ISO = "{{ hoje_iso }}";
     const TOTAL_DAYS = parseInt("{{ delta_days }}") || 14;
-
-    function formatarDataBR(dateStr) {
-        if(!dateStr) return "";
-        const [year, month, day] = dateStr.split('-');
-        return `${day}/${month}/${year}`;
-    }
+    let ALL_DATA = [];
 
     function getPos(dateStr) {
         const d = new Date(dateStr + "T00:00:00");
@@ -107,17 +114,89 @@
         return (diffTime / (1000 * 60 * 60 * 24) / TOTAL_DAYS) * 100;
     }
 
+    function renderGantt() {
+        // Pega todos os temas selecionados
+        const selectedTemas = Array.from(document.querySelectorAll('.filter-tema-cb:checked')).map(cb => cb.value);
+        // Pega todos os rótulos selecionados
+        const selectedRotulos = Array.from(document.querySelectorAll('.filter-rotulo-cb:checked')).map(cb => cb.value);
+
+        const body = document.getElementById('gantt-body');
+        const marker = document.getElementById('today-marker');
+        body.innerHTML = '';
+        body.appendChild(marker);
+
+        const filtered = ALL_DATA.filter(d => {
+            const s = new Date(d.start + "T00:00:00");
+            const e = new Date(d.end + "T23:59:59");
+            const inDateRange = s <= END_VIEW && e >= START_VIEW;
+            
+            // Lógica: Se nenhum selecionado, mostra todos. Se selecionado, deve conter no array.
+            const matchTema = selectedTemas.length === 0 || selectedTemas.includes(d.tema);
+            const matchRotulo = selectedRotulos.length === 0 || d.rotulos.some(r => selectedRotulos.includes(r.nome));
+            
+            return inDateRange && matchTema && matchRotulo;
+        });
+
+        body.innerHTML += filtered.map(d => {
+            const dStart = new Date(d.start + "T00:00:00");
+            const dEnd = new Date(d.end + "T23:59:59");
+            const isOutLeft = dStart < START_VIEW;
+            const isOutRight = dEnd > END_VIEW;
+            const vStart = isOutLeft ? 0 : getPos(d.start);
+            const vEnd = isOutRight ? 100 : (getPos(d.end) + (100/TOTAL_DAYS));
+            let width = vEnd - vStart;
+            if (width <= 0) width = 0.5;
+
+            return `
+                <div class="gantt-row group hover:bg-slate-50 border-b">
+                    <div class="name-cell shadow-sm">
+                        <div class="text-[13px] font-bold text-slate-800 leading-tight mb-2">${d.name}</div>
+                        <div class="flex flex-wrap gap-1 mb-2">
+                            ${d.rotulos.map(r => `<span class="px-2 py-0.5 rounded-md text-[8px] font-black uppercase text-white" style="background-color: ${r.cor}">${r.nome}</span>`).join('')}
+                        </div>
+                        <div class="text-[9px] text-slate-500 font-bold italic">📅 ${d.start} - ${d.end} | Tema: ${d.tema}</div>
+                    </div>
+                    <div class="flex-1 relative flex items-center min-h-[80px]">
+                        ${Array.from({length: TOTAL_DAYS}).map((_, i) => `<div class="absolute h-full border-r border-slate-100/50" style="left:${(i/TOTAL_DAYS)*100}%"></div>`).join('')}
+                        <div class="h-9 rounded shadow-sm flex items-center px-3 text-[11px] font-bold border bar-fill-dynamic ${d.custom_class} ${isOutLeft ? 'out-left' : ''} ${isOutRight ? 'out-right' : ''}"
+                             style="margin-left: ${vStart}%; width: ${width}%; --p: ${d.progress}%; z-index: 20; position: absolute;">
+                            <span class="truncate text-white ${isOutLeft ? 'ml-3' : ''}">${d.progress}%</span>
+                        </div>
+                    </div>
+                </div>`;
+        }).join('');
+    }
+
     async function initGantt() {
         try {
-            const dayWidth = 70;
-            // AJUSTE: 384px = 24rem
-            const minWidth = (TOTAL_DAYS * dayWidth) + 384; 
-            document.getElementById('gantt-canvas').style.width = minWidth + "px";
-
             const res = await fetch('../gantt-data/');
-            const allDemands = await res.json();
+            ALL_DATA = await res.json();
 
-            // 1. Dias
+            // Configuração visual
+            const dayWidth = 70;
+            document.getElementById('gantt-canvas').style.width = ((TOTAL_DAYS * dayWidth) + 384) + "px";
+
+            // Popular Filtros Multi-seleção
+            const temas = [...new Set(ALL_DATA.map(d => d.tema))].filter(Boolean).sort();
+            const rotulos = [...new Set(ALL_DATA.flatMap(d => d.rotulos.map(r => r.nome)))].sort();
+
+            const containerTemas = document.getElementById('container-temas');
+            temas.forEach(t => {
+                containerTemas.innerHTML += `
+                    <label class="flex items-center gap-2 p-1 hover:bg-slate-50 cursor-pointer text-sm">
+                        <input type="checkbox" value="${t}" class="filter-tema-cb" onchange="renderGantt()"> ${t}
+                    </label>`;
+            });
+
+            const containerRotulos = document.getElementById('container-rotulos');
+            rotulos.forEach(r => {
+                containerRotulos.innerHTML += `
+                    <label class="flex items-center gap-2 p-1 hover:bg-slate-50 cursor-pointer text-sm">
+                        <input type="checkbox" value="${r}" class="filter-rotulo-cb" onchange="renderGantt()"> ${r}
+                    </label>`;
+            });
+
+            // Renderizar Cabeçalho de Dias
             let dayHtml = '';
             for(let i=0; i < TOTAL_DAYS; i++) {
                 const curr = new Date(START_VIEW);
@@ -130,50 +209,18 @@
             }
             document.getElementById('day-labels').innerHTML = dayHtml;
 
-            // 2. Marcador Hoje
+            // Marcador de Hoje
             const hojeDate = new Date(HOJE_ISO + "T00:00:00");
             if (hojeDate >= START_VIEW && hojeDate <= END_VIEW) {
                 const marker = document.getElementById('today-marker');
-                // AJUSTE: 384px = 24rem
                 marker.style.left = `calc(${getPos(HOJE_ISO)}% + 384px)`;
                 marker.style.display = 'block';
             }
 
-            // 3. Render
-            document.getElementById('gantt-body').innerHTML += allDemands.filter(d => {
-                const s = new Date(d.start + "T00:00:00");
-                const e = new Date(d.end + "T23:59:59");
-                return s <= END_VIEW && e >= START_VIEW;
-            }).map(d => {
-                const dStart = new Date(d.start + "T00:00:00");
-                const dEnd = new Date(d.end + "T23:59:59");
-                const isOutLeft = dStart < START_VIEW;
-                const isOutRight = dEnd > END_VIEW;
-                const vStart = isOutLeft ? 0 : getPos(d.start);
-                const vEnd = isOutRight ? 100 : (getPos(d.end) + (100/TOTAL_DAYS));
-                let width = vEnd - vStart;
-                if (width <= 0) width = 0.5;
-
-                return `
-                    <div class="gantt-row group hover:bg-slate-50 border-b">
-                        <div class="name-cell shadow-sm">
-                            <div class="text-sm font-bold text-slate-800 leading-tight mb-2">${d.name}</div>
-                            <div class="flex flex-wrap gap-1 mb-2">
-                                ${d.rotulos.map(r => `<span class="px-2 py-0.5 rounded-md text-[8px] font-black uppercase text-white" style="background-color: ${r.cor}">${r.nome}</span>`).join('')}
-                            </div>
-                            <div class="text-[8px] text-slate-500 font-bold italic">📅 ${formatarDataBR(d.start)} — ${formatarDataBR(d.end)}</div>
-                        </div>
-                        <div class="flex-1 relative flex items-center min-h-[80px]">
-                            ${Array.from({length: TOTAL_DAYS}).map((_, i) => `<div class="absolute h-full border-r border-slate-100/50" style="left:${(i/TOTAL_DAYS)*100}%"></div>`).join('')}
-                            <div class="h-9 rounded shadow-sm flex items-center px-3 text-[11px] font-bold border bar-fill-dynamic ${d.custom_class} ${isOutLeft ? 'out-left' : ''} ${isOutRight ? 'out-right' : ''}"
-                                 style="margin-left: ${vStart}%; width: ${width}%; --p: ${d.progress}%; z-index: 20; position: absolute;">
-                                <span class="truncate text-white ${isOutLeft ? 'ml-3' : ''}">${d.progress}%</span>
-                            </div>
-                        </div>
-                    </div>`;
-            }).join('');
+            renderGantt();
         } catch (err) { console.error(err); }
     }
+
     document.addEventListener('DOMContentLoaded', initGantt);
 </script>
 {% endblock %}
