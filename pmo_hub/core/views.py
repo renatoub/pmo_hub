@@ -212,6 +212,7 @@ def gantt_data(request):
                     {"nome": r.nome, "cor": r.cor_hex} for r in demanda.rotulos.all()
                 ],
                 "responsaveis": list(resp_map.values()),
+                "tema": demanda.tema.nome if demanda.tema else "Sem Tema",
                 "start": start_str,
                 "end": end_str,
                 "progress": demanda.progresso_total,

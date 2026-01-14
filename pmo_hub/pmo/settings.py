@@ -20,7 +20,7 @@ html.format_html = patched_format_html
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ENVIRONMENT = os.getenv("BRANCH", "localhost")
-
+print(ENVIRONMENT)
 ENVIRONMENT_NAME = (
     "Desenvolvimento"
     if ENVIRONMENT == "dev"
