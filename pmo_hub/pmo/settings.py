@@ -20,7 +20,7 @@ html.format_html = patched_format_html
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ENVIRONMENT = os.getenv("BRANCH", "localhost")
-print(ENVIRONMENT)
+
 ENVIRONMENT_NAME = (
     "Desenvolvimento"
     if ENVIRONMENT == "dev"
@@ -168,10 +168,7 @@ JAZZMIN_SETTINGS = {
             "url": "admin:core_demanda_pmo",
         },
         {"name": "Linha do Tempo", "url": "/admin/core/demanda/gantt-view/"},
-        {
-            "name": "Dashboard",
-            "url": "/",
-        },
+        {"name": "Dashboard Kanban", "url": "admin:core_demanda_dashboard"},
         {"model": "core.Demanda"},
     ],
     # Menu Lateral
