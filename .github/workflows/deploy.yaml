@@ -99,14 +99,14 @@ jobs:
         shell: cmd
         working-directory: ${{ env.BASE_PATH }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_TERMINAL_PROMPT: 0
         run: |
           git config user.name "github-actions"
           git config user.email "action@github.com"
           git add pmo_hub/pmo/__init__.py
           git commit -m "chore: bump version [skip ci]"
-          git push https://x-access-token:%GITHUB_TOKEN%@github.com/%{{ github.repository }}%.git ${{ github.ref_name }}
+          git push https://x-access-token:%GH_TOKEN%@github.com/${{ github.repository }}.git ${{ github.ref_name }}
   backup:
     name: 3. Backup do Banco
     needs: [setup_and_stop, update_code_and_version]
