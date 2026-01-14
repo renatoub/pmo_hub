@@ -33,9 +33,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path(
         "",
-        RedirectView.as_view(
-            pattern_name="admin:core_demanda_dashboard", permanent=False
-        ),
+        RedirectView.as_view(url="admin/", permanent=False),
     ),
     # path("", dashboard_view, name="dashboard"),
 ]

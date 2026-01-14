@@ -75,6 +75,7 @@ jobs:
           new_content = re.sub(r'#\s*(major|minor)', '', new_content, flags=re.IGNORECASE).strip() + "\n"
           with open(init_path, "w", encoding="utf-8") as f:
               f.write(new_content)
+          print(f"Versão atualizada na branch {branch}: {current_version} -> {new_version}")
 
       - name: Persistir Versão no Repositório
         shell: cmd
