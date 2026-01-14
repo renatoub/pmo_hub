@@ -3,7 +3,6 @@ from core.views import (
     adicionar_pendencia_tarefa_view,
     alterar_status_view,
     criar_subatividade_view,
-    dashboard_view,
     gantt_data,
     gantt_view,
 )
@@ -11,6 +10,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     # Coloque as ações ANTES do admin ou com um nome bem específico
@@ -31,7 +31,13 @@ urlpatterns = [
     path("admin/core/demanda/gantt-data/", gantt_data, name="gantt_data_json"),
     path("gantt/", gantt_view, name="gantt_view"),
     path("admin/", admin.site.urls),
-    path("", dashboard_view, name="dashboard"),
+    path(
+        "",
+        RedirectView.as_view(
+            pattern_name="admin:core_demanda_dashboard", permanent=False
+        ),
+    ),
+    # path("", dashboard_view, name="dashboard"),
 ]
 
 if settings.DEBUG:
