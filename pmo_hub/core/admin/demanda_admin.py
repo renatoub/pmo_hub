@@ -17,7 +17,6 @@ from ..models.demanda import Demanda
 from .forms import DemandaForm
 from .inlines import (
     AnexoDemandaInline,
-    PendenciaInline,
     SubitemInline,
     TarefasInline,
 )
@@ -27,7 +26,6 @@ class DemandaAdmin(SimpleHistoryAdmin):
     form = DemandaForm
     inlines = [
         SubitemInline,
-        PendenciaInline,
         AnexoDemandaInline,
         TarefasInline,
     ]
@@ -72,12 +70,12 @@ class DemandaAdmin(SimpleHistoryAdmin):
                 "fields": (
                     "descricao",
                     "observacao",
-                    "riscos",
+                    # "riscos",
                     "objetivo_geral",
-                    "resultados_esperados",
+                    # "resultados_esperados",
                     "proximos_passos",
                     # "dependencias_externas",
-                    "porcentagem_concluida",
+                    # "porcentagem_concluida",
                 )
             },
         ),
