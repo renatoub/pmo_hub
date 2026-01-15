@@ -190,7 +190,9 @@ def gantt_data(request):
         resp_map = {}
         for tarefa in demanda.tarefas.all():
             for resp in tarefa.responsaveis.all():
-                resp_map[resp.username] = resp.username
+                # resp_map["nome"] = resp.username
+                resp_map["nome"] = resp.first_name
+                # resp_map["last_name"] = resp.last_name
 
         # Formatação de datas
         start_str = demanda.data_inicio.strftime("%Y-%m-%d")
@@ -211,8 +213,10 @@ def gantt_data(request):
                 "rotulos": [
                     {"nome": r.nome, "cor": r.cor_hex} for r in demanda.rotulos.all()
                 ],
-                "responsaveis": list(resp_map.values()),
+                "responsaveis": [{"nome": r} for r in resp_map.values()],
+                "responsavel": [resp_map],
                 "tema": demanda.tema.nome if demanda.tema else "Sem Tema",
+                "bucket": demanda.situacao.nome if demanda.situacao else "Sem Situação",
                 "start": start_str,
                 "end": end_str,
                 "progress": demanda.progresso_total,

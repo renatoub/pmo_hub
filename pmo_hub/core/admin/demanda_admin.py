@@ -3,7 +3,6 @@ from datetime import date, datetime, timedelta
 
 from django.contrib import messages
 from django.db.models import Count, Max, Q
-from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.template.response import TemplateResponse
 from django.urls import path, reverse
@@ -283,11 +282,11 @@ class DemandaAdmin(SimpleHistoryAdmin):
                 self.admin_site.admin_view(self.pmo_view),
                 name="core_demanda_pmo",
             ),
-            path(
-                "gantt-data/",
-                self.admin_site.admin_view(self.get_gantt_data),
-                name="demanda-gantt-data",
-            ),
+            # path(
+            #     "gantt-data/",
+            #     self.admin_site.admin_view(self.get_gantt_data),
+            #     name="demanda-gantt-data",
+            # ),
             path(
                 "gantt-view/",
                 self.admin_site.admin_view(self.gantt_view),
@@ -357,26 +356,27 @@ class DemandaAdmin(SimpleHistoryAdmin):
         }
         return TemplateResponse(request, "admin/core/dashboard_pmo.html", context)
 
-    def get_gantt_data(self, request):
-        # Filtra demandas que possuem data de início e prazo
-        queryset = Demanda.objects.exclude(
-            data_prazo__isnull=True
-        ).order_status_by_date()  # ou seu queryset padrão
+    # def get_gantt_data(self, request):
+    #     # Filtra demandas que possuem data de início e prazo
+    #     queryset = Demanda.objects.exclude(
+    #         data_prazo__isnull=True
+    #     ).order_status_by_date()  # ou seu queryset padrão
 
-        data = []
-        for d in queryset:
-            data.append(
-                {
-                    "id": str(d.id),
-                    "name": d.titulo,
-                    "start": d.data_inicio.isoformat(),
-                    "end": d.data_prazo.isoformat(),
-                    "progress": d.progresso_total,  # Usando sua @property
-                    "type": str(d.tipo.nome) if d.tipo else "N/A",
-                    "custom_class": self._get_status_class(d.situacao),
-                }
-            )
-        return JsonResponse(data, safe=False)
+    #     data = []
+    #     for d in queryset:
+    #         data.append(
+    #             {
+    #                 "id": str(d.id),
+    #                 "name": d.titulo,
+    #                 "start": d.data_inicio.isoformat(),
+    #                 "end": d.data_prazo.isoformat(),
+    #                 "progress": d.situacao,
+    #                 "buckets": d.return_buckets,
+    #                 "type": str(d.tipo.nome) if d.tipo else "N/A",
+    #                 "custom_class": self._get_status_class(d.situacao),
+    #             }
+    #         )
+    #     return JsonResponse(data, safe=False)
 
     def _get_status_class(self, situacao):
         # Mapeia sua situação para classes CSS do Tailwind/Custom

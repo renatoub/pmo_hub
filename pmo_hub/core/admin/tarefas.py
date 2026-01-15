@@ -105,6 +105,7 @@ class TarefasAdmin(SimpleHistoryAdmin):
             (~Q(pendencia="") & Q(resolvida=True) | Q(pendencia="")),
             concluida=False,
         )
+        concluded_count = for_conclude.count()
 
         if not_concluded.exists():
             self.message_user(
@@ -116,14 +117,14 @@ class TarefasAdmin(SimpleHistoryAdmin):
             for tarefa in with_pending:
                 self.message_user(
                     request,
-                    f"Tarefa {tarefa.nome} não pode ser concluída por pendência: {tarefa.pendencia}",
+                    f'Tarefa "{tarefa.nome}" não pode ser concluída por pendência: {tarefa.pendencia}',
                     messages.ERROR,
                 )
         if for_conclude.exists():
             for_conclude.update(concluida=True, concluido_em=timezone.now())
             self.message_user(
                 request,
-                f"{for_conclude.count()} tarefas concluídas com sucesso.",
+                f"{concluded_count} tarefas concluídas com sucesso.",
                 messages.SUCCESS,
             )
         else:
