@@ -98,6 +98,24 @@ class Demanda(TimeStampedModel):
             return 0
         return round((concluidas / total) * 100, 2)
 
+    @property
+    def stats_tarefas(self):
+        total = self.tarefas.count()
+        concluidas = self.tarefas.filter(concluida=True).count()
+
+        # Cálculo por Quantidade
+        percent_qtd = (concluidas / total * 100) if total > 0 else 0
+
+        # Cálculo por Horas (já existente no progresso_total)
+        percent_horas = self.progresso_total
+
+        return {
+            "total": total,
+            "concluidas": concluidas,
+            "percent_qtd": round(percent_qtd, 1),
+            "percent_horas": percent_horas,
+        }
+
     def save(self, *args, **kwargs):
         from .auxiliares import Situacao
 

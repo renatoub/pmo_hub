@@ -1,0 +1,185 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    /* Estilos preservados do que você gostou */
+    .kanban-container { 
+        display: flex;
+        overflow-x: auto;
+        padding: 10px;
+        gap: 1.2rem;
+        align-items: stretch;
+        background: #f4f7f6;
+    }
+    .kanban-column { 
+        background: #ebedf0;
+        min-width: 320px;
+        max-width: 320px;
+        border-radius: 10px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+    }
+    .kanban-header { 
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        color: #5e6c84;
+        display: flex;
+        justify-content: space-between;
+    }
+    .kanban-cards-wrapper { 
+        flex-grow: 1;
+        min-height: 100px;
+    }
+    .kanban-card { 
+        background: white;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        border-left: 5px solid #ccc;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .kanban-card:hover { 
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .kanban-card h6 {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    /* Filtros */
+    .filter-bar { 
+        background: #fff;
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        gap: 20px;
+        align-items: flex-end;
+        margin-bottom: 10px;
+        border-radius: 4px;
+    }
+    .multi-select-box { 
+        position: relative;
+        width: 200px;
+    }
+    .multi-select-menu { 
+        display: none;
+        position: absolute;
+        background: white;
+        z-index: 1000;
+        width: 250px;
+        max-height: 300px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        border-radius: 5px;
+    }
+    .multi-select-box:hover .multi-select-menu { 
+        display: block;
+    }
+    .opt-item { 
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 3px 0;
+        cursor: pointer;
+        }
+</style>
+
+<div class="filter-bar shadow-sm">
+    <div class="multi-select-box">
+        <label class="small fw-bold text-muted text-uppercase" style="font-size: 9px;">Filtrar Temas</label>
+        <div class="form-control form-control-sm">Selecionar...</div>
+        <div id="list-temas" class="multi-select-menu"></div>
+    </div>
+    <div class="multi-select-box">
+        <label class="small fw-bold text-muted text-uppercase" style="font-size: 9px;">Filtrar Rótulos</label>
+        <div class="form-control form-control-sm">Selecionar...</div>
+        <div id="list-rotulos" class="multi-select-menu"></div>
+    </div>
+    <button onclick="resetFilters()" class="btn btn-sm btn-outline-secondary">Limpar Filtros</button>
+</div>
+
+<div class="kanban-container">
+    {% for situacao, tarefas_list in kanban_data.items %}
+    <div class="kanban-column">
+        <div class="kanban-header">
+            <span>{{ situacao.nome }}</span>
+            <span class="badge bg-white text-dark border js-count">{{ tarefas_list|length }}</span>
+        </div>
+        <div class="kanban-cards-wrapper">
+            {% for d in tarefas_list %}
+            <div class="kanban-card js-filterable" 
+                 data-tema="{{ d.tema.nome|default:'Sem Tema' }}"
+                 data-rotulos="{% for r in d.rotulos.all %}{{ r.nome }}{% if not forloop.last %},{% endif %}{% endfor %}"
+                 style="border-left-color: {{ situacao.cor_hex }}" 
+                 onclick="window.open('{% url 'admin:core_demanda_change' d.id %}', '_blank')">
+                
+                <span class="badge bg-light text-dark" style="font-size: 9px;">{{ d.tema.nome|default:"Sem Tema" }}</span>
+                <h6>{{ d.titulo }}</h6>
+                
+                <div class="progress mb-2" style="height: 5px; background: #eee;">
+                    <div class="progress-bar bg-success" style="width: {{ d.progresso_total|default:0|stringformat:'f' }}%"></div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center" style="font-size: 10px; color: #6b778c;">
+                    <span><i class="fas fa-tasks text-success"></i> {{ d.tarefas.filter_concluidas.count|default:0 }}/{{ d.tarefas.count }}</span>
+                    <span><i class="far fa-user"></i> {% if d.responsavel %}{{ d.responsavel.username }}{% else %}---{% endif %}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    function runFilters() {
+        const selTemas = Array.from(document.querySelectorAll('.cb-tema:checked')).map(c => c.value);
+        const selRotulos = Array.from(document.querySelectorAll('.cb-rotulo:checked')).map(c => c.value);
+
+        document.querySelectorAll('.js-filterable').forEach(el => {
+            const t = el.dataset.tema;
+            const rs = el.dataset.rotulos ? el.dataset.rotulos.split(',') : [];
+            const matchT = selTemas.length === 0 || selTemas.includes(t);
+            const matchR = selRotulos.length === 0 || rs.some(r => selRotulos.includes(r));
+            el.style.display = (matchT && matchR) ? '' : 'none';
+        });
+
+        document.querySelectorAll('.kanban-column').forEach(col => {
+            const n = col.querySelectorAll('.kanban-card:not([style*="display: none"])').length;
+            col.querySelector('.js-count').textContent = n;
+        });
+    }
+
+    function resetFilters() {
+        document.querySelectorAll('.cb-tema, .cb-rotulo').forEach(c => c.checked = false);
+        runFilters();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const temas = new Set(), rotulos = new Set();
+        document.querySelectorAll('.js-filterable').forEach(el => {
+            temas.add(el.dataset.tema);
+            if(el.dataset.rotulos) el.dataset.rotulos.split(',').forEach(r => rotulos.add(r));
+        });
+
+        const tDiv = document.getElementById('list-temas'), rDiv = document.getElementById('list-rotulos');
+        [...temas].sort().forEach(t => tDiv.innerHTML += `<label class="opt-item"><input type="checkbox" class="cb-tema" value="${t}" onchange="runFilters()"> ${t}</label>`);
+        [...rotulos].sort().forEach(r => rDiv.innerHTML += `<label class="opt-item"><input type="checkbox" class="cb-rotulo" value="${r}" onchange="runFilters()"> ${r}</label>`);
+    });
+</script>
+{% endblock %}

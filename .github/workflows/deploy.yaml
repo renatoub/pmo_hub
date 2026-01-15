@@ -5,14 +5,18 @@ on:
   push:
     branches: [main, dev]
 
+permissions:
+  contents: write
+
 env:
-  TARGET_PORT: ${{ github.ref_name == 'main' && '1234' || '2345' }}
+  TARGET_PORT: ${{ github.ref_name == 'main' && '12345' || '23456' }}
   SERVICE_NAME: ${{ github.ref_name == 'main' && 'DataHub-EqtOne' || 'DataHub-EqtOne-Dev' }}
   BASE_PATH: "C:\\EQTONE\\pmo_hub\\pmo_hub_${{ github.ref_name }}"
+  MAIN_PATH: "C:\\EQTONE\\pmo_hub\\pmo_hub_main"
 
 jobs:
-  setup:
-    name: 1. Configurar Ambiente
+  setup_and_stop:
+    name: 1. Parar Serviço e Preparar
     runs-on: self-hosted
     outputs:
       backup_date: ${{ steps.vars.outputs.BACKUP_DATE }}
@@ -23,35 +27,106 @@ jobs:
           git config --global --add safe.directory *
           $TIMESTAMP = Get-Date -Format "yyyyMMdd_HHmm"
           echo "BACKUP_DATE=$TIMESTAMP" >> $env:GITHUB_OUTPUT
-          Write-Host "Iniciando deploy na branch ${{ github.ref_name }}"
+          
+          Write-Host "Parando o serviço $env:SERVICE_NAME..."
+          Stop-Service -Name "$env:SERVICE_NAME" -Force -ErrorAction SilentlyContinue
+          Start-Sleep -Seconds 3
 
-  backup:
-    name: 2. Backup do Banco
-    needs: setup
+  update_code_and_version:
+    name: 2. Git Pull e Incremento de Versão
+    needs: setup_and_stop
     runs-on: self-hosted
     steps:
-      - shell: cmd
-        working-directory: ${{ env.BASE_PATH }}
-        run: |
-          if not exist "..\backups" mkdir "..\backups"
-          copy pmo_hub\db.sqlite3 ..\backups\db_${{ github.ref_name }}_${{ needs.setup.outputs.backup_date }}.sqlite3
-          uv run python .\pmo_hub\manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 2 > ..\backups\dump_${{ github.ref_name }}_${{ needs.setup.outputs.backup_date }}.json
-
-  update_code:
-    name: 3. Git Pull
-    needs: backup
-    runs-on: self-hosted
-    steps:
-      - shell: cmd
+      - name: Checkout Code
+        shell: cmd
         working-directory: ${{ env.BASE_PATH }}
         run: |
           git fetch origin ${{ github.ref_name }}
           git reset --hard origin/${{ github.ref_name }}
           git pull origin ${{ github.ref_name }}
 
+      - name: Incrementar Versão Semântica (Git Flow)
+        shell: python
+        env:
+          PYTHONIOENCODING: utf-8
+          LANG: C.UTF-8
+        working-directory: ${{ env.BASE_PATH }}
+        run: |
+          import re
+          import os
+          init_path = os.path.join("pmo_hub", "pmo", "__init__.py")
+          with open(init_path, "r", encoding="utf-8") as f:
+              content = f.read()
+          version_match = re.search(r'__version__\s*=\s*"(.*?)"', content)
+          current_version = version_match.group(1)
+          major, minor, patch = map(int, current_version.split('.'))
+          branch = "${{ github.ref_name }}"
+          if branch == "main":
+              if "# major" in content.lower():
+                  major += 1
+                  minor = 0
+                  patch = 0
+              elif "# minor" in content.lower():
+                  minor += 1
+                  patch = 0
+              else:
+                  patch += 1
+          else:
+              patch += 1
+          new_version = f"{major}.{minor}.{patch}"
+          new_content = re.sub(r'__version__\s*=\s*".*?"', f'__version__ = "{new_version}"', content)
+          new_content = re.sub(r'#\s*(major|minor)', '', new_content, flags=re.IGNORECASE).strip() + "\n"
+          with open(init_path, "w", encoding="utf-8") as f:
+              f.write(new_content)
+          print(f"Versão atualizada na branch {branch}: {current_version} -> {new_version}")
+
+      - name: Persistir Versão no Repositório
+        shell: cmd
+        working-directory: ${{ env.BASE_PATH }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_TERMINAL_PROMPT: 0
+        run: |
+          git config user.name "github-actions"
+          git config user.email "action@github.com"
+          git add pmo_hub/pmo/__init__.py
+          git commit -m "chore: bump version [skip ci]"
+          git push https://x-access-token:%GH_TOKEN%@github.com/${{ github.repository }}.git ${{ github.ref_name }}
+
+  database_sync:
+    name: 3. Sincronizar ou Backup do Banco
+    needs: [setup_and_stop, update_code_and_version]
+    runs-on: self-hosted
+    steps:
+      - name: Sync ou Backup
+        shell: powershell
+        working-directory: ${{ env.BASE_PATH }}
+        run: |
+          if ("${{ github.ref_name }}" -eq "dev") {
+              Write-Host "Sincronizando banco da MAIN para DEV..."
+              $source = "${{ env.MAIN_PATH }}\pmo_hub\db.sqlite3"
+              $dest = "pmo_hub\db.sqlite3"
+              if (Test-Path $source) {
+                  Copy-Item -Path $source -Destination $dest -Force
+              } else {
+                  Write-Error "Banco de dados da MAIN não encontrado em $source"
+                  exit 1
+              }
+          } else {
+              Write-Host "Realizando backup de PRODUCAO (MAIN)..."
+              $backupDir = "..\backups"
+              if (!(Test-Path $backupDir)) { New-Item -ItemType Directory -Path $backupDir }
+              
+              # Backup do arquivo físico
+              Copy-Item -Path "pmo_hub\db.sqlite3" -Destination "$backupDir\db_main_${{ needs.setup_and_stop.outputs.backup_date }}.sqlite3" -Force
+              
+              # Dump JSON usando uv
+              uv run python .\pmo_hub\manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 2 | Out-File -FilePath "$backupDir\dump_main_${{ needs.setup_and_stop.outputs.backup_date }}.json" -Encoding utf8
+          }
+
   migrations:
     name: 4. Migrations
-    needs: update_code
+    needs: database_sync
     runs-on: self-hosted
     steps:
       - shell: cmd
@@ -59,14 +134,16 @@ jobs:
         run: uv run python pmo_hub\manage.py migrate --noinput
 
   restart:
-    name: 5. Restart Service
+    name: 5. Iniciar Serviço
     needs: migrations
     runs-on: self-hosted
     steps:
       - shell: powershell
         run: |
-          Stop-Service -Name "$env:SERVICE_NAME" -Force -ErrorAction SilentlyContinue
-          Start-Sleep -Seconds 5
+          Write-Host "Iniciando o serviço $env:SERVICE_NAME..."
           Start-Service -Name "$env:SERVICE_NAME"
           Start-Sleep -Seconds 5
-          if ((Get-Service -Name "$env:SERVICE_NAME").Status -ne "Running") { exit 1 }
+          if ((Get-Service -Name "$env:SERVICE_NAME").Status -ne "Running") { 
+            Write-Error "O serviço não iniciou corretamente!"
+            exit 1 
+          }

@@ -135,7 +135,7 @@ def adicionar_pendencia_tarefa_view(request, tarefa_id):
         if descricao:
             # 1. Atualiza os campos de texto e data
             tarefa.pendencia = descricao
-            tarefa.pendencia_data = timezone.now().date()
+            tarefa.pendencia_data = timezone.now()
             tarefa.responsabilidade_pendencia = responsabilidade
             tarefa.resolvida = False
             tarefa.concluida = False
@@ -212,6 +212,7 @@ def gantt_data(request):
                     {"nome": r.nome, "cor": r.cor_hex} for r in demanda.rotulos.all()
                 ],
                 "responsaveis": list(resp_map.values()),
+                "tema": demanda.tema.nome if demanda.tema else "Sem Tema",
                 "start": start_str,
                 "end": end_str,
                 "progress": demanda.progresso_total,

@@ -1,4 +1,3 @@
-<!-- pmo_hub\core\templates\core\dashboard.html -->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -12,14 +11,56 @@
     <style>
         body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .navbar-custom { background-color: #ffffff; border-bottom: 1px solid #e0e0e0; padding: 15px 30px; }
-        .kanban-container { display: flex; overflow-x: auto; padding: 20px; gap: 1.2rem; align-items: flex-start; }
-        .kanban-column { background: #ebedf0; min-width: 320px; max-width: 320px; border-radius: 10px; padding: 15px; min-height: 70vh; box-shadow: inset 0 0 5px rgba(0,0,0,0.05); }
-        .kanban-header { font-weight: bold; margin-bottom: 15px; text-transform: uppercase; font-size: 0.85rem; color: #5e6c84; display: flex; justify-content: space-between; }
-        .kanban-card { background: white; border-radius: 8px; padding: 15px; margin-bottom: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 6px solid #ccc; transition: transform 0.2s; cursor: pointer; }
+        
+        /* Container Kanban equalizado */
+        .kanban-container { 
+            display: flex; 
+            overflow-x: auto; 
+            padding: 20px; 
+            gap: 1.2rem; 
+            align-items: stretch; 
+        }
+
+        .kanban-column { 
+            background: #ebedf0; 
+            min-width: 320px; 
+            max-width: 320px; 
+            border-radius: 10px; 
+            padding: 15px; 
+            display: flex;
+            flex-direction: column;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.05);
+            height: auto;
+        }
+
+        .kanban-header { 
+            font-weight: bold; margin-bottom: 15px; text-transform: uppercase; 
+            font-size: 0.85rem; color: #5e6c84; display: flex; justify-content: space-between; 
+        }
+
+        .kanban-cards-wrapper { flex-grow: 1; min-height: 100px; }
+
+        .kanban-card { 
+            background: white; border-radius: 8px; padding: 15px; margin-bottom: 12px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 6px solid #ccc; 
+            transition: transform 0.2s; cursor: pointer; 
+        }
         .kanban-card:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
         .kanban-card h6 { margin: 0 0 8px 0; font-size: 14px; color: #172b4d; }
-        .kanban-card .meta-info { font-size: 12px; color: #6b778c; display: flex; justify-content: space-between; margin-top: 10px; }
-        .dashboard-card { border: none; border-radius: 12px; transition: 0.3s; }
+        .kanban-card .meta-info { font-size: 11px; color: #6b778c; margin-top: 10px; }
+
+        /* Estilos Filtros */
+        .filter-bar { background: white; padding: 15px 30px; border-bottom: 1px solid #e2e8f0; display: flex; gap: 1.5rem; align-items: flex-end; }
+        .multi-select-box { position: relative; width: 220px; }
+        .multi-select-menu { 
+            display: none; position: absolute; background: white; z-index: 1000; 
+            width: 100%; max-height: 250px; overflow-y: auto; 
+            border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 8px;
+        }
+        .multi-select-box:hover .multi-select-menu { display: block; }
+        .opt-item { font-size: 12px; display: flex; align-items: center; gap: 8px; padding: 4px 0; cursor: pointer; }
+        .opt-item:hover { background: #f8f9fa; }
     </style>
 </head>
 <body>
@@ -32,59 +73,69 @@
         </div>
     </nav>
 
+    <div class="filter-bar">
+        <div class="multi-select-box">
+            <label class="small fw-bold text-muted text-uppercase" style="font-size: 10px;">Temas</label>
+            <div class="form-select form-select-sm">Filtrar Temas</div>
+            <div id="list-temas" class="multi-select-menu"></div>
+        </div>
+        <div class="multi-select-box">
+            <label class="small fw-bold text-muted text-uppercase" style="font-size: 10px;">Rótulos</label>
+            <div class="form-select form-select-sm">Filtrar Rótulos</div>
+            <div id="list-rotulos" class="multi-select-menu"></div>
+        </div>
+        <button onclick="resetFilters()" class="btn btn-sm btn-link text-muted mb-1 text-decoration-none">Limpar</button>
+    </div>
+
     <div class="container-fluid mt-4">
-        
         <div class="row">
             <div class="col-12">
                 <h5 class="px-3 mb-3 fw-bold">Quadro Kanban</h5>
                 <div class="kanban-container">
-                    {% for situacao, tarefas in kanban_data.items %}
+                    {% for situacao, tarefas_list in kanban_data.items %}
                     <div class="kanban-column">
                         <div class="kanban-header">
                             <span>{{ situacao.nome }}</span>
-                            <span class="badge bg-white text-dark border">{{ tarefas|length }}</span>
+                            <span class="badge bg-white text-dark border js-count">{{ tarefas_list|length }}</span>
                         </div>
                         
-                        {% for d in tarefas %}
-                        <div class="kanban-card" style="border-left-color: {{ situacao.cor_hex }}" onclick="window.open('{% url 'admin:core_demanda_change' d.id %}', '_blank')">
-                            <span class="badge bg-light text-dark mb-2" style="font-size: 10px;">{{ d.tema }}</span>
-                            <h6>{{ d.titulo }}</h6>
-                            <div class="meta-info">
-                                <span><i class="far fa-user me-1"></i> 
-                                    {% if d.responsavel %}
-                                        {{ d.responsavel.username }}
-                                    {% else %}
-                                        ---
-                                    {% endif %}
-                                </span>
-                                <span><i class="far fa-calendar-alt me-1"></i> {{ d.data_prazo|date:"d/m"|default:"--" }}</span>
+                        <div class="kanban-cards-wrapper">
+                            {% for d in tarefas_list %}
+                            <div class="kanban-card js-filterable" 
+                                 data-tema="{{ d.tema.nome|default:'Sem Tema' }}"
+                                 data-rotulos="{% for r in d.rotulos.all %}{{ r.nome }}{% if not forloop.last %},{% endif %}{% endfor %}"
+                                 style="border-left-color: {{ situacao.cor_hex }}" 
+                                 onclick="window.open('{% url 'admin:core_demanda_change' d.id %}', '_blank')">
+                                
+                                <span class="badge bg-light text-dark mb-2" style="font-size: 10px;">{{ d.tema.nome|default:"Sem Tema" }}</span>
+                                <h6>{{ d.titulo }}</h6>
+                                
+                                <div class="progress mb-2" style="height: 6px;" title="Progresso: {{ d.progresso_total|default:0 }}%">
+                                    <div class="progress-bar bg-success" role="progressbar" 
+                                         style="width: {{ d.progresso_total|default:0|stringformat:'f' }}%"></div>
+                                </div>
+
+                                <div class="meta-info d-flex justify-content-between align-items-center">
+                                    <span>
+                                        <i class="fas fa-check-double text-success me-1"></i>
+                                        {{ d.stats_tarefas.concluidas|default:0 }}/{{ d.stats_tarefas.total|default:0 }} tarefas
+                                    </span>
+                                    <span class="badge bg-secondary" style="font-size: 9px;">
+                                        {{ d.progresso_total|default:0 }}% (Hrs)
+                                    </span>
+                                </div>
                             </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
                     {% endfor %}
                 </div>
             </div>
         </div>
-<!-- 
-        <div class="row my-5 px-3">
-            <div class="col-md-6 mb-4 text-center">
-                <div class="card dashboard-card p-4">
-                    <h6 class="fw-bold mb-4">Status</h6>
-                    <canvas id="chartSituacao"></canvas>
-                </div>
-            </div>
-            <div class="col-md-6 mb-4 text-center">
-                <div class="card dashboard-card p-4">
-                    <h6 class="fw-bold mb-4">Nível</h6>
-                    <canvas id="chartNivel"></canvas>
-                </div>
-            </div>
-        </div> -->
 
-        <div class="row px-3 pb-5">
+        <div class="row px-3 pb-5 mt-4">
             <div class="col-12">
-                <div class="card dashboard-card">
+                <div class="card dashboard-card border-0 shadow-sm">
                     <div class="card-header bg-white py-3"><h6 class="m-0 fw-bold">Lista de Demandas</h6></div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
@@ -94,16 +145,18 @@
                                         <th class="ps-4">Demanda</th>
                                         <th>Situação</th>
                                         <th>Responsável</th>
-                                        <th>Prazo</th>
+                                        <th>Progresso (Qtd)</th>
                                         <th class="text-center">Ação</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for demanda in demandas %}
-                                    <tr>
+                                    <tr class="js-filterable" 
+                                        data-tema="{{ demanda.tema.nome|default:'Sem Tema' }}"
+                                        data-rotulos="{% for r in demanda.rotulos.all %}{{ r.nome }}{% if not forloop.last %},{% endif %}{% endfor %}">
                                         <td class="ps-4">
                                             <strong>{{ demanda.titulo }}</strong><br>
-                                            <small class="text-muted">{{ demanda.tema }}</small>
+                                            <small class="text-muted">{{ demanda.tema.nome|default:"Sem Tema" }}</small>
                                         </td>
                                         <td>
                                             {% if demanda.situacao %}
@@ -119,7 +172,14 @@
                                                 <span class="text-muted">Não atribuído</span>
                                             {% endif %}
                                         </td>
-                                        <td>{{ demanda.data_prazo|date:"d/m/Y"|default:"---" }}</td>
+                                        <td>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <div class="progress flex-grow-1" style="height: 8px; width: 80px;">
+                                                    <div class="progress-bar bg-info" style="width: {{ demanda.stats_tarefas.percent_qtd|default:0|stringformat:'f' }}%"></div>
+                                                </div>
+                                                <small style="font-size: 10px;">{{ demanda.stats_tarefas.concluidas|default:0 }}/{{ demanda.stats_tarefas.total|default:0 }}</small>
+                                            </div>
+                                        </td>
                                         <td class="text-center">
                                             <a href="{% url 'admin:core_demanda_change' demanda.id %}" target="_blank" class="text-primary">
                                                 <i class="fas fa-external-link-alt"></i>
@@ -137,29 +197,49 @@
     </div>
 
     <script>
-        // Gráfico Status
-        new Chart(document.getElementById('chartSituacao'), {
-            type: 'doughnut',
-            data: {
-                labels: {{ labels_situacao|safe }},
-                datasets: [{
-                    data: {{ counts_situacao|safe }},
-                    backgroundColor: {{ cores_situacao|safe }}
-                }]
-            }
-        });
+        function runFilters() {
+            const selectedTemas = Array.from(document.querySelectorAll('.cb-tema:checked')).map(c => c.value);
+            const selectedRotulos = Array.from(document.querySelectorAll('.cb-rotulo:checked')).map(c => c.value);
 
-        // Gráfico Nível
-        new Chart(document.getElementById('chartNivel'), {
-            type: 'bar',
-            data: {
-                labels: {{ labels_tema|safe }},
-                datasets: [{
-                    label: 'Quantidade',
-                    data: {{ counts_tema|safe }},
-                    backgroundColor: '#4e73df'
-                }]
-            }
+            document.querySelectorAll('.js-filterable').forEach(el => {
+                const tema = el.dataset.tema;
+                const rotulosArr = el.dataset.rotulos ? el.dataset.rotulos.split(',') : [];
+
+                const matchTema = selectedTemas.length === 0 || selectedTemas.includes(tema);
+                const matchRotulo = selectedRotulos.length === 0 || rotulosArr.some(r => selectedRotulos.includes(r));
+
+                el.style.display = (matchTema && matchRotulo) ? '' : 'none';
+            });
+
+            document.querySelectorAll('.kanban-column').forEach(col => {
+                const count = col.querySelectorAll('.kanban-card:not([style*="display: none"])').length;
+                col.querySelector('.js-count').textContent = count;
+            });
+        }
+
+        function resetFilters() {
+            document.querySelectorAll('.cb-tema, .cb-rotulo').forEach(c => c.checked = false);
+            runFilters();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const temas = new Set();
+            const rotulos = new Set();
+
+            document.querySelectorAll('.js-filterable').forEach(el => {
+                temas.add(el.dataset.tema);
+                if(el.dataset.rotulos) el.dataset.rotulos.split(',').forEach(r => rotulos.add(r));
+            });
+
+            const temaDiv = document.getElementById('list-temas');
+            [...temas].sort().forEach(t => {
+                temaDiv.innerHTML += `<label class="opt-item"><input type="checkbox" class="cb-tema" value="${t}" onchange="runFilters()"> ${t}</label>`;
+            });
+
+            const rotDiv = document.getElementById('list-rotulos');
+            [...rotulos].sort().forEach(r => {
+                rotDiv.innerHTML += `<label class="opt-item"><input type="checkbox" class="cb-rotulo" value="${r}" onchange="runFilters()"> ${r}</label>`;
+            });
         });
     </script>
 </body>

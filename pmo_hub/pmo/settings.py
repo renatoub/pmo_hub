@@ -153,7 +153,7 @@ JAZZMIN_SETTINGS = {
     # "site_icon": "img/logo.png",
     # "site_logo_classes": "img-circle",
     "welcome_sign": "Bem-vindo ao PMO Hub - Gerenciamento de core",
-    "copyright": f"PMO Hub Ltda v{APP_VERSION}",
+    "copyright": f"Equatorial Energia Ltda v{APP_VERSION}",
     "search_model": ["core.Demanda"],
     "user_avatar": None,
     # Links no menu superior
@@ -168,10 +168,7 @@ JAZZMIN_SETTINGS = {
             "url": "admin:core_demanda_pmo",
         },
         {"name": "Linha do Tempo", "url": "/admin/core/demanda/gantt-view/"},
-        {
-            "name": "Dashboard",
-            "url": "/",
-        },
+        {"name": "Dashboard Kanban", "url": "admin:core_demanda_dashboard"},
         {"model": "core.Demanda"},
     ],
     # Menu Lateral
@@ -196,29 +193,35 @@ JAZZMIN_SETTINGS = {
 }
 
 JAZZMIN_UI_TWEAKS = {
-    # Tema Base Claro e Harmonioso
-    "theme": "simplex",
-    # Ativa o seletor de Dark Mode no menu do usuário
-    # "dark_mode_theme": "darkly",
-    # Ajustes finos de cores
-    "navbar_small_text": False,
+    "navbar_small_text": True,
     "footer_small_text": True,
     "body_small_text": False,
-    "brand_small_text": False,
-    "brand_colour": "navbar-primary",
+    "brand_small_text": True,
+    "brand_colour": "navbar-white",
     "accent": "accent-primary",
-    "navbar": "navbar-dark",
-    "no_navbar_border": False,
+    "navbar": "navbar-white navbar-light",
+    "no_navbar_border": True,
     "navbar_fixed": True,
     "layout_boxed": False,
-    "footer_fixed": False,
+    "footer_fixed": True,
     "sidebar_fixed": True,
-    "sidebar": "sidebar-dark-primary",
+    "sidebar": "sidebar-light-info",
     "sidebar_nav_small_text": True,
     "sidebar_disable_expand": False,
     "sidebar_nav_child_indent": True,
-    "sidebar_nav_compact_style": False,
+    "sidebar_nav_compact_style": True,
     "sidebar_nav_legacy_style": False,
-    "sidebar_nav_flat_style": False,
+    "sidebar_nav_flat_style": True,
+    "theme": "simplex",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success",
+    },
     "theme_cls": "flatly",
+    "actions_sticky_top": False,
 }

@@ -20,7 +20,7 @@ class Tarefas(TimeStampedModel):
     nome = models.CharField(max_length=255)
     descricao = models.TextField(blank=True, verbose_name="Descrição da Tarefa")
     pendencia = models.TextField(blank=True, verbose_name="Descrição da Pendência")
-    pendencia_data = models.DateField(
+    pendencia_data = models.DateTimeField(
         null=True, blank=True, verbose_name="Data da Pendência"
     )
     pendencia_resolvida_em = models.DateTimeField(

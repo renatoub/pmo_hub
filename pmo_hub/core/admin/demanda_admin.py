@@ -2,7 +2,7 @@
 from datetime import date, datetime, timedelta
 
 from django.contrib import messages
-from django.db.models import Max, Q
+from django.db.models import Count, Max, Q
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.template.response import TemplateResponse
@@ -17,7 +17,6 @@ from ..models.demanda import Demanda
 from .forms import DemandaForm
 from .inlines import (
     AnexoDemandaInline,
-    PendenciaInline,
     SubitemInline,
     TarefasInline,
 )
@@ -27,7 +26,6 @@ class DemandaAdmin(SimpleHistoryAdmin):
     form = DemandaForm
     inlines = [
         SubitemInline,
-        PendenciaInline,
         AnexoDemandaInline,
         TarefasInline,
     ]
@@ -72,12 +70,12 @@ class DemandaAdmin(SimpleHistoryAdmin):
                 "fields": (
                     "descricao",
                     "observacao",
-                    "riscos",
+                    # "riscos",
                     "objetivo_geral",
-                    "resultados_esperados",
+                    # "resultados_esperados",
                     "proximos_passos",
                     # "dependencias_externas",
-                    "porcentagem_concluida",
+                    # "porcentagem_concluida",
                 )
             },
         ),
@@ -276,6 +274,11 @@ class DemandaAdmin(SimpleHistoryAdmin):
                 name="core_demanda_dashboard",
             ),
             path(
+                "dashboard-pmo/",
+                self.admin_site.admin_view(self.kanban_dashboard_view),
+                name="core_demanda_dashboard",
+            ),
+            path(
                 "pmo/",
                 self.admin_site.admin_view(self.pmo_view),
                 name="core_demanda_pmo",
@@ -293,6 +296,66 @@ class DemandaAdmin(SimpleHistoryAdmin):
         ]
 
         return custom_urls + urls
+
+    def kanban_dashboard_view(self, request):
+        # Lógica original extraída do seu views.py
+        hoje = timezone.now().date()
+
+        # Prefetch de rótulos e tarefas para evitar centenas de queries no banco (N+1)
+        todas_demandas = (
+            Demanda.objects.all()
+            .select_related("situacao", "responsavel", "tema")
+            .prefetch_related("rotulos", "tarefas")
+            .order_by("-criado_em")
+        )
+
+        # Ordenação das colunas do Kanban
+        desired_order = [
+            "Backlog",
+            "Priorizada",
+            "Em execução",
+            "No Farol",
+            "Finalizado",
+        ]
+        all_situacoes = list(Situacao.objects.all())
+        situacoes = [
+            s
+            for name in desired_order
+            for s in all_situacoes
+            if s.nome.lower() == name.lower()
+        ]
+        situacoes += [s for s in all_situacoes if s not in situacoes]
+
+        kanban_data = {
+            sit: [d for d in todas_demandas if d.situacao_id == sit.id]
+            for sit in situacoes
+        }
+
+        # Dados para Gráficos
+        sit_data = Demanda.objects.values(
+            "situacao__nome", "situacao__cor_hex"
+        ).annotate(total=Count("id"))
+        tema_data = Demanda.objects.values("tema__nome").annotate(total=Count("id"))
+
+        context = {
+            **self.admin_site.each_context(
+                request
+            ),  # Inclui variáveis do Jazzmin/Admin
+            "title": "Dashboard Estratégico",
+            "kanban_data": kanban_data,
+            "demandas": todas_demandas,
+            "hoje": hoje,
+            "labels_situacao": [
+                item["situacao__nome"] or "Sem Situação" for item in sit_data
+            ],
+            "counts_situacao": [item["total"] for item in sit_data],
+            "cores_situacao": [
+                item["situacao__cor_hex"] or "#bdc3c7" for item in sit_data
+            ],
+            "labels_tema": [item["tema__nome"] or "Sem Tema" for item in tema_data],
+            "counts_tema": [item["total"] for item in tema_data],
+        }
+        return TemplateResponse(request, "admin/core/dashboard_pmo.html", context)
 
     def get_gantt_data(self, request):
         # Filtra demandas que possuem data de início e prazo
