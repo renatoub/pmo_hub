@@ -84,15 +84,20 @@ class TarefasInline(admin.TabularInline):
         if obj.pendencia and not obj.resolvida:
             icon_color = "#d33"  # Vermelho se houver pendência ativa
 
+        if obj.pendencia:
+            pendencia_html = f'<i class="fa-solid fa-triangle-exclamation" title="{obj.pendencia}" style="color: {icon_color};"></i>'
+        else:
+            pendencia_html = f"<a href=\"{url_pending}\" onclick=\"window.open(this.href, 'popup', 'width=600,height=500'); return false;\" "
+            pendencia_html += (
+                f'style="color: {icon_color};" title="Registrar pendência">'
+            )
+            pendencia_html += '<i class="fa-solid fa-triangle-exclamation"></i></a>'
+
         return format_html(
             '<a href="{}" style="color: #2196F3; margin-right: 12px;" title="Editar completa">'
-            '<i class="fa-solid fa-pen-to-square"></i></a>'
-            "<a href=\"{}\" onclick=\"window.open(this.href, 'popup', 'width=600,height=500'); return false;\" "
-            'style="color: {};" title="Registrar/Ver Pendência">'
-            '<i class="fa-solid fa-triangle-exclamation"></i></a>',
+            '<i class="fa-solid fa-pen-to-square"></i></a>{}',
             url_change,
-            url_pending,
-            icon_color,
+            mark_safe(pendencia_html),
         )
 
     edit_tarefas.short_description = "Ações rápidas"

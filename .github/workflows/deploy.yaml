@@ -47,6 +47,9 @@ jobs:
 
       - name: Incrementar Versão Semântica (Git Flow)
         shell: python
+        env:
+          PYTHONIOENCODING: utf-8
+          LANG: C.UTF-8
         working-directory: ${{ env.BASE_PATH }}
         run: |
           import re
