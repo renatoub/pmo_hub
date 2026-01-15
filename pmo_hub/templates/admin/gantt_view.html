@@ -149,6 +149,20 @@
                 </div>
         </div>
 
+        <div class="multi-select-container">
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Filtrar Responsáveis</label>
+            <div class="border rounded px-2 py-1.5 text-sm bg-white cursor-pointer select-none">Selecionar Responsáveis...</div>
+            <div id="container-responsaveis" class="multi-select-content">
+                </div>
+        </div>
+
+        <div class="multi-select-container">
+            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Filtrar Buckets</label>
+            <div class="border rounded px-2 py-1.5 text-sm bg-white cursor-pointer select-none">Selecionar Buckets...</div>
+            <div id="container-buckets" class="multi-select-content">
+                </div>
+        </div>
+
         <a href="?" class="text-blue-600 font-bold text-xs underline mb-2">Resetar</a>
     </div>
 </div>
@@ -183,6 +197,10 @@
         const selectedTemas = Array.from(document.querySelectorAll('.filter-tema-cb:checked')).map(cb => cb.value);
         // Pega todos os rótulos selecionados
         const selectedRotulos = Array.from(document.querySelectorAll('.filter-rotulo-cb:checked')).map(cb => cb.value);
+        // Pega todos os responsáveis selecionados
+        const selectedResponsaveis = Array.from(document.querySelectorAll('.filter-responsavel-cb:checked')).map(cb => cb.value);
+        // Pega todos os buckets selecionados
+        const selectedBuckets = Array.from(document.querySelectorAll('.filter-bucket-cb:checked')).map(cb => cb.value);
 
         const body = document.getElementById('gantt-body');
         const marker = document.getElementById('today-marker');
@@ -197,8 +215,10 @@
             // Lógica: Se nenhum selecionado, mostra todos. Se selecionado, deve conter no array.
             const matchTema = selectedTemas.length === 0 || selectedTemas.includes(d.tema);
             const matchRotulo = selectedRotulos.length === 0 || d.rotulos.some(r => selectedRotulos.includes(r.nome));
-            
-            return inDateRange && matchTema && matchRotulo;
+            const matchResponsavel = selectedResponsaveis.length === 0 || d.responsaveis.some(r => selectedResponsaveis.includes(r.nome));
+            const matchBucket = selectedBuckets.length === 0 || selectedBuckets.includes(d.bucket);
+
+            return inDateRange && matchTema && matchRotulo && matchResponsavel && matchBucket;
         });
 
         body.innerHTML += filtered.map(d => {
@@ -243,6 +263,8 @@
             // Popular Filtros Multi-seleção
             const temas = [...new Set(ALL_DATA.map(d => d.tema))].filter(Boolean).sort();
             const rotulos = [...new Set(ALL_DATA.flatMap(d => d.rotulos.map(r => r.nome)))].sort();
+            const responsaveis = [...new Set(ALL_DATA.flatMap(d => d.responsaveis.map(r => r.nome)))].sort();
+            const buckets = [...new Set(ALL_DATA.map(d => d.bucket))].filter(Boolean).sort();
 
             const containerTemas = document.getElementById('container-temas');
             temas.forEach(t => {
@@ -259,6 +281,23 @@
                         <input type="checkbox" value="${r}" class="filter-rotulo-cb" onchange="renderGantt()"> ${r}
                     </label>`;
             });
+
+            const containerResponsaveis = document.getElementById('container-responsaveis');
+            responsaveis.forEach(r => {
+                containerResponsaveis.innerHTML += `
+                    <label class="flex items-center gap-2 p-1 hover:bg-slate-50 cursor-pointer text-sm">
+                        <input type="checkbox" value="${r}" class="filter-responsavel-cb" onchange="renderGantt()"> ${r}
+                    </label>`;
+            });
+
+            const containerBuckets = document.getElementById('container-buckets');
+            buckets.forEach(b => {
+                containerBuckets.innerHTML += `
+                    <label class="flex items-center gap-2 p-1 hover:bg-slate-50 cursor-pointer text-sm">
+                        <input type="checkbox" value="${b}" class="filter-bucket-cb" onchange="renderGantt()"> ${b}
+                    </label>`;
+            });
+
 
             // Renderizar Cabeçalho de Dias
             let dayHtml = '';
