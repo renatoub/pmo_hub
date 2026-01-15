@@ -24,8 +24,6 @@ from .inlines import (
 
 
 class DemandaAdmin(SimpleHistoryAdmin):
-    change_list_template = "admin/core/demanda_changelist.html"
-
     form = DemandaForm
     inlines = [
         SubitemInline,

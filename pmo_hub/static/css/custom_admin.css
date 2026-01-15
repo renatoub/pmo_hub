@@ -27,3 +27,7 @@
     width: 100% !important;
     text-align: center !important;
 }
+
+.main-footer {
+    display: none !important;
+}

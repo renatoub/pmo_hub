@@ -135,7 +135,7 @@ def adicionar_pendencia_tarefa_view(request, tarefa_id):
         if descricao:
             # 1. Atualiza os campos de texto e data
             tarefa.pendencia = descricao
-            tarefa.pendencia_data = timezone.now().date()
+            tarefa.pendencia_data = timezone.now()
             tarefa.responsabilidade_pendencia = responsabilidade
             tarefa.resolvida = False
             tarefa.concluida = False
