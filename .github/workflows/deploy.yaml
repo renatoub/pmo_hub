@@ -18,6 +18,7 @@ jobs:
   setup_and_stop:
     name: 1. Parar Serviço e Preparar
     runs-on: self-hosted
+    timeout-minutes: 2
     outputs:
       backup_date: ${{ steps.vars.outputs.BACKUP_DATE }}
     steps:
@@ -35,6 +36,7 @@ jobs:
   update_code_and_version:
     name: 2. Git Pull e Incremento de Versão
     needs: setup_and_stop
+    timeout-minutes: 2
     runs-on: self-hosted
     steps:
       - name: Checkout Code
@@ -96,6 +98,7 @@ jobs:
   database_sync:
     name: 3. Sincronizar ou Backup do Banco
     needs: [setup_and_stop, update_code_and_version]
+    timeout-minutes: 2
     runs-on: self-hosted
     steps:
       - name: Sync ou Backup
@@ -127,6 +130,7 @@ jobs:
   migrations:
     name: 4. Migrations
     needs: database_sync
+    timeout-minutes: 2
     runs-on: self-hosted
     steps:
       - shell: cmd
@@ -136,6 +140,7 @@ jobs:
   restart:
     name: 5. Iniciar Serviço
     needs: migrations
+    timeout-minutes: 2
     runs-on: self-hosted
     steps:
       - shell: powershell

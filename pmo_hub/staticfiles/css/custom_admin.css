@@ -27,3 +27,24 @@
     width: 100% !important;
     text-align: center !important;
 }
+
+.main-footer {
+    display: block !important;
+    z-index: 1
+}
+
+/* Força a visibilidade e posicionamento do footer */
+body.layout-footer-fixed .main-footer {
+    display: flex !important;
+    z-index: 1035 !important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: fixed;
+    background-color: #fff !important;
+}
+
+/* Garante que o conteúdo não fique escondido atrás do footer fixo */
+body.layout-footer-fixed .content-wrapper {
+    padding-bottom: calc(3.5rem + 1px) !important;
+}
