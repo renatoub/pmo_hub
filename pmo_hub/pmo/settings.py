@@ -146,7 +146,7 @@ JAZZMIN_SETTINGS = {
     "site_title": "PMO Hub",
     "site_header": "PMO Hub",
     "site_brand": "PMO Hub",
-    "custom_css": "css/custom_admin.css",
+    "custom_css": "css/admin_fix.css",
     # "site_logo": "img/logo.png",
     # "login_logo": "img/logo.png",
     # "site_logo_classes": "img-circle",
@@ -213,7 +213,7 @@ JAZZMIN_UI_TWEAKS = {
     "sidebar_nav_legacy_style": False,
     "sidebar_nav_flat_style": True,
     "theme": "simplex",
-    "dark_mode_theme": None,
+    "dark_mode_theme": False,
     "button_classes": {
         "primary": "btn-primary",
         "secondary": "btn-secondary",

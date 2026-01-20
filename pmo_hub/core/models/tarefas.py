@@ -17,7 +17,7 @@ class Tarefas(TimeStampedModel):
     demanda = models.ForeignKey(
         Demanda, on_delete=models.CASCADE, related_name="tarefas"
     )
-    nome = models.CharField(max_length=255)
+    nome = models.TextField(max_length=255)
     descricao = models.TextField(blank=True, verbose_name="Descrição da Tarefa")
     pendencia = models.TextField(blank=True, verbose_name="Descrição da Pendência")
     pendencia_data = models.DateTimeField(

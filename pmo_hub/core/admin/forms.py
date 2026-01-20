@@ -1,8 +1,9 @@
 # pmo_hub/core/admin/forms.py
 from django import forms
+from django.contrib import admin
 from django.forms.widgets import FileInput
 
-from ..models import AnexoDemanda, Demanda, Rotulos, Situacao
+from ..models import AnexoDemanda, Demanda, Rotulos, Situacao, Tarefas
 
 
 class MultipleFileInput(FileInput):
@@ -61,3 +62,21 @@ class DemandaForm(forms.ModelForm):
                     {"pendencia_descricao": "Descrição obrigatória para pendências."}
                 )
         return cleaned
+
+
+class TarefasForm(forms.ModelForm):
+    class Meta:
+        model = Tarefas
+        fields = "__all__"
+        widgets = {
+            "nome": forms.TextInput(attrs={"style": "width: 400px;"}),
+            "responsaveis": admin.widgets.FilteredSelectMultiple(
+                verbose_name="Responsáveis", is_stacked=False
+            ),
+        }
+
+
+class TarefasInline(admin.TabularInline):
+    model = Tarefas
+    form = TarefasForm  # <--- Vincule o form aqui
+    fields = ("nome", "responsaveis", "concluida", "edit_tarefas")
