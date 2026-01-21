@@ -1,6 +1,7 @@
 # pmo_hub\core\views.py
 from datetime import datetime, timedelta
 
+from django.db import transaction
 from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -125,8 +126,46 @@ def alterar_status_view(request, pk, situacao_id):
     return redirect(request.META.get("HTTP_REFERER", "dashboard"))
 
 
+def registrar_pendencia_view(request, demanda_id, situacao_id):
+    demanda = get_object_or_404(Demanda, pk=demanda_id)
+    situacao_destino = get_object_or_404(Situacao, pk=situacao_id)
+
+    # Filtro: Tarefas desta demanda que não estão concluídas
+    tarefas_disponiveis = demanda.tarefas.filter(concluida=False)
+
+    if request.method == "POST":
+        tarefa_id = request.POST.get("tarefa_id")
+        descricao = request.POST.get("pendencia_descricao")
+        responsabilidade = request.POST.get("responsabilidade")
+
+        if tarefa_id and descricao:
+            with transaction.atomic():
+                # 1. Atualizar a Tarefa Selecionada
+                tarefa = get_object_or_404(Tarefas, pk=tarefa_id)
+                tarefa.pendencia = descricao
+                tarefa.pendencia_data = timezone.now()
+                tarefa.responsabilidade_pendencia = responsabilidade
+                tarefa.resolvida = False
+                tarefa.save()
+
+                # 2. Atualizar a Demanda (Muda o Bucket/Situação)
+                demanda.situacao = situacao_destino
+                demanda.save(update_fields=["situacao"])
+
+            return render(request, "core/pendencia_form.html", {"msg_sucesso": True})
+
+    context = {
+        "demanda": demanda,
+        "tarefas_disponiveis": tarefas_disponiveis,
+        "situacao_destino": situacao_destino,
+        "choices": Tarefas.ResponsabilidadeChoices.choices,
+    }
+    return render(request, "core/pendencia_form.html", context)
+
+
 def adicionar_pendencia_tarefa_view(request, tarefa_id):
     tarefa = get_object_or_404(Tarefas, pk=tarefa_id)
+    demanda = tarefa.demanda
 
     if request.method == "POST":
         descricao = request.POST.get("pendencia_descricao", "").strip()
@@ -139,7 +178,13 @@ def adicionar_pendencia_tarefa_view(request, tarefa_id):
             tarefa.responsabilidade_pendencia = responsabilidade
             tarefa.resolvida = False
             tarefa.concluida = False
-            tarefa.save()  # Salva primeiro os campos simples
+            tarefa.save()
+
+            situacao_pendente = Situacao.objects.filter(pendente=True).first()
+
+            if situacao_pendente:
+                demanda.situacao = situacao_pendente
+                demanda.save(update_fields=["situacao"])
 
             # 2. Adiciona o usuário atual aos responsáveis (ManyToMany)
             # O método .add() não sobrescreve os atuais, apenas inclui o novo

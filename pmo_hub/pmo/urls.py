@@ -5,6 +5,7 @@ from core.views import (
     criar_subatividade_view,
     gantt_data,
     gantt_view,
+    registrar_pendencia_view,
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -18,6 +19,11 @@ urlpatterns = [
         "acoes/status/<int:pk>/<int:situacao_id>/",
         alterar_status_view,
         name="alterar_status",
+    ),
+    path(
+        "demanda/<int:demanda_id>/pendencia/<int:situacao_id>/",
+        registrar_pendencia_view,
+        name="registrar_pendencia_form",
     ),
     path(
         "acoes/pendencia/<int:tarefa_id>/",

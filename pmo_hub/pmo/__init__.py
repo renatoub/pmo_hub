@@ -1,3 +1,2 @@
 # pmo_hub/pmo/__init__.py
-
-__version__ = "0.11.2"
+__version__ = "0.11.4"
