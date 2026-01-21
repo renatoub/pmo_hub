@@ -54,6 +54,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     "jazzmin",
+    "users.apps.UsersConfig",
     "core",
     "simple_history",
     "django.contrib.admin",
@@ -155,12 +156,7 @@ JAZZMIN_SETTINGS = {
     "welcome_sign": "Bem-vindo ao PMO Hub - Gerenciamento de core",
     "copyright": f"Equatorial Energia Ltda v{APP_VERSION}",
     "search_model": ["core.Demanda"],
-    "user_avatar": None,
-    # Links no menu superior
-    # "topmenu_links": [
-    #     {"name": "Início", "url": "admin:index", "permissions": ["auth.view_user"]},
-    #     {"model": "core.Demanda"},
-    # ],
+    "user_avatar": "get_user_avatar",
     "topmenu_links": [
         {"name": "Início", "url": "admin:index", "permissions": ["auth.view_user"]},
         {

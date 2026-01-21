@@ -10,5 +10,6 @@ dependencies = [
     "django-jazzmin>=3.0.1",
     "django-simple-history>=3.11.0",
     "django-stubs>=5.2.8",
+    "pillow>=12.1.0",
     "whitenoise>=6.11.0",
 ]
