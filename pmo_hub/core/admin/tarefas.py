@@ -11,11 +11,24 @@ from simple_history.admin import SimpleHistoryAdmin
 class TarefasAdmin(SimpleHistoryAdmin):
     search_fields = ("nome", "demanda__titulo")
     list_filter = ("concluida", "criado_em", "demanda__titulo", "responsaveis")
+    fields = [
+        "demanda",
+        "nome",
+        "descricao",
+        "resolvida",  # <-- Agora ele aparecerá logo após a descrição
+        "pendencia",
+        "responsabilidade_pendencia",
+        "pendencia_data",
+        "pendencia_resolvida_em",
+        "concluida",
+        "concluido_em",
+    ]
     list_display = (
         "nome",
         "link_demanda",
         "botao_pendencia",
         "concluida",
+        "resolvida",
         "criado_em",
         "concluido_em",
     )
@@ -28,7 +41,25 @@ class TarefasAdmin(SimpleHistoryAdmin):
         "atualizado_em",
         "concluido_em",
     )
+
     actions = ["concluir_tarefas_em_massa"]
+
+    def get_readonly_fields(self, request, obj=None):
+        # 1. Transformamos em lista e garantimos o tipo genérico list[str]
+        readonly = list(super().get_readonly_fields(request, obj))
+
+        # 2. Verificamos a condição lógica
+        if obj and obj.resolvida:
+            # Agora o .append não causará erro de Literal, pois 'readonly' é list[str]
+            if "resolvida" not in readonly:
+                readonly.append("resolvida")
+
+            # Garanta que os campos de pendência também fiquem travados
+            for campo in ["pendencia", "responsabilidade_pendencia"]:
+                if campo not in readonly:
+                    readonly.append(campo)
+
+        return readonly
 
     def link_demanda(self, obj):
         if obj.demanda:
@@ -65,17 +96,18 @@ class TarefasAdmin(SimpleHistoryAdmin):
 
         # Se já existir pendência e não estiver resolvida, destaca o ícone
         icon_color = "#ffbf00"  # Amarelo padrão
-        if obj.pendencia and not obj.resolvida:
-            icon_color = "#d33"  # Vermelho se houver pendência ativa
+        if not obj.concluida:
+            if obj.pendencia and not obj.resolvida:
+                icon_color = "#d33"  # Vermelho se houver pendência ativa
 
-        if not obj.pendencia:
-            html = f"<a href=\"{url_pending}\" onclick=\"window.open(this.href, 'popup', 'width=600,height=500'); return false;\" "
-            html += f'style="color: {icon_color};" title="Registrar Pendência">'
-            html += '<i class="fa-solid fa-triangle-exclamation"></i></a>'
-        else:
-            html = f'<i title="Pendência registrada">{obj.pendencia}</i>'
+            if not obj.pendencia or (obj.pendencia and obj.resolvida):
+                html = f"<a href=\"{url_pending}\" onclick=\"window.open(this.href, 'popup', 'width=600,height=500'); return false;\" "
+                html += f'style="color: {icon_color};" title="Registrar Pendência">'
+                html += '<i class="fa-solid fa-triangle-exclamation"></i></a>'
+            else:
+                html = f'<i title="Pendência registrada">{obj.pendencia}</i>'
 
-        return mark_safe(html)
+            return mark_safe(html)
 
     botao_pendencia.admin_order_field = "pendencia"
     botao_pendencia.short_description = "Pendência"
