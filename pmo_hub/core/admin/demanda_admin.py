@@ -73,6 +73,7 @@ class DemandaAdmin(SimpleHistoryAdmin):
                     "objetivo_geral",
                     # "resultados_esperados",
                     "proximos_passos",
+                    "conclusao",
                     # "dependencias_externas",
                     # "porcentagem_concluida",
                 )

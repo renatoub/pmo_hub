@@ -44,7 +44,7 @@ class Demanda(TimeStampedModel):
         blank=True,
         verbose_name="Bucket",
     )
-
+    conclusao = models.TextField(blank=True, verbose_name="Conclusão")
     riscos = models.ManyToManyField(Riscos, blank=True)
     objetivo_geral = models.TextField(blank=True, verbose_name="Objetivo Geral")
     resultados_esperados = models.ManyToManyField(
