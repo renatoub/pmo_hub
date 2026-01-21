@@ -204,13 +204,11 @@ class DemandaAdmin(SimpleHistoryAdmin):
         return super().changelist_view(request, extra_context)
 
     def acoes_rapidas(self, obj):
-        # Recuperamos o ID do usuário diretamente do request que salvamos
         usuario_logado = self._current_request.user if self._current_request else None
         id_do_usuario = usuario_logado.id if usuario_logado else None
-
         html = []
 
-        # Botão + Sub
+        # 1. Botão + Sub
         html.append(
             format_html(
                 '<a class="btn" href="{}" style="background:#17a2b8; display: inline-block; color:white; padding:2px 5px; font-size:10px; margin-right:3px; border-radius:3px; text-decoration:none;">+ Sub</a>',
@@ -218,7 +216,7 @@ class DemandaAdmin(SimpleHistoryAdmin):
             )
         )
 
-        # Botão Assumir (Aparece apenas se o logado NÃO for o responsável)
+        # 2. Botão Assumir
         if obj.responsavel_id != id_do_usuario:
             assumir_url = reverse(
                 f"admin:{obj._meta.app_label}_{obj._meta.model_name}_assumir",
@@ -231,33 +229,60 @@ class DemandaAdmin(SimpleHistoryAdmin):
                 )
             )
 
-        # Status seguintes
+        # 3. Lógica de Transição
+        situacao_atual_pendente = obj.situacao.pendente if obj.situacao else False
+
         if obj.situacao:
             for proxima in obj.situacao.proximas_situacoes.all():
+                abrir_em_popup = False
+
+                # CASO A: Indo PARA uma situação de pendência
                 if proxima.pendente:
-                    # Mudamos a URL aqui para apontar para o nosso formulário de pendências
                     url = reverse("registrar_pendencia_form", args=[obj.pk, proxima.id])
-                    html.append(
-                        format_html(
-                            '<a href="{}" '
-                            "onclick=\"window.open(this.href, 'popup', 'width=600,height=550,scrollbars=yes'); return false;\" "
-                            'style="white-space: nowrap !important;font-size:10px; padding:1px 4px; border:1px solid #ffc107; color:#856404; background:#fff3cd; text-decoration:none; margin-right:2px;">'
-                            "{}</a>",
-                            url,
-                            proxima.nome,
-                        )
+                    estilo = "white-space: nowrap !important; border:1px solid #ffc107; color:#856404; background:#fff3cd;"
+                    abrir_em_popup = True
+
+                # CASO B: Saindo DE uma pendência
+                elif situacao_atual_pendente:
+                    tem_tarefas_travadas = (
+                        obj.tarefas.filter(resolvida=False)
+                        .exclude(pendencia="")
+                        .exists()
                     )
+                    if tem_tarefas_travadas:
+                        url = reverse(
+                            "resolver_pendencias_form", args=[obj.pk, proxima.id]
+                        )
+                        estilo = "white-space: nowrap !important; border:1px solid #28a745; color:#155724; background:#d4edda;"
+                        abrir_em_popup = True
+                    else:
+                        url = reverse("alterar_status", args=[obj.pk, proxima.id])
+                        estilo = "white-space: nowrap !important; border:1px solid #ccc; color:#666; background:#f8f9fa;"
+
+                # CASO C: Transição normal
                 else:
-                    # Status normais continuam usando a lógica padrão (presumi que você tem essa view 'alterar_status')
                     url = reverse("alterar_status", args=[obj.pk, proxima.id])
-                    html.append(
-                        format_html(
-                            '<a href="{}" style="white-space: nowrap !important;font-size:10px; padding:1px 4px; border:1px solid #ccc; color:#666; text-decoration:none; margin-right:2px;">'
-                            "{}</a>",
-                            url,
-                            proxima.nome,
-                        )
+                    estilo = "white-space: nowrap !important; border:1px solid #ccc; color:#666; background:#fff;"
+
+                # Gerar o atributo JS apenas se necessário
+                js_popup = (
+                    "onclick=\"window.open(this.href, 'popup', 'width=600,height=550,scrollbars=yes'); return false;\""
+                    if abrir_em_popup
+                    else ""
+                )
+
+                html.append(
+                    format_html(
+                        '<a href="{}" {} '
+                        'style="font-size:10px; padding:1px 4px; border-radius:3px; text-decoration:none; margin-right:2px; {}">'
+                        "{}</a>",
+                        url,
+                        mark_safe(js_popup),
+                        estilo,
+                        proxima.nome,
                     )
+                )
+
         return mark_safe(" ".join(html))
 
     acoes_rapidas.short_description = "Ações"

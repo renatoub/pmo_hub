@@ -33,9 +33,41 @@ jobs:
           Stop-Service -Name "$env:SERVICE_NAME" -Force -ErrorAction SilentlyContinue
           Start-Sleep -Seconds 3
 
-  update_code_and_version:
-    name: 2. Git Pull e Incremento de Versão
+  database_sync:
+    name: 2. Sincronizar ou Backup do Banco
     needs: setup_and_stop
+    timeout-minutes: 2
+    runs-on: self-hosted
+    steps:
+      - name: Sync ou Backup
+        shell: powershell
+        working-directory: ${{ env.BASE_PATH }}
+        run: |
+          if ("${{ github.ref_name }}" -eq "dev") {
+              Write-Host "Sincronizando banco da MAIN para DEV..."
+              $source = "${{ env.MAIN_PATH }}\pmo_hub\db.sqlite3"
+              $dest = "pmo_hub\db.sqlite3"
+              if (Test-Path $source) {
+                  Copy-Item -Path $source -Destination $dest -Force
+              } else {
+                  Write-Error "Banco de dados da MAIN não encontrado em $source"
+                  exit 1
+              }
+          } else {
+              Write-Host "Realizando backup de PRODUCAO (MAIN)..."
+              $backupDir = "..\backups"
+              if (!(Test-Path $backupDir)) { New-Item -ItemType Directory -Path $backupDir }
+              
+              # Backup do arquivo físico
+              Copy-Item -Path "pmo_hub\db.sqlite3" -Destination "$backupDir\db_main_${{ needs.setup_and_stop.outputs.backup_date }}.sqlite3" -Force
+              
+              # Dump JSON usando uv
+              # uv run python .\pmo_hub\manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 2 | Out-File -FilePath "$backupDir\dump_main_${{ needs.setup_and_stop.outputs.backup_date }}.json" -Encoding utf8
+          }
+
+  update_code_and_version:
+    name: 3. Git Pull e Incremento de Versão
+    needs: database_sync
     timeout-minutes: 2
     runs-on: self-hosted
     steps:
@@ -95,41 +127,9 @@ jobs:
           git commit -m "chore: bump version [skip ci]"
           git push https://x-access-token:%GH_TOKEN%@github.com/${{ github.repository }}.git ${{ github.ref_name }}
 
-  database_sync:
-    name: 3. Sincronizar ou Backup do Banco
-    needs: [setup_and_stop, update_code_and_version]
-    timeout-minutes: 2
-    runs-on: self-hosted
-    steps:
-      - name: Sync ou Backup
-        shell: powershell
-        working-directory: ${{ env.BASE_PATH }}
-        run: |
-          if ("${{ github.ref_name }}" -eq "dev") {
-              Write-Host "Sincronizando banco da MAIN para DEV..."
-              $source = "${{ env.MAIN_PATH }}\pmo_hub\db.sqlite3"
-              $dest = "pmo_hub\db.sqlite3"
-              if (Test-Path $source) {
-                  Copy-Item -Path $source -Destination $dest -Force
-              } else {
-                  Write-Error "Banco de dados da MAIN não encontrado em $source"
-                  exit 1
-              }
-          } else {
-              Write-Host "Realizando backup de PRODUCAO (MAIN)..."
-              $backupDir = "..\backups"
-              if (!(Test-Path $backupDir)) { New-Item -ItemType Directory -Path $backupDir }
-              
-              # Backup do arquivo físico
-              Copy-Item -Path "pmo_hub\db.sqlite3" -Destination "$backupDir\db_main_${{ needs.setup_and_stop.outputs.backup_date }}.sqlite3" -Force
-              
-              # Dump JSON usando uv
-              uv run python .\pmo_hub\manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 2 | Out-File -FilePath "$backupDir\dump_main_${{ needs.setup_and_stop.outputs.backup_date }}.json" -Encoding utf8
-          }
-
   migrations:
     name: 4. Migrations
-    needs: database_sync
+    needs: update_code_and_version
     timeout-minutes: 2
     runs-on: self-hosted
     steps:

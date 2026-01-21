@@ -202,6 +202,40 @@ def adicionar_pendencia_tarefa_view(request, tarefa_id):
     )
 
 
+def resolver_pendencias_e_alterar_status_view(request, demanda_id, situacao_id):
+    demanda = get_object_or_404(Demanda, pk=demanda_id)
+    nova_situacao = get_object_or_404(Situacao, pk=situacao_id)
+
+    # Busca tarefas que possuem pendência não resolvida
+    tarefas_pendentes = demanda.tarefas.filter(resolvida=False).exclude(pendencia="")
+
+    if request.method == "POST":
+        # resolver_todas = request.POST.get("resolver_pendencias") == "on"
+
+        with transaction.atomic():
+            # if resolver_todas:
+            # Atualiza todas as tarefas pendentes da demanda
+            demanda.tarefas.filter(resolvida=False).update(
+                resolvida=True, pendencia_resolvida_em=timezone.now()
+            )
+
+            # Altera a situação da demanda
+            demanda.situacao = nova_situacao
+            demanda.save(update_fields=["situacao"])
+
+        return render(request, "core/pendencia_form.html", {"msg_sucesso": True})
+
+    return render(
+        request,
+        "core/resolver_pendencias_form.html",
+        {
+            "demanda": demanda,
+            "nova_situacao": nova_situacao,
+            "tarefas_pendentes": tarefas_pendentes,
+        },
+    )
+
+
 def criar_subatividade_view(request, pk):
     pai = get_object_or_404(Demanda, pk=pk)
     url = reverse("admin:core_demanda_add")
