@@ -234,13 +234,13 @@ class DemandaAdmin(SimpleHistoryAdmin):
         # Status seguintes
         if obj.situacao:
             for proxima in obj.situacao.proximas_situacoes.all():
-                url = reverse("alterar_status", args=[obj.pk, proxima.id])
-
                 if proxima.pendente:
+                    # Mudamos a URL aqui para apontar para o nosso formulário de pendências
+                    url = reverse("registrar_pendencia_form", args=[obj.pk, proxima.id])
                     html.append(
                         format_html(
                             '<a href="{}" '
-                            "onclick=\"window.open(this.href, 'popup', 'width=600,height=500,scrollbars=yes,resizable=yes'); return false;\" "
+                            "onclick=\"window.open(this.href, 'popup', 'width=600,height=550,scrollbars=yes'); return false;\" "
                             'style="white-space: nowrap !important;font-size:10px; padding:1px 4px; border:1px solid #ffc107; color:#856404; background:#fff3cd; text-decoration:none; margin-right:2px;">'
                             "{}</a>",
                             url,
@@ -248,6 +248,8 @@ class DemandaAdmin(SimpleHistoryAdmin):
                         )
                     )
                 else:
+                    # Status normais continuam usando a lógica padrão (presumi que você tem essa view 'alterar_status')
+                    url = reverse("alterar_status", args=[obj.pk, proxima.id])
                     html.append(
                         format_html(
                             '<a href="{}" style="white-space: nowrap !important;font-size:10px; padding:1px 4px; border:1px solid #ccc; color:#666; text-decoration:none; margin-right:2px;">'

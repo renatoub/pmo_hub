@@ -61,7 +61,6 @@ class TarefasAdmin(SimpleHistoryAdmin):
                 '<i class="fa-solid fa-pen-to-square" style="color: #ccc;"></i>'
             )
 
-        url_change = reverse("admin:core_tarefas_change", args=[obj.pk])
         url_pending = reverse("adicionar_pendencia_tarefa", args=[obj.pk])
 
         # Se já existir pendência e não estiver resolvida, destaca o ícone
