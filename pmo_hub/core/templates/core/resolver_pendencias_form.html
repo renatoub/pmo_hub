@@ -1,3 +1,21 @@
+<!-- pmo_hub\core\templates\core\resolver_pendencias_form.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Adicionar Pendência</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: sans-serif; padding: 20px; background-color: #f4f7f6; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h2 { color: #333; font-size: 18px; margin-top: 0; }
+        textarea { width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 10px; box-sizing: border-box; }
+        .btn { 
+            background-color: #ffbf00; border: none; color: white; padding: 10px 20px; 
+            border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px; width: 100%;
+        }
+        .success-msg { text-align: center; color: #28a745; }
+    </style>
+</head>
 <body class="p-4">
     <div class="container">
         <h5>Saindo da Pendência: {{ demanda.titulo }}</h5>
