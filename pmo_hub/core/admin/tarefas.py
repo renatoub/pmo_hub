@@ -13,8 +13,10 @@ class TarefasAdmin(SimpleHistoryAdmin):
     list_filter = ("concluida", "criado_em", "demanda__titulo", "responsaveis")
     fields = [
         "demanda",
+        "prioridade",
         "nome",
         "descricao",
+        "horas_estimadas",
         "resolvida",  # <-- Agora ele aparecerá logo após a descrição
         "pendencia",
         "responsabilidade_pendencia",
@@ -25,6 +27,7 @@ class TarefasAdmin(SimpleHistoryAdmin):
     ]
     list_display = (
         "nome",
+        "prioridade",
         "link_demanda",
         "botao_pendencia",
         "concluida",
@@ -41,6 +44,8 @@ class TarefasAdmin(SimpleHistoryAdmin):
         "atualizado_em",
         "concluido_em",
     )
+    # ordering = ["prioridade"]
+    list_editable = ("concluida",)
 
     actions = ["concluir_tarefas_em_massa"]
 

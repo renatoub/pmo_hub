@@ -1,6 +1,7 @@
 # pmo_hub/core/admin/demanda_admin.py
 from datetime import date, datetime, timedelta
 
+from adminsortable2.admin import SortableAdminBase
 from django.contrib import messages
 from django.db.models import Count, Max, Q
 from django.shortcuts import redirect, render
@@ -21,7 +22,7 @@ from .inlines import (
 )
 
 
-class DemandaAdmin(SimpleHistoryAdmin):
+class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
     form = DemandaForm
     inlines = [
         SubitemInline,

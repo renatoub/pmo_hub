@@ -40,3 +40,34 @@
     width: 100% !important;
     min-width: 300px;
 }
+
+/* Força a exibição do ícone de arrastar no Inline */
+.ui-sortable-handle {
+    display: inline-block !important;
+    width: 20px !important;
+    height: 20px !important;
+    background-color: transparent !important;
+    cursor: grab !important;
+    position: relative;
+    top: 3px;
+    margin-right: 5px;
+}
+
+/* Cria visualmente o ícone (três linhas) caso a imagem não carregue */
+.ui-sortable-handle::before {
+    content: "☰"; /* Caractere unicode de menu/lista */
+    color: #888;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Garante que a coluna da prioridade não fique oculta */
+td.field-prioridade {
+    display: table-cell !important;
+    min-width: 30px;
+}
+
+/* Esconde o input numérico original da prioridade (opcional, mas recomendado) */
+td.field-prioridade input {
+    display: none;
+}

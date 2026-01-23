@@ -1,4 +1,7 @@
 # pmo_hub/core/admin/inlines.py
+from adminsortable2.admin import (
+    SortableInlineAdminMixin,  # <--- 1. Importação necessária
+)
 from django.contrib import admin
 from django.urls import reverse
 from django.utils import timezone
@@ -50,12 +53,17 @@ class SubitemInline(admin.TabularInline):
     show_change_link = True
 
 
-class TarefasInline(admin.TabularInline):
+# <--- 2. Adicione o Mixin aqui como o PRIMEIRO argumento
+class TarefasInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Tarefas
     extra = 0
-    fields = ("nome", "responsaveis", "concluida", "edit_tarefas")
+
+    # <--- 3. Adicione 'prioridade' aqui. O plugin o transformará na "alça" de arrastar.
+    fields = ("prioridade", "nome", "responsaveis", "concluida", "edit_tarefas")
+
     # autocomplete_fields = ("responsaveis",)
     readonly_fields = (
+        "prioridade",
         "pendencia",
         "pendencia_data",
         "responsabilidade_pendencia",
@@ -67,7 +75,8 @@ class TarefasInline(admin.TabularInline):
     def get_formset(self, request, obj=None, **kwargs):
         formset = super().get_formset(request, obj, **kwargs)
         # Remove o botão de '+' do campo responsaveis
-        formset.form.base_fields["responsaveis"].widget.can_add_related = False
+        if "responsaveis" in formset.form.base_fields:
+            formset.form.base_fields["responsaveis"].widget.can_add_related = False
         return formset
 
     def edit_tarefas(self, obj):
