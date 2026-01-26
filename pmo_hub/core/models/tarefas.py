@@ -18,7 +18,7 @@ class Tarefas(TimeStampedModel):
     demanda = models.ForeignKey(
         Demanda, on_delete=models.CASCADE, related_name="tarefas"
     )
-    nome = models.TextField(max_length=255)
+    nome = models.TextField(max_length=255, blank=False, null=False, verbose_name="Nome da Tarefa")
     descricao = models.TextField(blank=True, verbose_name="Descrição da Tarefa")
     prioridade = models.PositiveIntegerField(
         default=0, blank=False, null=False, verbose_name="Prioridade"
@@ -51,6 +51,7 @@ class Tarefas(TimeStampedModel):
     concluido_em = models.DateTimeField(
         null=True, blank=True, verbose_name="Data de Conclusão"
     )
+
 
     def save(self, *args, **kwargs):
         # Lógica de Auto-Incremento da Prioridade por Demanda
