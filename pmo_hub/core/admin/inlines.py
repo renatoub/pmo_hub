@@ -64,6 +64,7 @@ class TarefasInline(SortableInlineAdminMixin, admin.TabularInline):
         "prioridade",
         "nome",
         "responsaveis",
+        "horas_estimadas",
         "concluida",
         "edit_tarefas",
     )
