@@ -42,7 +42,7 @@
 }
 
 /* Força a exibição do ícone de arrastar no Inline */
-.ui-sortable-handle {
+.sortable td.original p {
     display: inline-block !important;
     width: 20px !important;
     height: 20px !important;
@@ -54,7 +54,7 @@
 }
 
 /* Cria visualmente o ícone (três linhas) caso a imagem não carregue */
-.ui-sortable-handle::before {
+.sortable td.original p::before {
     content: "☰"; /* Caractere unicode de menu/lista */
     color: #888;
     font-size: 18px;

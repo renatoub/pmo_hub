@@ -32,7 +32,7 @@
     display: none !important;
 }
 
-.ui-sortable-handle {
+.sortable td.original p {
     cursor: move;
     width: 20px !important;
     display: inline-block !important;
