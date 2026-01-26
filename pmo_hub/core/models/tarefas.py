@@ -3,6 +3,7 @@ from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Max
 from simple_history.models import HistoricalRecords
 
 from .base import TimeStampedModel
@@ -19,20 +20,26 @@ class Tarefas(TimeStampedModel):
     )
     nome = models.TextField(max_length=255)
     descricao = models.TextField(blank=True, verbose_name="Descrição da Tarefa")
+    prioridade = models.PositiveIntegerField(
+        default=0, blank=False, null=False, verbose_name="Prioridade"
+    )
+    horas_estimadas = models.PositiveIntegerField(
+        default=0, verbose_name="Horas Estimadas"
+    )
+    resolvida = models.BooleanField(default=False, verbose_name="Pendência Resolvida")
     pendencia = models.TextField(blank=True, verbose_name="Descrição da Pendência")
-    pendencia_data = models.DateTimeField(
-        null=True, blank=True, verbose_name="Data da Pendência"
-    )
-    pendencia_resolvida_em = models.DateTimeField(
-        null=True, blank=True, verbose_name="Data de Resolução da Pendência"
-    )
     responsabilidade_pendencia = models.CharField(
         max_length=10,
         blank=True,
         choices=ResponsabilidadeChoices.choices,
         verbose_name="Responsáveis por concluir a pendência",
     )
-    resolvida = models.BooleanField(default=False, verbose_name="Pendência Resolvida")
+    pendencia_data = models.DateTimeField(
+        null=True, blank=True, verbose_name="Data da Pendência"
+    )
+    pendencia_resolvida_em = models.DateTimeField(
+        null=True, blank=True, verbose_name="Data de Resolução da Pendência"
+    )
     responsaveis = models.ManyToManyField(
         User, blank=True, related_name="tarefas_atribuidas"
     )
@@ -44,11 +51,18 @@ class Tarefas(TimeStampedModel):
     concluido_em = models.DateTimeField(
         null=True, blank=True, verbose_name="Data de Conclusão"
     )
-    horas_estimadas = models.PositiveIntegerField(
-        default=0, verbose_name="Horas Estimadas"
-    )
 
     def save(self, *args, **kwargs):
+        # Lógica de Auto-Incremento da Prioridade por Demanda
+        if not self.prioridade and self.demanda_id:
+            # Busca a maior prioridade existente NAQUELA demanda
+            max_prioridade = Tarefas.objects.filter(demanda=self.demanda).aggregate(
+                Max("prioridade")
+            )["prioridade__max"]
+
+            # Se não houver tarefas, começa em 1, senão soma 1
+            self.prioridade = (max_prioridade or 0) + 1
+
         if self.pk:
             # Busca a versão atual do banco para comparar status
             old_instance = Tarefas.objects.get(pk=self.pk)
@@ -74,6 +88,9 @@ class Tarefas(TimeStampedModel):
     class Meta:
         verbose_name = "Tarefa"
         verbose_name_plural = "Tarefas"
+        ordering = [
+            "prioridade",
+        ]
 
     def __str__(self):
         return self.nome
