@@ -29,22 +29,12 @@
 }
 
 .main-footer {
-    display: block !important;
-    z-index: 1
+    display: none !important;
 }
 
-/* Força a visibilidade e posicionamento do footer */
-body.layout-footer-fixed .main-footer {
-    display: flex !important;
-    z-index: 1035 !important;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    position: fixed;
-    background-color: #fff !important;
-}
-
-/* Garante que o conteúdo não fique escondido atrás do footer fixo */
-body.layout-footer-fixed .content-wrapper {
-    padding-bottom: calc(3.5rem + 1px) !important;
+.ui-sortable-handle {
+    cursor: move;
+    width: 20px !important;
+    display: inline-block !important;
+    background: transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><path d="M0 2h10v2H0zm0 4h10v2H0z" fill="%23999"/></svg>') no-repeat center center;
 }

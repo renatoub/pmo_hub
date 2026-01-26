@@ -1,7 +1,12 @@
 # pmo_hub/core/admin/inlines.py
+from adminsortable2.admin import (
+    SortableInlineAdminMixin,
+)
 from django.contrib import admin
 from django.urls import reverse
 from django.utils import timezone
+from django.forms import Textarea
+from django.db import models
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
@@ -50,24 +55,49 @@ class SubitemInline(admin.TabularInline):
     show_change_link = True
 
 
-class TarefasInline(admin.TabularInline):
+class TarefasInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Tarefas
     extra = 0
-    fields = ("nome", "responsaveis", "concluida", "edit_tarefas")
+    default_order_field = "prioridade"
+
+    fields = (
+        "nome",
+        "responsaveis",
+        "get_priority_display",
+        "horas_estimadas",
+        "concluida",
+        "edit_tarefas",
+    )
+
     # autocomplete_fields = ("responsaveis",)
     readonly_fields = (
-        "pendencia",
-        "pendencia_data",
-        "responsabilidade_pendencia",
-        "pendencia_resolvida_em",
+        # "prioridade",
+        "get_priority_display",
+    #     "pendencia",
+    #     "pendencia_data",
+    #     "responsabilidade_pendencia",
+    #     "pendencia_resolvida_em",
         "edit_tarefas",
     )
     can_delete = False
 
+    formfield_overrides = {
+        # Isso afeta apenas o Django Admin
+        models.TextField: {'widget': Textarea(attrs={'rows': 2, 'style': 'resize:true;'})},
+    }
+
+    
+    def get_priority_display(self, obj):
+        return obj.prioridade
+
+    get_priority_display.short_description = "Prioridade"
+    get_priority_display.admin_order_field = "prioridade"
+
     def get_formset(self, request, obj=None, **kwargs):
         formset = super().get_formset(request, obj, **kwargs)
         # Remove o botão de '+' do campo responsaveis
-        formset.form.base_fields["responsaveis"].widget.can_add_related = False
+        if "responsaveis" in formset.form.base_fields:
+            formset.form.base_fields["responsaveis"].widget.can_add_related = False
         return formset
 
     def edit_tarefas(self, obj):

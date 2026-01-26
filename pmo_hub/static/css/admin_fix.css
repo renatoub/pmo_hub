@@ -1,7 +1,9 @@
 /* Força a cor do texto para branco e fundo azul padrão (ou a cor de sua preferência) */
 .historylink {
-    background-color: #79aec8 !important; /* Azul padrão Django */
-    color: #ffffff !important;           /* Branco */
+    background-color: #79aec8 !important;
+    /* Azul padrão Django */
+    color: #ffffff !important;
+    /* Branco */
     padding: 8px 15px !important;
     border-radius: 4px;
     display: inline-block;
@@ -23,17 +25,17 @@
     font-size: 11px;
     font-weight: 700;
     margin: 2px;
-    text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
     white-space: nowrap;
 }
 
 .btn-no-wrap {
     display: inline-block !important;
     white-space: nowrap !important;
-    font-size:10px;
-    padding:1px 4px;
-    text-decoration:none;
-    margin-right:2px;
+    font-size: 10px;
+    padding: 1px 4px;
+    text-decoration: none;
+    margin-right: 2px;
 }
 
 .select2-container {
@@ -41,3 +43,34 @@
     min-width: 300px;
 }
 
+/* Força a exibição do ícone de arrastar no Inline */
+.sortable td.original p {
+    display: inline-block !important;
+    width: 20px !important;
+    height: 20px !important;
+    background-color: transparent !important;
+    cursor: grab !important;
+    position: relative;
+    top: 3px;
+    margin-right: 5px;
+}
+
+/* Cria visualmente o ícone (três linhas) caso a imagem não carregue */
+.sortable td.original p::before {
+    content: "☰";
+    /* Caractere unicode de menu/lista */
+    color: #888;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Garante que a coluna da prioridade não fique oculta */
+td.field-prioridade {
+    display: table-cell !important;
+    min-width: 30px;
+}
+
+/* Esconde o input numérico original da prioridade (opcional, mas recomendado) */
+td.field-prioridade input {
+    display: none;
+}

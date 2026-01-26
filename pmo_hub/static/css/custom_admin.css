@@ -1,19 +1,25 @@
 /* Força o texto "Histórico" a aparecer centralizado e com contraste */
 .historylink {
-    background-color: #2c5047 !important; /* Cor sólida */
-    color: #ffffff !important;           /* Texto Branco */
-    
+    background-color: #2c5047 !important;
+    /* Cor sólida */
+    color: #ffffff !important;
+    /* Texto Branco */
+
     /* Centralização */
     display: inline-flex !important;
-    justify-content: center !important;  /* Centraliza horizontalmente */
-    align-items: center !important;      /* Centraliza verticalmente */
+    justify-content: center !important;
+    /* Centraliza horizontalmente */
+    align-items: center !important;
+    /* Centraliza verticalmente */
     text-align: center !important;
-    
+
     /* Dimensionamento */
-    min-width: 120px !important;         /* Garante largura mínima para notar a centralização */
-    height: 35px !important;             /* Altura fixa para alinhar ao centro */
+    min-width: 120px !important;
+    /* Garante largura mínima para notar a centralização */
+    height: 35px !important;
+    /* Altura fixa para alinhar ao centro */
     padding: 0 15px !important;
-    
+
     border-radius: 4px !important;
     font-size: 8 !important;
     text-decoration: none !important;
@@ -30,4 +36,11 @@
 
 .main-footer {
     display: none !important;
+}
+
+.sortable td.original p {
+    cursor: move;
+    width: 20px !important;
+    display: inline-block !important;
+    background: transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><path d="M0 2h10v2H0zm0 4h10v2H0z" fill="%23999"/></svg>') no-repeat center center;
 }
