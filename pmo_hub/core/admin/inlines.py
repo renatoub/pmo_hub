@@ -57,13 +57,20 @@ class SubitemInline(admin.TabularInline):
 class TarefasInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Tarefas
     extra = 0
+    default_order_field = "prioridade"
 
     # <--- 3. Adicione 'prioridade' aqui. O plugin o transformará na "alça" de arrastar.
-    fields = ("prioridade", "nome", "responsaveis", "concluida", "edit_tarefas")
+    fields = (
+        "prioridade",
+        "nome",
+        "responsaveis",
+        "concluida",
+        "edit_tarefas",
+    )
 
     # autocomplete_fields = ("responsaveis",)
     readonly_fields = (
-        "prioridade",
+        # "prioridade",
         "pendencia",
         "pendencia_data",
         "responsabilidade_pendencia",

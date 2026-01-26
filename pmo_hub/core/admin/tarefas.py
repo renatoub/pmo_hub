@@ -44,8 +44,13 @@ class TarefasAdmin(SimpleHistoryAdmin):
         "atualizado_em",
         "concluido_em",
     )
-    # ordering = ["prioridade"]
-    list_editable = ("concluida",)
+    ordering = [
+        "demanda",
+        "prioridade",
+    ]
+    list_editable = (
+        "concluida",
+    )
 
     actions = ["concluir_tarefas_em_massa"]
 

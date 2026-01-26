@@ -558,8 +558,37 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         else:
             super().save_formset(request, form, formset, change)
 
-    # class Media:
-    #     css = {"all": ("css/custom_admin.css",)}
+    def change_view(self, request, object_id, form_url="", extra_context=None):
+        extra_context = extra_context or {}
+        # CSS Forçado para corrigir Jazzmin + Sortable
+        extra_context["css_fix_sortable"] = """
+            <style>
+                /* Garante que o container de arrastar tenha tamanho */
+                .ui-sortable-handle {
+                    display: inline-block !important;
+                    width: 20px !important;
+                    height: 20px !important;
+                    background-color: #ddd !important; /* Fundo cinza para teste */
+                    cursor: move !important;
+                    text-align: center;
+                    margin-right: 5px;
+                }
+                /* Adiciona um caractere caso a imagem falhe */
+                .ui-sortable-handle:after {
+                    content: "☰";
+                    color: #333;
+                    font-weight: bold;
+                    line-height: 20px;
+                }
+                /* Garante que a coluna da prioridade seja visível */
+                td.field-prioridade {
+                    white-space: nowrap !important;
+                    min-width: 50px !important;
+                    text-align: left !important;
+                }
+            </style>
+        """
+        return super().change_view(request, object_id, form_url, extra_context)
 
     class Media:
         css = {
@@ -568,3 +597,8 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
                 "css/admin_fix.css",
             )
         }
+
+        js = (
+            # Pequeno hack para garantir que o CSS seja aplicado após o carregamento da página
+            "admin/js/jquery.init.js",
+        )
