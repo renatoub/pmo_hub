@@ -135,7 +135,7 @@ class Demanda(TimeStampedModel):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.tema if self.tema else 'S/T'}: {self.titulo}"
+        return f"{self.titulo} ({self.situacao})"
 
 
 class AnexoDemanda(models.Model):
