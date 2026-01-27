@@ -54,44 +54,59 @@ class Tarefas(TimeStampedModel):
 
 
     def save(self, *args, **kwargs):
-        # Lógica de Auto-Incremento da Prioridade por Demanda
-        if not self.prioridade and self.demanda_id:
-            # Busca a maior prioridade existente NAQUELA demanda
+        # 1. Lógica original de Auto-Incremento para novas tarefas
+        if not self.prioridade and self.demanda_id and not self.concluida:
             max_prioridade = Tarefas.objects.filter(demanda=self.demanda).aggregate(
                 Max("prioridade")
             )["prioridade__max"]
-
-            # Se não houver tarefas, começa em 1, senão soma 1
             self.prioridade = (max_prioridade or 0) + 1
 
+        # 2. Lógica original de timestamps e pendências
         if self.pk:
-            # Busca a versão atual do banco para comparar status
             old_instance = Tarefas.objects.get(pk=self.pk)
-
-            # Se a tarefa foi marcada como concluída AGORA
             if not old_instance.concluida and self.concluida:
                 self.concluido_em = datetime.now()
-
-                # Se havia uma pendência aberta, resolve automaticamente
                 if not self.resolvida:
                     self.resolvida = True
                     self.pendencia_resolvida_em = datetime.now()
 
-            # Caso a pendência seja marcada como resolvida manualmente (sem concluir a tarefa)
             if not old_instance.resolvida and self.resolvida:
                 if not self.pendencia_resolvida_em:
                     self.pendencia_resolvida_em = datetime.now()
 
+        # 3. Se concluída, força prioridade 0 (sai da lista ordenável)
+        if self.concluida:
+            self.prioridade = 0
+
+        # Salva a instância atual
         super().save(*args, **kwargs)
+
+        # 4. CRUCIAL: Dispara reordenação dos irmãos pendentes para tapar buracos
+        if self.demanda_id:
+            self._reordenar_pendentes()
+
+    def _reordenar_pendentes(self):
+        """Recalcula a prioridade de todas as tarefas NÃO concluídas desta demanda"""
+        pendentes = Tarefas.objects.filter(
+            demanda_id=self.demanda_id, 
+            concluida=False
+        ).order_by('prioridade', 'criado_em')
+
+        updates = []
+        for index, tarefa in enumerate(pendentes, start=1):
+            if tarefa.prioridade != index:
+                tarefa.prioridade = index
+                updates.append(tarefa)
+        
+        if updates:
+            Tarefas.objects.bulk_update(updates, ['prioridade'])
 
     history = HistoricalRecords()
 
     class Meta:
         verbose_name = "Tarefa"
         verbose_name_plural = "Tarefas"
-        ordering = [
-            "prioridade",
-        ]
+        ordering = ["prioridade"]
 
     def __str__(self):
         return self.nome

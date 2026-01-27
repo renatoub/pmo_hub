@@ -59,6 +59,8 @@ class TarefasInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Tarefas
     extra = 0
     default_order_field = "prioridade"
+    
+    template = "admin/core/tarefas/tabular_custom.html"
 
     fields = (
         "nome",
@@ -69,25 +71,28 @@ class TarefasInline(SortableInlineAdminMixin, admin.TabularInline):
         "edit_tarefas",
     )
 
-    # autocomplete_fields = ("responsaveis",)
     readonly_fields = (
-        # "prioridade",
         "get_priority_display",
-    #     "pendencia",
-    #     "pendencia_data",
-    #     "responsabilidade_pendencia",
-    #     "pendencia_resolvida_em",
         "edit_tarefas",
     )
     can_delete = False
 
     formfield_overrides = {
-        # Isso afeta apenas o Django Admin
         models.TextField: {'widget': Textarea(attrs={'rows': 2, 'style': 'resize:true;'})},
     }
-
     
+    # LÓGICA DO FILTRO
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Se NÃO tiver o parâmetro show_all_tasks=1, filtra os concluídos fora
+        if request.GET.get('show_all_tasks') != '1':
+            qs = qs.filter(concluida=False)
+        return qs
+
     def get_priority_display(self, obj):
+        # Mostra "-" para itens concluídos (prioridade 0) visualmente
+        if obj.prioridade == 0:
+            return "-"
         return obj.prioridade
 
     get_priority_display.short_description = "Prioridade"

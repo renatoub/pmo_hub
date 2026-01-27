@@ -123,9 +123,38 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "action@github.com"
+          
+          REM --- 1. Commit e Push na branch atual (MAIN ou DEV) ---
           git add pmo_hub/pmo/__init__.py
           git commit -m "chore: bump version [skip ci]"
           git push https://x-access-token:%GH_TOKEN%@github.com/${{ github.repository }}.git ${{ github.ref_name }}
+
+          REM --- 2. Lógica de Sync: Se estivermos na MAIN, atualiza a DEV ---
+          IF "${{ github.ref_name }}" == "main" (
+            echo "::notice::Detectado Deploy na MAIN. Iniciando sincronizacao de versao com a DEV..."
+            
+            REM Garante que temos as referencias da dev
+            git fetch origin dev
+            
+            REM Checkout na dev e pull para garantir que esta atualizado
+            git checkout dev
+            git pull origin dev
+            
+            REM Pega o arquivo __init__.py da MAIN (que ja esta atualizado) e joga na DEV
+            git checkout origin/main pmo_hub/pmo/__init__.py
+            
+            REM Commitar na DEV
+            git add pmo_hub/pmo/__init__.py
+            git commit -m "chore: sync version from main [skip ci]"
+            
+            REM Enviar para remoto
+            git push https://x-access-token:%GH_TOKEN%@github.com/${{ github.repository }}.git dev
+            
+            echo "::notice::Versao sincronizada com sucesso na branch DEV."
+            
+            REM Voltar para main para nao quebrar passos subsequentes se houver
+            git checkout main
+          )
 
   migrations:
     name: 4. Migrations
@@ -135,7 +164,9 @@ jobs:
     steps:
       - shell: cmd
         working-directory: ${{ env.BASE_PATH }}
-        run: uv run python pmo_hub\manage.py migrate --noinput
+        run:
+          uv run python pmo_hub\manage.py migrate --noinput
+          uv run python pmo_hub\manage.py collectstatic --clear --noinput
 
   restart:
     name: 5. Iniciar Serviço
