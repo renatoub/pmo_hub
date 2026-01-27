@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html, mark_safe
 
-from .forms import RotuloForm, SituacaoForm
+from .forms import RotuloForm, SituacaoForm, TemaForm
 
 
 class AuxiliarAdmin(admin.ModelAdmin):
@@ -57,6 +57,22 @@ class AnexoDemandaAdmin(admin.ModelAdmin):
 
     baixar.short_description = "Baixar"
 
+class TemasAdmin(admin.ModelAdmin):
+    form = TemaForm
+    list_display = ("nome", "exibir_cor")
+    search_fields = ["nome"]
+
+    def exibir_cor(self, obj):
+        if obj.cor_hex:
+            return format_html(
+                '<div style="width: 30px; height: 20px; background-color: {}; border-radius: 4px; border: 1px solid #000;"></div>',
+                obj.cor_hex,
+            )
+        return mark_safe(
+            '<div style="width: 30px; height: 20px; background-color: #eee; border: 1px dashed #ccc;"></div>'
+        )
+
+    exibir_cor.short_description = "Cor"
 
 class RotulosAdmin(admin.ModelAdmin):
     form = RotuloForm

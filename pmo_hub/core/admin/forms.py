@@ -3,7 +3,7 @@ from django import forms
 from django.contrib import admin
 from django.forms.widgets import FileInput
 
-from ..models import AnexoDemanda, Demanda, Rotulos, Situacao, Tarefas
+from ..models import AnexoDemanda, Demanda, Rotulos, Situacao, Tarefas, Tema
 
 
 class MultipleFileInput(FileInput):
@@ -33,6 +33,16 @@ class SituacaoForm(forms.ModelForm):
 class RotuloForm(forms.ModelForm):
     class Meta:
         model = Rotulos
+        fields = "__all__"
+        widgets = {
+            "cor_hex": forms.TextInput(
+                attrs={"type": "color", "style": "height: 40px; width: 60px;"}
+            )
+        }
+
+class TemaForm(forms.ModelForm):
+    class Meta:
+        model = Tema
         fields = "__all__"
         widgets = {
             "cor_hex": forms.TextInput(
