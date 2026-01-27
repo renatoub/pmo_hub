@@ -31,7 +31,6 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
     ]
     list_display = (
         "titulo",
-        "tema",
         "exibir_temas",
         "status_tag",
         "status_prazo_tag",
