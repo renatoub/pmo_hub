@@ -21,21 +21,6 @@ html.format_html = patched_format_html
 DEBUG = True
 ENVIRONMENT = os.getenv("BRANCH", "localhost")
 
-ENVIRONMENT_NAME = (
-    "Desenvolvimento"
-    if ENVIRONMENT == "dev"
-    else "Localhost"
-    if ENVIRONMENT == "localhost"
-    else None
-)
-ENVIRONMENT_COLOR = (
-    "#28a745"
-    if ENVIRONMENT == "dev"
-    else "#17a2b8"
-    if ENVIRONMENT == "localhost"
-    else None
-)
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = "/media/"
@@ -198,22 +183,18 @@ JAZZMIN_UI_TWEAKS = {
     "footer_small_text": True,
     "body_small_text": False,
     "brand_small_text": True,
-    "brand_colour": "navbar-white",
     "accent": "accent-primary",
-    "navbar": "navbar-white navbar-light",
     "no_navbar_border": True,
     "navbar_fixed": True,
     "layout_boxed": False,
     "footer_fixed": True,
     "sidebar_fixed": True,
-    "sidebar": "sidebar-light-info",
     "sidebar_nav_small_text": True,
     "sidebar_disable_expand": False,
     "sidebar_nav_child_indent": True,
     "sidebar_nav_compact_style": True,
     "sidebar_nav_legacy_style": False,
     "sidebar_nav_flat_style": True,
-    "theme": "simplex",
     "dark_mode_theme": False,
     "button_classes": {
         "primary": "btn-primary",
@@ -226,3 +207,19 @@ JAZZMIN_UI_TWEAKS = {
     "theme_cls": "flatly",
     "actions_sticky_top": False,
 }
+
+if ENVIRONMENT == "localhost":
+    JAZZMIN_UI_TWEAKS["navbar"] = "navbar-red navbar-light"
+    JAZZMIN_UI_TWEAKS["sidebar"] = "sidebar-red-info"
+    JAZZMIN_UI_TWEAKS["theme"] = "slate"
+    JAZZMIN_UI_TWEAKS["brand_colour"] = "navbar-black"
+elif ENVIRONMENT == "dev":
+    JAZZMIN_UI_TWEAKS["navbar"] = "navbar-yellow navbar-light"
+    JAZZMIN_UI_TWEAKS["sidebar"] = "sidebar-yellow-info"
+    JAZZMIN_UI_TWEAKS["theme"] = "slate"
+    JAZZMIN_UI_TWEAKS["brand_colour"] = "navbar-black"
+else:
+    JAZZMIN_UI_TWEAKS["navbar"] = "navbar-white navbar-light"
+    JAZZMIN_UI_TWEAKS["sidebar"] = "sidebar-light-info"
+    JAZZMIN_UI_TWEAKS["theme"] = "simplex"
+    JAZZMIN_UI_TWEAKS["brand_colour"] = "navbar-white"

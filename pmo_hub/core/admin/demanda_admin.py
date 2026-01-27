@@ -31,7 +31,7 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
     ]
     list_display = (
         "titulo",
-        "tema",
+        "exibir_temas",
         "status_tag",
         "status_prazo_tag",
         "responsavel",
@@ -56,7 +56,7 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
                 "fields": (
                     "titulo",
                     "parent",
-                    "tema",
+                    "temas",
                     "tipo",
                     "situacao",
                     "pmo",
@@ -93,6 +93,20 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
 
     def get_queryset(self, request):
         return super().get_queryset(request).prefetch_related("rotulos")
+
+    def exibir_temas(self, obj):
+        temas_html = []
+        for tema in obj.temas.all():
+            temas_html.append(
+                format_html(
+                    '<span class="tag-rotulo" style="background-color: {};">{}</span>',
+                    tema.cor_hex,
+                    tema.nome
+                )
+            )
+        return mark_safe("".join(temas_html)) if temas_html else "-"
+    
+    exibir_temas.short_description = "Temas"
 
     def exibir_rotulos(self, obj):
         tags_html = []

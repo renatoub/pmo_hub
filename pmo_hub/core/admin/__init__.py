@@ -21,6 +21,7 @@ from .auxiliares import (
     ContatoAdmin,
     RotulosAdmin,
     SituacaoAdmin,
+    TemasAdmin,
 )
 from .demanda_admin import DemandaAdmin
 from .tarefas import TarefasAdmin
@@ -34,7 +35,7 @@ admin.site.register(Contato, ContatoAdmin)
 admin.site.register(AnexoDemanda, AnexoDemandaAdmin)
 
 # Modelos Auxiliares
-admin.site.register(Tema, AuxiliarAdmin)
+admin.site.register(Tema, TemasAdmin)
 admin.site.register(TipoAtividade, AuxiliarAdmin)
 admin.site.register(Riscos, AuxiliarAdmin)
 admin.site.register(ResultadosEsperados, AuxiliarAdmin)
