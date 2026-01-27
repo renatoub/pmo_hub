@@ -59,6 +59,7 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
                     "tema",
                     "tipo",
                     "situacao",
+                    "pmo",
                     "rotulos",
                 )
             },
