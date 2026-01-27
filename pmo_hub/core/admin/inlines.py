@@ -1,10 +1,12 @@
 # pmo_hub/core/admin/inlines.py
 from adminsortable2.admin import (
-    SortableInlineAdminMixin,  # <--- 1. Importação necessária
+    SortableInlineAdminMixin,
 )
 from django.contrib import admin
 from django.urls import reverse
 from django.utils import timezone
+from django.forms import Textarea
+from django.db import models
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
@@ -53,32 +55,48 @@ class SubitemInline(admin.TabularInline):
     show_change_link = True
 
 
-# <--- 2. Adicione o Mixin aqui como o PRIMEIRO argumento
 class TarefasInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Tarefas
     extra = 0
     default_order_field = "prioridade"
+    
+    template = "admin/core/tarefas/tabular_custom.html"
 
-    # <--- 3. Adicione 'prioridade' aqui. O plugin o transformará na "alça" de arrastar.
     fields = (
-        "prioridade",
         "nome",
         "responsaveis",
+        "get_priority_display",
         "horas_estimadas",
         "concluida",
         "edit_tarefas",
     )
 
-    # autocomplete_fields = ("responsaveis",)
     readonly_fields = (
-        # "prioridade",
-        "pendencia",
-        "pendencia_data",
-        "responsabilidade_pendencia",
-        "pendencia_resolvida_em",
+        "get_priority_display",
         "edit_tarefas",
     )
     can_delete = False
+
+    formfield_overrides = {
+        models.TextField: {'widget': Textarea(attrs={'rows': 2, 'style': 'resize:true;'})},
+    }
+    
+    # LÓGICA DO FILTRO
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Se NÃO tiver o parâmetro show_all_tasks=1, filtra os concluídos fora
+        if request.GET.get('show_all_tasks') != '1':
+            qs = qs.filter(concluida=False)
+        return qs
+
+    def get_priority_display(self, obj):
+        # Mostra "-" para itens concluídos (prioridade 0) visualmente
+        if obj.prioridade == 0:
+            return "-"
+        return obj.prioridade
+
+    get_priority_display.short_description = "Prioridade"
+    get_priority_display.admin_order_field = "prioridade"
 
     def get_formset(self, request, obj=None, **kwargs):
         formset = super().get_formset(request, obj, **kwargs)

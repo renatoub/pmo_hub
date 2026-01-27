@@ -135,7 +135,9 @@ jobs:
     steps:
       - shell: cmd
         working-directory: ${{ env.BASE_PATH }}
-        run: uv run python pmo_hub\manage.py migrate --noinput
+        run:
+          uv run python pmo_hub\manage.py migrate --noinput
+          uv run python pmo_hub\manage.py collectstatic --clear --noinput
 
   restart:
     name: 5. Iniciar Serviço
