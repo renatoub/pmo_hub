@@ -164,7 +164,7 @@ jobs:
     steps:
       - shell: cmd
         working-directory: ${{ env.BASE_PATH }}
-        run:
+        run: |
           uv run python pmo_hub\manage.py migrate --noinput
           uv run python pmo_hub\manage.py collectstatic --clear --noinput
 
