@@ -13,11 +13,11 @@ class TarefasAdmin(SimpleHistoryAdmin):
     list_filter = ("concluida", "criado_em", "demanda__titulo", "responsaveis")
     fields = [
         "demanda",
-        "prioridade",
         "nome",
         "descricao",
         "horas_estimadas",
-        "resolvida",  # <-- Agora ele aparecerá logo após a descrição
+        "prioridade",
+        "resolvida_pendencia",
         "pendencia",
         "responsabilidade_pendencia",
         "pendencia_data",
@@ -37,7 +37,9 @@ class TarefasAdmin(SimpleHistoryAdmin):
     )
     readonly_fields = (
         "pendencia",
+        "prioridade",
         "pendencia_data",
+        "resolvida_pendencia",
         "pendencia_resolvida_em",
         "responsabilidade_pendencia",
         "criado_em",
@@ -53,6 +55,11 @@ class TarefasAdmin(SimpleHistoryAdmin):
     )
 
     actions = ["concluir_tarefas_em_massa"]
+
+    def resolvida_pendencia(self, obj):
+        return obj.resolvida if obj.pendencia else None
+
+    resolvida_pendencia.short_description = "Resolvida"
 
     def get_readonly_fields(self, request, obj=None):
         # 1. Transformamos em lista e garantimos o tipo genérico list[str]
