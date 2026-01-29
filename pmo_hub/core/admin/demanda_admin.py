@@ -1,9 +1,12 @@
 # pmo_hub/core/admin/demanda_admin.py
+
+import random
 from datetime import date, datetime, timedelta
 
 from adminsortable2.admin import SortableAdminBase
 from django.contrib import messages
-from django.db.models import Count, Max, Q
+from django.contrib.auth.models import User
+from django.db.models import Count, Max, Prefetch, Q
 from django.shortcuts import redirect, render
 from django.template.response import TemplateResponse
 from django.urls import path, reverse
@@ -12,8 +15,7 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from simple_history.admin import SimpleHistoryAdmin
 
-from ..models import AnexoDemanda, Demanda, Pendencia, Situacao, Tema
-from ..models.demanda import Demanda
+from ..models import AnexoDemanda, Demanda, Pendencia, Situacao, Tarefas, Tema
 from .forms import DemandaForm
 from .inlines import (
     AnexoDemandaInline,
@@ -31,21 +33,21 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
     ]
     list_display = (
         "titulo",
-        "exibir_temas",
+        "exibir_tema",
         "status_tag",
         "status_prazo_tag",
-        "responsavel",
+        "get_responsaveis",
         "acoes_rapidas",
         "exibir_rotulos",
         "progresso_total",
         "tarefas",
         "data_prazo",
     )
-    list_filter = ("tema", "situacao", "responsavel")
+    list_filter = ("tema", "situacao", "responsavel", "rotulos")
     filter_horizontal = ("solicitantes",)
     search_fields = ("titulo", "descricao")
     autocomplete_fields = ["parent", "responsavel", "solicitantes", "rotulos"]
-    readonly_fields = ["data_fechamento", "situacao"]
+    readonly_fields = ["data_fechamento", "get_responsaveis", "situacao"]
     actions = ["definir_situacao_em_massa"]
     save_on_top = True
 
@@ -56,7 +58,7 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
                 "fields": (
                     "titulo",
                     "parent",
-                    "temas",
+                    "tema",
                     "tipo",
                     "situacao",
                     "pmo",
@@ -64,7 +66,7 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
                 )
             },
         ),
-        ("Pessoas", {"fields": ("responsavel", "solicitantes")}),
+        ("Pessoas", {"fields": ("get_responsaveis", "solicitantes")}),
         (
             "Detalhes",
             {
@@ -92,21 +94,101 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
     tarefas.short_description = "Tarefas"
 
     def get_queryset(self, request):
-        return super().get_queryset(request).prefetch_related("rotulos")
+        # 1. Carrega o queryset base
+        qs = super().get_queryset(request)
 
-    def exibir_temas(self, obj):
-        temas_html = []
-        for tema in obj.temas.all():
-            temas_html.append(
+        # 2. Otimiza chaves estrangeiras diretas da Demanda
+        qs = qs.select_related("tema", "situacao", "responsavel")
+
+        # 3. Otimiza ManyToMany e Relações Reversas (Rótulos e Tarefas)
+        return qs.prefetch_related(
+            "rotulos",
+            Prefetch(
+                "tarefas",
+                queryset=Tarefas.objects.prefetch_related(
+                    Prefetch(
+                        "responsaveis",
+                        queryset=User.objects.only("first_name", "username"),
+                    )
+                ),
+            ),
+        )
+
+    def get_responsaveis(self, obj):
+        """
+        Exibe os responsáveis de todas as tarefas associadas a esta demanda.
+        Usa set comprehension para não repetir nomes.
+        """
+        cores_hex = [
+            "#e74c3c",
+            "#27ae60",
+            "#2980b9",
+            "#8e44ad",
+            "#f39c12",
+            "#d35400",
+            "#16a085",
+            "#2c3e50",
+            "#c0392b",
+            "#27ae60",
+            "#34495e",
+        ]
+        responsaveis = []
+        for t in obj.tarefas.all():
+            for r in t.responsaveis.all():
+                if r.first_name in responsaveis or r.username in responsaveis:
+                    continue
+                else:
+                    responsaveis.append(r.first_name or r.username)
+
+        responsaveis_html = []
+        for resp in responsaveis:
+            responsaveis_html.append(
                 format_html(
                     '<span class="tag-rotulo" style="background-color: {};">{}</span>',
-                    tema.cor_hex,
-                    tema.nome
+                    random.choice(cores_hex),
+                    resp,
                 )
             )
-        return mark_safe("".join(temas_html)) if temas_html else "-"
-    
-    exibir_temas.short_description = "Temas"
+
+        # nomes = {
+        #     u.first_name or u.username
+        #     for t in obj.tarefas.all()
+        #     for u in t.responsaveis.all()
+        # }
+
+        if not responsaveis_html:
+            return "-"
+
+        # Retorna os nomes em ordem alfabética separados por vírgula
+        return mark_safe(" ".join(sorted(responsaveis_html)))
+
+    get_responsaveis.short_description = "Responsáveis das Tarefas"
+
+    def exibir_tema(self, obj):
+        if obj.tema:
+            return format_html(
+                '<span class="tag-rotulo" style="background-color: {};">{}</span>',
+                obj.tema.cor_hex,
+                obj.tema.nome,
+            )
+        return "-"
+
+    exibir_tema.short_description = "Tema"
+    exibir_tema.admin_order_field = "tema__nome"
+
+    # def exibir_temas(self, obj):
+    #     temas_html = []
+    #     for tema in obj.temas.all():
+    #         temas_html.append(
+    #             format_html(
+    #                 '<span class="tag-rotulo" style="background-color: {};">{}</span>',
+    #                 tema.cor_hex,
+    #                 tema.nome,
+    #             )
+    #         )
+    #     return mark_safe("".join(temas_html)) if temas_html else "-"
+
+    # exibir_temas.short_description = "Temas"
 
     def exibir_rotulos(self, obj):
         tags_html = []

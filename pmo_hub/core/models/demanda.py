@@ -34,8 +34,10 @@ class Demanda(TimeStampedModel):
         "Rotulos", blank=True, verbose_name="Rótulos", related_name="demandas"
     )
     tema = models.ForeignKey(Tema, on_delete=models.SET_NULL, null=True, blank=True)
-    temas = models.ManyToManyField(Tema, related_name='temas')
-    pmo = models.BooleanField(blank=False, null= False, default=False, verbose_name="Tela PMO")
+    # temas = models.ManyToManyField(Tema, related_name='temas')
+    pmo = models.BooleanField(
+        blank=False, null=False, default=False, verbose_name="Tela PMO"
+    )
     tipo = models.ForeignKey(
         TipoAtividade, on_delete=models.SET_NULL, null=True, blank=True
     )
