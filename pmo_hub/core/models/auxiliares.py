@@ -48,13 +48,17 @@ class Situacao(models.Model):
         verbose_name="Padrão",
     )
     pendente = models.BooleanField(
-        default=False, help_text="Representa estado 'pendente'"
+        default=False, help_text="Representa o bucket 'pendente'"
     )
     proximas_situacoes = models.ManyToManyField(
         "self", symmetrical=False, blank=True, verbose_name="Buckets seguintes"
     )
     fechado = models.BooleanField(
-        default=False, help_text="Indica se é um estado final (fechado)"
+        default=False, verbose_name="Fechado", help_text="Indica se é um o bucket final (fechado)"
+    )
+    execucao = models.BooleanField(
+        default=False,
+        verbose_name="Indica qual o bucket de execução"
     )
 
     class Meta:

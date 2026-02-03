@@ -6,6 +6,8 @@ from django.urls import path, reverse
 from django.utils import timezone
 from django.utils.html import format_html, mark_safe
 from simple_history.admin import SimpleHistoryAdmin
+from datetime import timedelta
+from ..models import Tarefas
 
 
 class TarefasAdmin(SimpleHistoryAdmin):
@@ -23,6 +25,7 @@ class TarefasAdmin(SimpleHistoryAdmin):
         "pendencia_data",
         "pendencia_resolvida_em",
         "concluida",
+        "exibir_previsao",
         "concluido_em",
     ]
     list_display = (
@@ -33,6 +36,7 @@ class TarefasAdmin(SimpleHistoryAdmin):
         "concluida",
         "resolvida",
         "criado_em",
+        "exibir_previsao",
         "concluido_em",
     )
     readonly_fields = (
@@ -44,6 +48,7 @@ class TarefasAdmin(SimpleHistoryAdmin):
         "responsabilidade_pendencia",
         "criado_em",
         "atualizado_em",
+        "exibir_previsao",
         "concluido_em",
     )
     ordering = [
@@ -55,6 +60,10 @@ class TarefasAdmin(SimpleHistoryAdmin):
     )
 
     actions = ["concluir_tarefas_em_massa"]
+
+    def exibir_previsao(self, obj):
+        return obj.get_previsao_entrega()
+    exibir_previsao.short_description = "Previsão de Entrega"
 
     def resolvida_pendencia(self, obj):
         return obj.resolvida if obj.pendencia else None

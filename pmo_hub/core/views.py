@@ -2,14 +2,14 @@
 from datetime import datetime, timedelta
 
 from django.db import transaction
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 
 from .forms import UploadForm
-from .models import AnexoDemanda, Demanda, Pendencia, Situacao, Tarefas
+from .models import AnexoDemanda, Demanda, Pendencia, Situacao, Tarefas, Tema
 
 
 def upload_arquivos(request, demanda_id=None):
@@ -308,3 +308,67 @@ def gantt_data(request):
 
 def gantt_view(request):
     return render(request, "core/gantt.html")
+
+
+def relatorio_demandas_semanal(request):
+    # 1. Filtro de Semana (Padrão: hoje)
+    referencia = request.GET.get("semana", timezone.now().date().isoformat())
+    data_ref = timezone.datetime.strptime(referencia, "%Y-%m-%d").date()
+
+    # Cálculos de Datas
+    inicio_passada = data_ref - timedelta(days=data_ref.weekday() + 7)
+    fim_passada = inicio_passada + timedelta(days=6)
+    data_passada = inicio_passada.strftime("%Y-%m-%d")
+
+    inicio_proxima = data_ref + timedelta(days=(7 - data_ref.weekday()))
+    fim_proxima = inicio_proxima + timedelta(days=6)
+    data_proxima = inicio_proxima.strftime("%Y-%m-%d")
+
+    # 2. Busca os dados
+    temas = Tema.objects.all()
+    tarefas = Tarefas.objects.all()
+    dados_agrupados = []
+
+    for tema in temas:
+        # Demandas concluídas na semana passada
+        concluidas = Demanda.objects.filter(
+            (Q(situacao__fechado=True) | Q(situacao__nome="Concluído")),
+            tema=tema,
+            data_fechamento__range=[inicio_proxima, fim_proxima],
+        )
+
+        # Demandas a concluir na próxima semana
+        a_concluir = Demanda.objects.filter(
+            tema=tema,
+            situacao__fechado=False,
+            situacao__padrao=False,
+            data_prazo__range=[inicio_proxima, fim_proxima],
+        )
+
+        # Cruzamento para gerar as linhas colunares
+        # Usamos zip_longest para lidar com quantidades diferentes de demandas
+        from itertools import zip_longest
+
+        linhas = zip_longest(concluidas, a_concluir)
+
+        for conc, prox in linhas:
+            dados_agrupados.append(
+                {
+                    "tema": tema.nome,
+                    "conc_nome": f"{conc.titulo}\n" if conc else "-",
+                    "conc_data": conc.data_fechamento if conc else "-",
+                    "prox_nome": prox.titulo if prox else "-",
+                    "prox_data": prox.data_prazo if prox else "-",
+                }
+            )
+
+    context = {
+        "relatorio": dados_agrupados,
+        "data_ref": referencia,
+        "data_proxima": data_proxima,
+        "data_passada": data_passada,
+        "periodo_passado": f"{inicio_passada} a {fim_passada}",
+        "periodo_proximo": f"{inicio_proxima} a {fim_proxima}",
+    }
+
+    return render(request, "core/relatorio_semanal.html", context)

@@ -6,6 +6,7 @@ from core.views import (
     gantt_data,
     gantt_view,
     registrar_pendencia_view,
+    relatorio_demandas_semanal,
     resolver_pendencias_e_alterar_status_view,
 )
 from django.conf import settings
@@ -39,15 +40,19 @@ urlpatterns = [
     path(
         "acoes/nova-sub/<int:pk>/", criar_subatividade_view, name="criar_subatividade"
     ),
-    # path("gantt-data/", gantt_data, name="gantt_data_json"),
     path("admin/core/demanda/gantt-data/", gantt_data, name="gantt_data_json"),
+    path("admin/core/demanda/pmo-data/", relatorio_demandas_semanal, name="pmo_data_json"),
     path("gantt/", gantt_view, name="gantt_view"),
     path("admin/", admin.site.urls),
     path(
         "",
         RedirectView.as_view(url="admin/", permanent=False),
     ),
-    # path("", dashboard_view, name="dashboard"),
+    path(
+        "pmo-panel/",
+        relatorio_demandas_semanal,
+        name="pmo_panel",
+    ),
 ]
 
 if settings.DEBUG:

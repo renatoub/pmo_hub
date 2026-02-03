@@ -17,6 +17,7 @@ from simple_history.admin import SimpleHistoryAdmin
 
 from ..models import AnexoDemanda, Demanda, Pendencia, Situacao, Tarefas, Tema
 from .forms import DemandaForm
+
 from .inlines import (
     AnexoDemandaInline,
     SubitemInline,
@@ -32,7 +33,7 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         TarefasInline,
     ]
     list_display = (
-        "titulo",
+        "titulo_expansivel",
         "exibir_tema",
         "status_tag",
         "status_prazo_tag",
@@ -41,13 +42,14 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         "exibir_rotulos",
         "progresso_total",
         "tarefas",
+        "get_prazo_final",
         "data_prazo",
     )
     list_filter = ("tema", "situacao", "responsavel", "rotulos")
     filter_horizontal = ("solicitantes",)
     search_fields = ("titulo", "descricao")
     autocomplete_fields = ["parent", "responsavel", "solicitantes", "rotulos"]
-    readonly_fields = ["data_fechamento", "get_responsaveis", "situacao"]
+    readonly_fields = ["data_fechamento", "get_responsaveis", "situacao", "get_prazo_final"]
     actions = ["definir_situacao_em_massa"]
     save_on_top = True
 
@@ -83,8 +85,22 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
                 )
             },
         ),
-        ("Datas", {"fields": ("data_inicio", "data_prazo", "data_fechamento")}),
+        ("Datas", {"fields": ("data_inicio", "data_prazo", "get_prazo_final", "data_fechamento")}),
     )
+
+    def titulo_expansivel(self, obj):
+        return format_html(
+            '<div class="wrapper-demanda">'
+                '<strong>{}</strong> '
+                '<a href="javascript:void(0)" class="toggle-desc" style="cursor:pointer; margin-left:8px;">➕</a>'
+                '<div class="desc-content" style="display:none; margin-top:10px; color:#666; font-style:italic; max-width:400px;">'
+                    '{}'
+                '</div>'
+            '</div>',
+            obj.titulo,
+            obj.descricao or "Sem descrição disponível."
+        )
+    titulo_expansivel.short_description = 'Demanda'
 
     def tarefas(self, obj):
         total = obj.tarefas.count()
@@ -92,6 +108,23 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         return f"{concluidas}/{total}" if total else "-"
 
     tarefas.short_description = "Tarefas"
+
+    def get_prazo_final(self, obj):
+        # 1. Pegamos a última tarefa pendente (a de maior prioridade)
+        ultima_tarefa = obj.tarefas.filter(concluida=False).order_by('-prioridade').first()
+        
+        if ultima_tarefa:
+            # 2. Chamamos o método de cálculo que já criamos no model de Tarefas
+            return ultima_tarefa.get_previsao_entrega()
+        
+        # Se todas estiverem concluídas, você pode mostrar a data da última concluída
+        ultima_concluida = obj.tarefas.filter(concluida=True).order_by('-concluido_em').first()
+        if ultima_concluida and ultima_concluida.concluido_em:
+            return f"Finalizado em {ultima_concluida.concluido_em.strftime('%d/%m/%Y')}"
+            
+        return "Sem tarefas pendentes"
+
+    get_prazo_final.short_description = "Prazo Estimado da Demanda"
 
     def get_queryset(self, request):
         # 1. Carrega o queryset base
@@ -315,17 +348,17 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         )
 
         # 2. Botão Assumir
-        if obj.responsavel_id != id_do_usuario:
-            assumir_url = reverse(
-                f"admin:{obj._meta.app_label}_{obj._meta.model_name}_assumir",
-                args=[obj.pk],
-            )
-            html.append(
-                format_html(
-                    '<a class="btn" href="{}" style="background:#28a745; display: inline-block; color:white; padding:2px 5px; font-size:10px; margin-right:3px; border-radius:3px; text-decoration:none;">Assumir</a>',
-                    assumir_url,
-                )
-            )
+        # if obj.responsavel_id != id_do_usuario:
+        #     assumir_url = reverse(
+        #         f"admin:{obj._meta.app_label}_{obj._meta.model_name}_assumir",
+        #         args=[obj.pk],
+        #     )
+        #     html.append(
+        #         format_html(
+        #             '<a class="btn" href="{}" style="background:#28a745; display: inline-block; color:white; padding:2px 5px; font-size:10px; margin-right:3px; border-radius:3px; text-decoration:none;">Assumir</a>',
+        #             assumir_url,
+        #         )
+        #     )
 
         # 3. Lógica de Transição
         situacao_atual_pendente = obj.situacao.pendente if obj.situacao else False
@@ -408,11 +441,6 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
                 self.admin_site.admin_view(self.pmo_view),
                 name="core_demanda_pmo",
             ),
-            # path(
-            #     "gantt-data/",
-            #     self.admin_site.admin_view(self.get_gantt_data),
-            #     name="demanda-gantt-data",
-            # ),
             path(
                 "gantt-view/",
                 self.admin_site.admin_view(self.gantt_view),
@@ -482,7 +510,7 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         }
         return TemplateResponse(request, "admin/core/dashboard_pmo.html", context)
 
-    # def get_gantt_data(self, request):
+    # def gantt(self, request):
     #     # Filtra demandas que possuem data de início e prazo
     #     queryset = Demanda.objects.exclude(
     #         data_prazo__isnull=True
@@ -698,4 +726,5 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         js = (
             # Pequeno hack para garantir que o CSS seja aplicado após o carregamento da página
             "admin/js/jquery.init.js",
+            "js/toggle_demanda.js"
         )

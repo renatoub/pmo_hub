@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <title>Evolução semanal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+    <form id="filtro-semana" method="GET" style="margin-bottom: 20px;">
+        <label>Selecione a data de referência:</label>
+
+        <button type="button"
+            onclick="document.getElementById('input-data').value='{{ data_passada }}'; this.form.submit();"
+            class="px-2 py-1 bg-gray-200 rounded">
+            << </button>
+
+                <input type="date" id="input-data" name="semana" value="{{ data_ref }}" onchange="this.form.submit()">
+
+                <button type="button"
+                    onclick="document.getElementById('input-data').value='{{ data_proxima }}'; this.form.submit();"
+                    class="px-2 py-1 bg-gray-200 rounded">
+                    >>
+                </button>
+    </form>
+    <div style="margin-bottom: 10px;">
+        <strong>Semana Passada (Concluídas):</strong> {{ periodo_passado }} <br>
+        <strong>Próxima Semana (A Concluir):</strong> {{ periodo_proximo }}
+    </div>
+
+    <table border="1" cellpadding="10" style="width:100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background-color: #f2f2f2;">
+                <th>Tema</th>
+                <th>Demanda Concluída</th>
+                <th>Data Conclusão</th>
+                <th>Demanda Próxima a Concluir</th>
+                <th>Data Prevista</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for linha in relatorio %}
+            <tr>
+                <td>{{ linha.tema }}</td>
+                <td>{{ linha.conc_nome }}</td>
+                <td>{{ linha.conc_data }}</td>
+                <td>{{ linha.prox_nome }}</td>
+                <td>{{ linha.prox_data }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Nenhum dado encontrado para este período.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>

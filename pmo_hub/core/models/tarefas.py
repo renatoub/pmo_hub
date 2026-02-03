@@ -1,16 +1,20 @@
 # pmo_hub/core/models/tarefas.py
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Max
+from django.utils import timezone
 from simple_history.models import HistoricalRecords
+from django.template.defaultfilters import date as django_date_filter
 
 from .base import TimeStampedModel
 from .demanda import Demanda
 
 
 class Tarefas(TimeStampedModel):
+    CARGA_HORARIA_DIARIA = 8
+
     class ResponsabilidadeChoices(models.TextChoices):
         INTERNO = "Interno", "Interno"
         EXTERNO = "Externo", "Externo"
@@ -84,6 +88,44 @@ class Tarefas(TimeStampedModel):
         # 4. CRUCIAL: Dispara reordenação dos irmãos pendentes para tapar buracos
         if self.demanda_id:
             self._reordenar_pendentes()
+
+    def get_previsao_entrega(self):
+        if self.concluida:
+            return django_date_filter(self.concluido_em, "d \d\e F \d\e Y") if self.concluido_em else "Concluída"
+
+        # if Tarefas.objects.prefetch_related("Demanda")
+
+        tarefas_irmas = Tarefas.objects.filter(
+            demanda_id=self.demanda_id, 
+            concluida=False
+        ).order_by('prioridade', 'criado_em')
+
+        data_cursor = timezone.now()
+        horas_disponiveis_hoje = self.CARGA_HORARIA_DIARIA
+
+        for tarefa in tarefas_irmas:
+            while data_cursor.weekday() >= 5:
+                data_cursor += timedelta(days=1)
+                horas_disponiveis_hoje = self.CARGA_HORARIA_DIARIA
+
+            horas_restantes_tarefa = tarefa.horas_estimadas
+
+            while horas_restantes_tarefa > 0:
+                if horas_disponiveis_hoje <= 0:
+                    data_cursor += timedelta(days=1)
+                    while data_cursor.weekday() >= 5:
+                        data_cursor += timedelta(days=1)
+                    horas_disponiveis_hoje = self.CARGA_HORARIA_DIARIA
+
+                consumo = min(horas_restantes_tarefa, horas_disponiveis_hoje)
+                horas_restantes_tarefa -= consumo
+                horas_disponiveis_hoje -= consumo
+
+            # Se esta for a tarefa que estamos calculando, retorna a data onde o cursor parou
+            if tarefa.id == self.id:
+                return django_date_filter(data_cursor, "d \d\e F \d\e Y")
+
+        return "-"
 
     def _reordenar_pendentes(self):
         """Recalcula a prioridade de todas as tarefas NÃO concluídas desta demanda"""

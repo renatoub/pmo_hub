@@ -9,7 +9,6 @@ from django.forms import Textarea
 from django.db import models
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
-
 from ..models import AnexoDemanda, Demanda, Pendencia, Tarefas
 from .forms import AnexoForm
 
@@ -69,17 +68,23 @@ class TarefasInline(SortableInlineAdminMixin, admin.TabularInline):
         "horas_estimadas",
         "concluida",
         "edit_tarefas",
+        "exibir_previsao",
     )
 
     readonly_fields = (
         "get_priority_display",
         "edit_tarefas",
+        "exibir_previsao",
     )
     can_delete = False
 
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows': 2, 'style': 'resize:true;'})},
     }
+
+    def exibir_previsao(self, obj):
+        return obj.get_previsao_entrega()
+    exibir_previsao.short_description = "Previsão de Entrega"
     
     # LÓGICA DO FILTRO
     def get_queryset(self, request):
