@@ -32,7 +32,7 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         TarefasInline,
     ]
     list_display = (
-        "titulo",
+        "titulo_expansivel",
         "exibir_tema",
         "status_tag",
         "status_prazo_tag",
@@ -85,6 +85,21 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         ),
         ("Datas", {"fields": ("data_inicio", "data_prazo", "data_fechamento")}),
     )
+
+    def titulo_expansivel(self, obj):
+        return format_html(
+            '<div class="wrapper-demanda">'
+                '<span class="toggle-icon" style="cursor:pointer; display:inline-block; transition: transform 0.2s;">▶</span> '
+                '<strong>{}</strong>'
+                '<div class="desc-content" style="display:none; padding: 10px; background: #f9f9f9; border-left: 3px solid #79aec8; margin-top:5px;">'
+                    '{}'
+                '</div>'
+            '</div>',
+            obj.titulo,
+            obj.descricao or "Sem descrição."
+        )
+
+    titulo_expansivel.short_description = 'Demanda'
 
     def tarefas(self, obj):
         total = obj.tarefas.count()
@@ -698,4 +713,6 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         js = (
             # Pequeno hack para garantir que o CSS seja aplicado após o carregamento da página
             "admin/js/jquery.init.js",
+            "js/toggle_demanda.js",
+
         )
