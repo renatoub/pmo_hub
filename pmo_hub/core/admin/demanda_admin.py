@@ -90,16 +90,16 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         return format_html(
             '<div class="wrapper-demanda">'
                 '<span class="toggle-icon" style="cursor:pointer; display:inline-block; transition: transform 0.2s;">▶</span> '
-                '<strong>{}</strong>'
+                "<strong>{}</strong>"
                 '<div class="desc-content" style="display:none; padding: 10px; background: #f9f9f9; border-left: 3px solid #79aec8; margin-top:5px;">'
-                    '{}'
-                '</div>'
-            '</div>',
+                "{}"
+                "</div>"
+            "</div>",
             obj.titulo,
-            obj.descricao or "Sem descrição."
+            obj.descricao or "Sem descrição.",
         )
 
-    titulo_expansivel.short_description = 'Demanda'
+    titulo_expansivel.short_description = "Demanda"
 
     def tarefas(self, obj):
         total = obj.tarefas.count()
@@ -714,5 +714,4 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
             # Pequeno hack para garantir que o CSS seja aplicado após o carregamento da página
             "admin/js/jquery.init.js",
             "js/toggle_demanda.js",
-
         )
