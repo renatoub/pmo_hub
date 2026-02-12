@@ -1,12 +1,14 @@
 # pmo_hub/core/admin/inlines.py
+import os
+
 from adminsortable2.admin import (
     SortableInlineAdminMixin,
 )
 from django.contrib import admin
+from django.db import models
+from django.forms import Textarea
 from django.urls import reverse
 from django.utils import timezone
-from django.forms import Textarea
-from django.db import models
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
@@ -18,15 +20,18 @@ class AnexoDemandaInline(admin.TabularInline):
     model = AnexoDemanda
     form = AnexoForm
     extra = 1
-    fields = ["arquivo", "link_download"]
-    readonly_fields = ["link_download"]
+    fields = ["nome_arquivo", "arquivo"]
+    readonly_fields = ["nome_arquivo"]
 
-    def link_download(self, obj):
+    def nome_arquivo(self, obj):
         if obj.id and obj.arquivo:
             return format_html(
-                '<a href="{}" target="_blank">📄 Baixar</a>', obj.arquivo.url
+                '<a href="{}" target="_blank">{}</a>',
+                obj.arquivo.url,
+                os.path.basename(obj.arquivo.name),
             )
-        return mark_safe("-")
+        else:
+            return mark_safe("-")
 
 
 class PendenciaInline(admin.TabularInline):
@@ -59,7 +64,7 @@ class TarefasInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Tarefas
     extra = 0
     default_order_field = "prioridade"
-    
+
     template = "admin/core/tarefas/tabular_custom.html"
 
     fields = (
@@ -78,14 +83,16 @@ class TarefasInline(SortableInlineAdminMixin, admin.TabularInline):
     can_delete = False
 
     formfield_overrides = {
-        models.TextField: {'widget': Textarea(attrs={'rows': 2, 'style': 'resize:true;'})},
+        models.TextField: {
+            "widget": Textarea(attrs={"rows": 2, "style": "resize:true;"})
+        },
     }
-    
+
     # LÓGICA DO FILTRO
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         # Se NÃO tiver o parâmetro show_all_tasks=1, filtra os concluídos fora
-        if request.GET.get('show_all_tasks') != '1':
+        if request.GET.get("show_all_tasks") != "1":
             qs = qs.filter(concluida=False)
         return qs
 

@@ -233,19 +233,31 @@
 
             return `
                 <div class="gantt-row group hover:bg-slate-50 border-b">
-                    <div class="name-cell shadow-sm">
-                        <div class="text-[13px] font-bold text-slate-800 leading-tight mb-2">${d.name}</div>
+                    <a href="${d.admin_url}" target="_blank" class="name-cell shadow-sm hover:bg-blue-50 transition-colors cursor-pointer no-underline text-inherit">
+                        <div class="text-[13px] font-bold text-slate-800 leading-tight mb-1">${d.name}</div>
+                        
+                        <div class="flex flex-wrap gap-1 mb-2">
+                            ${d.responsaveis.map(r => `
+                                <span class="bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded text-[9px] font-medium border border-slate-200">
+                                    👤 ${r.nome}
+                                </span>
+                            `).join('')}
+                        </div>
+
                         <div class="flex flex-wrap gap-1 mb-2">
                             ${d.rotulos.map(r => `<span class="px-2 py-0.5 rounded-md text-[8px] font-black uppercase text-white" style="background-color: ${r.cor}">${r.nome}</span>`).join('')}
                         </div>
-                        <div class="text-[9px] text-slate-500 font-bold italic">📅 ${d.start} - ${d.end} | Tema: ${d.tema}</div>
-                    </div>
+                        <div class="text-[9px] text-slate-500 font-bold italic">📅 ${d.start} - ${d.end}</div>
+                    </a>
+
                     <div class="flex-1 relative flex items-center min-h-[80px]">
                         ${Array.from({length: TOTAL_DAYS}).map((_, i) => `<div class="absolute h-full border-r border-slate-100/50" style="left:${(i/TOTAL_DAYS)*100}%"></div>`).join('')}
-                        <div class="h-9 rounded shadow-sm flex items-center px-3 text-[11px] font-bold border bar-fill-dynamic ${d.custom_class} ${isOutLeft ? 'out-left' : ''} ${isOutRight ? 'out-right' : ''}"
-                             style="margin-left: ${vStart}%; width: ${width}%; --p: ${d.progress}%; z-index: 20; position: absolute;">
+                        
+                        <a href="${d.admin_url}" target="_blank" 
+                        class="absolute h-9 rounded shadow-sm flex items-center px-3 text-[11px] font-bold border bar-fill-dynamic hover:scale-[1.02] active:scale-95 transition-transform ${d.custom_class} ${isOutLeft ? 'out-left' : ''} ${isOutRight ? 'out-right' : ''}"
+                        style="left: ${vStart}%; width: ${width}%; --p: ${d.progress}%; z-index: 30; cursor: pointer; text-decoration: none !important;">
                             <span class="truncate text-white ${isOutLeft ? 'ml-3' : ''}">${d.progress}%</span>
-                        </div>
+                        </a>
                     </div>
                 </div>`;
         }).join('');
@@ -253,18 +265,20 @@
 
     async function initGantt() {
         try {
-            const res = await fetch('../gantt-data/');
-            ALL_DATA = await res.json();
+            // Agora os dados vêm direto do Django context
+            ALL_DATA = JSON.parse('{{ gantt_data_json|escapejs }}');
 
             // Configuração visual
             const dayWidth = 70;
-            document.getElementById('gantt-canvas').style.width = ((TOTAL_DAYS * dayWidth) + 384) + "px";
+            const canvas = document.getElementById('gantt-canvas');
+            if(canvas) canvas.style.width = ((TOTAL_DAYS * dayWidth) + 384) + "px";
 
-            // Popular Filtros Multi-seleção
+            // Popular Filtros Multi-seleção (o restante do seu código permanece igual)
             const temas = [...new Set(ALL_DATA.map(d => d.tema))].filter(Boolean).sort();
             const rotulos = [...new Set(ALL_DATA.flatMap(d => d.rotulos.map(r => r.nome)))].sort();
             const responsaveis = [...new Set(ALL_DATA.flatMap(d => d.responsaveis.map(r => r.nome)))].sort();
             const buckets = [...new Set(ALL_DATA.map(d => d.bucket))].filter(Boolean).sort();
+            
 
             const containerTemas = document.getElementById('container-temas');
             temas.forEach(t => {
@@ -321,8 +335,11 @@
             }
 
             renderGantt();
-        } catch (err) { console.error(err); }
+        } catch (err) { 
+            console.error("Erro ao inicializar Gantt:", err); 
+        }
     }
+
 
     document.addEventListener('DOMContentLoaded', initGantt);
 </script>

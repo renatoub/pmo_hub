@@ -13,3 +13,9 @@ dependencies = [
     "django-stubs>=5.2.8",
     "whitenoise>=6.11.0",
 ]
+
+[dependency-groups]
+dev = [
+    "django-extensions>=4.1",
+]
+
