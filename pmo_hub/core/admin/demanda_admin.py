@@ -27,23 +27,26 @@ from .inlines import (
 )
 
 
-class ResponsavelTarefaFilter(SimpleListFilter):
-    title = "Responsável por Tarefa"  # Nome que aparece na barra lateral
-    parameter_name = "resp_tarefa"  # Parâmetro na URL
+class ResponsavelTarefaPendenteFilter(SimpleListFilter):
+    title = "Responsável (Com Tarefas Pendentes)"  # Nome na barra lateral
+    parameter_name = "resp_tarefa_pendente"  # Parâmetro na URL
 
     def lookups(self, request, model_admin):
-        # Retorna a lista de usuários que estão atribuídos a pelo menos uma tarefa
+        # Lista apenas usuários que possuem pelo menos uma tarefa NÃO concluída
         users = (
-            User.objects.filter(tarefas_atribuidas__isnull=False)
+            User.objects.filter(tarefas_atribuidas__concluida=False)
             .distinct()
             .order_by("first_name", "username")
         )
+
         return [(user.id, user.get_full_name() or user.username) for user in users]
 
     def queryset(self, request, queryset):
-        # Filtra as demandas que possuem tarefas onde o usuário selecionado está presente
+        # Filtra as demandas que possuem tarefas do usuário selecionado que ainda estão abertas
         if self.value():
-            return queryset.filter(tarefas__responsaveis__id=self.value()).distinct()
+            return queryset.filter(
+                tarefas__responsaveis__id=self.value(), tarefas__concluida=False
+            ).distinct()
         return queryset
 
 
@@ -66,7 +69,7 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         "tarefas",
         "data_prazo",
     )
-    list_filter = ("tema", "situacao", ResponsavelTarefaFilter, "rotulos")
+    list_filter = ("tema", "situacao", ResponsavelTarefaPendenteFilter, "rotulos")
     filter_horizontal = ("solicitantes",)
     search_fields = ("titulo", "descricao")
     autocomplete_fields = ["parent", "responsavel", "solicitantes", "rotulos"]
@@ -537,9 +540,10 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         return "bar-progress"
 
     def gantt_view(self, request):
+        # 1. Configuração de Datas (Eixo X)
         hoje = timezone.now().date()
         padrao_inicio = hoje - timedelta(days=hoje.weekday())
-        padrao_fim = padrao_inicio + timedelta(days=13)
+        padrao_fim = padrao_inicio + timedelta(days=13)  # 2 semanas
 
         str_inicio = request.GET.get("data_inicio")
         str_fim = request.GET.get("data_fim")
@@ -560,27 +564,40 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         if delta_days <= 0:
             delta_days = 1
 
-        # --- COLETA DE DADOS PARA O JS ---
-        # Buscamos as demandas que se sobrepõem ao período visualizado
-        queryset = Demanda.objects.filter(
-            data_inicio__lte=end_date, data_prazo__gte=start_date
-        ).prefetch_related("rotulos", "situacao", "tema", "tarefas__responsaveis")
+        # 2. Queryset Otimizado (Prefetch de 2 níveis para tarefas e responsáveis)
+        queryset = (
+            Demanda.objects.filter(
+                data_prazo__gte=start_date, data_inicio__lte=end_date
+            )
+            .select_related("tema", "situacao")
+            .prefetch_related("rotulos", "tarefas__responsaveis")
+        )
 
+        # 3. Construção do JSON de Dados
         gantt_data = []
         for d in queryset:
-            # Extração de responsáveis únicos das tarefas
-            resps = []
-            for t in d.tarefas.all():
-                for r in t.responsaveis.all():
-                    nome = r.first_name or r.username
-                    if {"nome": nome} not in resps:
-                        resps.append({"nome": nome})
+            # Coleta de responsáveis únicos para exibição no card
+            resps_set = set()
+            tarefas_detalhes = []
 
-            # Cálculo de progresso (concluídas/total)
-            tarefas_lista = d.tarefas.all()
-            total_t = len(tarefas_lista)
-            concluidas = sum(1 for t in tarefas_lista if t.concluida)
-            progresso = int((concluidas / total_t) * 100) if total_t > 0 else 0
+            tarefas_qs = d.tarefas.all()
+            total_t = len(tarefas_qs)
+            concluidas_count = 0
+
+            for t in tarefas_qs:
+                nomes_resps = [r.first_name or r.username for r in t.responsaveis.all()]
+                resps_set.update(nomes_resps)
+
+                if t.concluida:
+                    concluidas_count += 1
+
+                # Dados para a lógica de filtro JS (pendentes vs concluídas)
+                tarefas_detalhes.append(
+                    {"concluida": t.concluida, "responsaveis_nomes": nomes_resps}
+                )
+
+            # Cálculo de progresso baseado nas tarefas
+            progresso = int((concluidas_count / total_t) * 100) if total_t > 0 else 0
 
             gantt_data.append(
                 {
@@ -593,9 +610,7 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
                     "start": d.data_inicio.isoformat()
                     if d.data_inicio
                     else d.criado_em.date().isoformat(),
-                    "end": d.data_prazo.isoformat()
-                    if d.data_prazo
-                    else d.data_inicio.isoformat(),
+                    "end": d.data_prazo.isoformat(),
                     "progress": progresso,
                     "tema": d.tema.nome if d.tema else "Sem Tema",
                     "bucket": d.situacao.nome if d.situacao else "Sem Bucket",
@@ -603,21 +618,22 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
                     "rotulos": [
                         {"nome": r.nome, "cor": r.cor_hex} for r in d.rotulos.all()
                     ],
-                    "responsaveis": resps,
+                    "responsaveis": [{"nome": n} for n in sorted(list(resps_set))],
+                    "tarefas_detalhes": tarefas_detalhes,
                 }
             )
 
+        # 4. Contexto do Template
         context = {
             **self.admin_site.each_context(request),
-            "title": "Gantt Personalizado",
+            "title": "Gantt de Demandas",
             "start_iso": start_date.isoformat(),
             "end_iso": end_date.isoformat(),
             "delta_days": delta_days,
             "hoje_iso": hoje.isoformat(),
-            "gantt_data_json": json.dumps(
-                gantt_data, cls=DjangoJSONEncoder
-            ),  # Dados serializados para o JS
+            "gantt_data_json": json.dumps(gantt_data, cls=DjangoJSONEncoder),
         }
+
         return TemplateResponse(request, "admin/gantt_view.html", context)
 
     def pmo_view(self, request):
