@@ -5,6 +5,7 @@ from datetime import date, datetime, timedelta
 
 from adminsortable2.admin import SortableAdminBase
 from django.contrib import messages
+from django.contrib.admin import SimpleListFilter
 from django.contrib.auth.models import User
 from django.db.models import Count, Max, Prefetch, Q
 from django.shortcuts import redirect, render
@@ -22,6 +23,26 @@ from .inlines import (
     SubitemInline,
     TarefasInline,
 )
+
+
+class ResponsavelTarefaFilter(SimpleListFilter):
+    title = "Responsável por Tarefa"  # Nome que aparece na barra lateral
+    parameter_name = "resp_tarefa"  # Parâmetro na URL
+
+    def lookups(self, request, model_admin):
+        # Retorna a lista de usuários que estão atribuídos a pelo menos uma tarefa
+        users = (
+            User.objects.filter(tarefas_atribuidas__isnull=False)
+            .distinct()
+            .order_by("first_name", "username")
+        )
+        return [(user.id, user.get_full_name() or user.username) for user in users]
+
+    def queryset(self, request, queryset):
+        # Filtra as demandas que possuem tarefas onde o usuário selecionado está presente
+        if self.value():
+            return queryset.filter(tarefas__responsaveis__id=self.value()).distinct()
+        return queryset
 
 
 class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
@@ -43,7 +64,7 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         "tarefas",
         "data_prazo",
     )
-    list_filter = ("tema", "situacao", "responsavel", "rotulos")
+    list_filter = ("tema", "situacao", ResponsavelTarefaFilter, "rotulos")
     filter_horizontal = ("solicitantes",)
     search_fields = ("titulo", "descricao")
     autocomplete_fields = ["parent", "responsavel", "solicitantes", "rotulos"]
@@ -89,11 +110,11 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
     def titulo_expansivel(self, obj):
         return format_html(
             '<div class="wrapper-demanda">'
-                '<span class="toggle-icon" style="cursor:pointer; display:inline-block; transition: transform 0.2s;">▶</span> '
-                "<strong>{}</strong>"
-                '<div class="desc-content" style="display:none; padding: 10px; background: #f9f9f9; border-left: 3px solid #79aec8; margin-top:5px;">'
-                "{}"
-                "</div>"
+            '<span class="toggle-icon" style="cursor:pointer; display:inline-block; transition: transform 0.2s;">▶</span> '
+            "<strong>{}</strong>"
+            '<div class="desc-content" style="display:none; padding: 10px; background: #f9f9f9; border-left: 3px solid #79aec8; margin-top:5px;">'
+            "{}"
+            "</div>"
             "</div>",
             obj.titulo,
             obj.descricao or "Sem descrição.",
