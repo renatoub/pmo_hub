@@ -1,5 +1,6 @@
 # pmo_hub/core/admin/demanda_admin.py
 
+import json
 import random
 from datetime import date, datetime, timedelta
 
@@ -7,6 +8,7 @@ from adminsortable2.admin import SortableAdminBase
 from django.contrib import messages
 from django.contrib.admin import SimpleListFilter
 from django.contrib.auth.models import User
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Count, Max, Prefetch, Q
 from django.shortcuts import redirect, render
 from django.template.response import TemplateResponse
@@ -211,20 +213,6 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
 
     exibir_tema.short_description = "Tema"
     exibir_tema.admin_order_field = "tema__nome"
-
-    # def exibir_temas(self, obj):
-    #     temas_html = []
-    #     for tema in obj.temas.all():
-    #         temas_html.append(
-    #             format_html(
-    #                 '<span class="tag-rotulo" style="background-color: {};">{}</span>',
-    #                 tema.cor_hex,
-    #                 tema.nome,
-    #             )
-    #         )
-    #     return mark_safe("".join(temas_html)) if temas_html else "-"
-
-    # exibir_temas.short_description = "Temas"
 
     def exibir_rotulos(self, obj):
         tags_html = []
@@ -549,10 +537,9 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         return "bar-progress"
 
     def gantt_view(self, request):
-        # Captura datas do filtro ou define padrão (semana atual)
         hoje = timezone.now().date()
         padrao_inicio = hoje - timedelta(days=hoje.weekday())
-        padrao_fim = padrao_inicio + timedelta(days=13)  # 2 semanas por padrão
+        padrao_fim = padrao_inicio + timedelta(days=13)
 
         str_inicio = request.GET.get("data_inicio")
         str_fim = request.GET.get("data_fim")
@@ -569,10 +556,56 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
         except ValueError:
             start_date, end_date = padrao_inicio, padrao_fim
 
-        # Cálculo de dias para o grid JS
         delta_days = (end_date - start_date).days + 1
         if delta_days <= 0:
             delta_days = 1
+
+        # --- COLETA DE DADOS PARA O JS ---
+        # Buscamos as demandas que se sobrepõem ao período visualizado
+        queryset = Demanda.objects.filter(
+            data_inicio__lte=end_date, data_prazo__gte=start_date
+        ).prefetch_related("rotulos", "situacao", "tema", "tarefas__responsaveis")
+
+        gantt_data = []
+        for d in queryset:
+            # Extração de responsáveis únicos das tarefas
+            resps = []
+            for t in d.tarefas.all():
+                for r in t.responsaveis.all():
+                    nome = r.first_name or r.username
+                    if {"nome": nome} not in resps:
+                        resps.append({"nome": nome})
+
+            # Cálculo de progresso (concluídas/total)
+            tarefas_lista = d.tarefas.all()
+            total_t = len(tarefas_lista)
+            concluidas = sum(1 for t in tarefas_lista if t.concluida)
+            progresso = int((concluidas / total_t) * 100) if total_t > 0 else 0
+
+            gantt_data.append(
+                {
+                    "id": d.id,
+                    "name": d.titulo,
+                    "admin_url": reverse(
+                        f"admin:{d._meta.app_label}_{d._meta.model_name}_change",
+                        args=[d.pk],
+                    ),
+                    "start": d.data_inicio.isoformat()
+                    if d.data_inicio
+                    else d.criado_em.date().isoformat(),
+                    "end": d.data_prazo.isoformat()
+                    if d.data_prazo
+                    else d.data_inicio.isoformat(),
+                    "progress": progresso,
+                    "tema": d.tema.nome if d.tema else "Sem Tema",
+                    "bucket": d.situacao.nome if d.situacao else "Sem Bucket",
+                    "custom_class": self._get_status_class(d.situacao),
+                    "rotulos": [
+                        {"nome": r.nome, "cor": r.cor_hex} for r in d.rotulos.all()
+                    ],
+                    "responsaveis": resps,
+                }
+            )
 
         context = {
             **self.admin_site.each_context(request),
@@ -581,6 +614,9 @@ class DemandaAdmin(SortableAdminBase, SimpleHistoryAdmin):
             "end_iso": end_date.isoformat(),
             "delta_days": delta_days,
             "hoje_iso": hoje.isoformat(),
+            "gantt_data_json": json.dumps(
+                gantt_data, cls=DjangoJSONEncoder
+            ),  # Dados serializados para o JS
         }
         return TemplateResponse(request, "admin/gantt_view.html", context)
 
