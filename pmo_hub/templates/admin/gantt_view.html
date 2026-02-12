@@ -2,7 +2,7 @@
 {% block extrahead %}
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-    /* Estilos originais preservados */
+    /* Estilos de setas para barras que extrapolam o eixo */
     .out-left::before {
         content: ''; position: absolute; left: -12px; top: 50%;
         transform: translateY(-50%);
@@ -20,100 +20,44 @@
             var(--bg-fill) 0%, var(--bg-fill) var(--p), 
             var(--bg-empty) var(--p), var(--bg-empty) 100%) !important;
     }
-    .bar-demanda {
+    .bar-progress {
         --bg-fill: #2563eb;
         --bg-empty: #dbeafe;
         border: 1px solid #2563eb !important;
-        color: white !important;
     }
     .bar-done {
         --bg-fill: #059669;
         --bg-empty: #dcfce7;
         border: 1px solid #059669 !important;
-        color: white !important;
     }
-    #content {
-        padding: 0 !important;
-        overflow: hidden !important;
-    }
+    #content { padding: 0 !important; overflow: hidden !important; }
     .filter-header {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        background: #f8fafc;
-        border-bottom: 1px solid #e2e8f0;
-        padding: 1rem;
-        width: 100%;
-    }
-    .gantt-row {
-        display: flex;
-        min-height: 4rem;
-        height: auto;
-        align-items: stretch;
-    }
-    .name-cell {
-        width: 23rem;
-        padding: 1rem;
-        border-right: 1px solid #e2e8f0;
-        background-color: white;
-        position: sticky;
-        left: 1rem;
-        z-index: 40;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        word-wrap: break-word;
-        white-space: normal;
+        position: sticky; top: 0; z-index: 100;
+        background: #f8fafc; border-bottom: 1px solid #e2e8f0; padding: 1rem;
     }
     .gantt-scroll-container {
-        width: 100%;
-        height: calc(100vh - 200px);
-        overflow: auto !important;
-        background: #fff;
+        width: 100%; height: calc(100vh - 200px);
+        overflow: auto !important; background: #fff;
     }
-    #gantt-canvas {
-        position: relative;
-        display: block;
+    .name-cell {
+        width: 24rem; padding: 1rem; border-right: 1px solid #e2e8f0;
+        background-color: white; position: sticky; left: 0; z-index: 40;
     }
     .day-col {
-        border-right: 1px solid #e2e8f0;
-        flex: 1;
-        text-align: center;
-        font-size: 10px;
-        padding: 10px 0;
-        min-width: 65px;
+        border-right: 1px solid #e2e8f0; flex: 1; text-align: center;
+        font-size: 10px; padding: 10px 0; min-width: 70px;
     }
-    .weekend {
-        background-color: #f1f5f9;
-    }
+    .weekend { background-color: #f1f5f9; }
     .today-line {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 2px;
-        background: #ef4444;
-        z-index: 10;
-        pointer-events: none;
+        position: absolute; top: 0; bottom: 0; width: 2px;
+        background: #ef4444; z-index: 10; pointer-events: none;
     }
-    
-    /* Novo estilo para o dropdown de multi-seleção */
-    .multi-select-container {
-        position: relative;
-        display: inline-block;
-        width: 200px;
-    }
+    .multi-select-container { position: relative; display: inline-block; width: 200px; }
     .multi-select-content {
-        display: none;
-        position: absolute;
-        background-color: white;
-        min-width: 250px;
-        max-height: 300px;
-        overflow-y: auto;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        z-index: 110;
-        border: 1px solid #e2e8f0;
-        padding: 10px;
-        border-radius: 4px;
+        display: none; position: absolute; background: white;
+        min-width: 250px; max-height: 300px; overflow-y: auto;
+        box-shadow: 0px 8px 16px rgba(0,0,0,0.1); z-index: 110;
+        border: 1px solid #e2e8f0; padding: 10px; border-radius: 4px;
     }
     .multi-select-container:hover .multi-select-content { display: block; }
 </style>
@@ -121,7 +65,7 @@
 
 {% block content %}
 <div class="filter-header">
-    <div class="flex items-end gap-6 max-w-full">
+    <div class="flex items-end gap-6">
         <form method="get" class="flex items-end gap-4">
             <div>
                 <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Período</label>
@@ -133,34 +77,27 @@
             <button type="submit" class="bg-slate-800 hover:bg-black text-white px-4 py-1.5 rounded text-sm font-bold shadow-sm">Atualizar Eixo</button>
         </form>
 
-        <div class="h-10 w-px bg-slate-300 self-end"></div>
+        <div class="h-10 w-px bg-slate-300"></div>
 
-        <div class="multi-select-container">
-            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Filtrar Temas</label>
-            <div class="border rounded px-2 py-1.5 text-sm bg-white cursor-pointer select-none">Selecionar Temas...</div>
-            <div id="container-temas" class="multi-select-content">
-                </div>
-        </div>
+        <div class="flex gap-4">
+            <div class="multi-select-container">
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Temas</label>
+                <div class="border rounded px-2 py-1.5 text-sm bg-white cursor-pointer">Selecionar Temas...</div>
+                <div id="container-temas" class="multi-select-content"></div>
+            </div>
 
-        <div class="multi-select-container">
-            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Filtrar Rótulos</label>
-            <div class="border rounded px-2 py-1.5 text-sm bg-white cursor-pointer select-none">Selecionar Rótulos...</div>
-            <div id="container-rotulos" class="multi-select-content">
-                </div>
-        </div>
+            <div class="multi-select-container">
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Buckets</label>
+                <div class="border rounded px-2 py-1.5 text-sm bg-white cursor-pointer">Selecionar Buckets...</div>
+                <div id="container-buckets" class="multi-select-content"></div>
+            </div>
 
-        <div class="multi-select-container">
-            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Filtrar Responsáveis</label>
-            <div class="border rounded px-2 py-1.5 text-sm bg-white cursor-pointer select-none">Selecionar Responsáveis...</div>
-            <div id="container-responsaveis" class="multi-select-content">
+            <div class="multi-select-container">
+                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Filtrar Responsáveis</label>
+                <div class="border rounded px-2 py-1.5 text-sm bg-white cursor-pointer select-none">Selecionar Responsáveis...</div>
+                <div id="container-responsaveis" class="multi-select-content">
                 </div>
-        </div>
-
-        <div class="multi-select-container">
-            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Filtrar Buckets</label>
-            <div class="border rounded px-2 py-1.5 text-sm bg-white cursor-pointer select-none">Selecionar Buckets...</div>
-            <div id="container-buckets" class="multi-select-content">
-                </div>
+            </div>
         </div>
 
         <a href="?" class="text-blue-600 font-bold text-xs underline mb-2">Resetar</a>
@@ -168,10 +105,10 @@
 </div>
 
 <div class="gantt-scroll-container">
-    <div id="gantt-canvas">
+    <div id="gantt-canvas" class="relative">
         <div class="flex border-b border-slate-200 bg-white sticky top-0 z-50">
             <div class="w-[24rem] p-4 font-bold border-r border-slate-200 bg-slate-50 sticky left-0 z-[60] text-slate-700 text-sm">Título da Demanda</div>
-            <div id="day-labels" class="flex-1 flex bg-white"></div>
+            <div id="day-labels" class="flex-1 flex"></div>
         </div>
         <div id="gantt-body" class="divide-y divide-slate-100 relative">
             <div id="today-marker" class="today-line" style="display: none;"></div>
@@ -183,8 +120,8 @@
     const START_VIEW = new Date("{{ start_iso }}T00:00:00");
     const END_VIEW = new Date("{{ end_iso }}T23:59:59");
     const HOJE_ISO = "{{ hoje_iso }}";
-    const TOTAL_DAYS = parseInt("{{ delta_days }}") || 14;
-    let ALL_DATA = [];
+    const TOTAL_DAYS = parseInt("{{ delta_days }}");
+    let ALL_DATA = JSON.parse('{{ gantt_data_json|escapejs }}');
 
     function getPos(dateStr) {
         const d = new Date(dateStr + "T00:00:00");
@@ -193,14 +130,9 @@
     }
 
     function renderGantt() {
-        // Pega todos os temas selecionados
-        const selectedTemas = Array.from(document.querySelectorAll('.filter-tema-cb:checked')).map(cb => cb.value);
-        // Pega todos os rótulos selecionados
-        const selectedRotulos = Array.from(document.querySelectorAll('.filter-rotulo-cb:checked')).map(cb => cb.value);
-        // Pega todos os responsáveis selecionados
-        const selectedResponsaveis = Array.from(document.querySelectorAll('.filter-responsavel-cb:checked')).map(cb => cb.value);
-        // Pega todos os buckets selecionados
-        const selectedBuckets = Array.from(document.querySelectorAll('.filter-bucket-cb:checked')).map(cb => cb.value);
+        const selResps = Array.from(document.querySelectorAll('.filter-resp-cb:checked')).map(cb => cb.value);
+        const selTemas = Array.from(document.querySelectorAll('.filter-tema-cb:checked')).map(cb => cb.value);
+        const selBuckets = Array.from(document.querySelectorAll('.filter-bucket-cb:checked')).map(cb => cb.value);
 
         const body = document.getElementById('gantt-body');
         const marker = document.getElementById('today-marker');
@@ -208,139 +140,92 @@
         body.appendChild(marker);
 
         const filtered = ALL_DATA.filter(d => {
-            const s = new Date(d.start + "T00:00:00");
-            const e = new Date(d.end + "T23:59:59");
-            const inDateRange = s <= END_VIEW && e >= START_VIEW;
-            
-            // Lógica: Se nenhum selecionado, mostra todos. Se selecionado, deve conter no array.
-            const matchTema = selectedTemas.length === 0 || selectedTemas.includes(d.tema);
-            const matchRotulo = selectedRotulos.length === 0 || d.rotulos.some(r => selectedRotulos.includes(r.nome));
-            const matchResponsavel = selectedResponsaveis.length === 0 || d.responsaveis.some(r => selectedResponsaveis.includes(r.nome));
-            const matchBucket = selectedBuckets.length === 0 || selectedBuckets.includes(d.bucket);
+            const dS = new Date(d.start + "T00:00:00");
+            const dE = new Date(d.end + "T23:59:59");
+            const inDate = dS <= END_VIEW && dE >= START_VIEW;
 
-            return inDateRange && matchTema && matchRotulo && matchResponsavel && matchBucket;
+            const matchTema = selTemas.length === 0 || selTemas.includes(d.tema);
+            const matchBucket = selBuckets.length === 0 || selBuckets.includes(d.bucket);
+            
+            // Regra: Se filtrar responsável, mostra demandas onde ele tem tarefa NÃO concluída
+            const matchResp = selResps.length === 0 || d.tarefas_detalhes.some(t => 
+                t.responsaveis_nomes.some(n => selResps.includes(n)) && t.concluida === false
+            );
+
+            return inDate && matchTema && matchBucket && matchResp;
         });
 
         body.innerHTML += filtered.map(d => {
-            const dStart = new Date(d.start + "T00:00:00");
-            const dEnd = new Date(d.end + "T23:59:59");
-            const isOutLeft = dStart < START_VIEW;
-            const isOutRight = dEnd > END_VIEW;
-            const vStart = isOutLeft ? 0 : getPos(d.start);
-            const vEnd = isOutRight ? 100 : (getPos(d.end) + (100/TOTAL_DAYS));
-            let width = vEnd - vStart;
-            if (width <= 0) width = 0.5;
+            const vStart = Math.max(0, getPos(d.start));
+            const vEnd = Math.min(100, getPos(d.end) + (100/TOTAL_DAYS));
+            const width = Math.max(0.5, vEnd - vStart);
 
             return `
-                <div class="gantt-row group hover:bg-slate-50 border-b">
-                    <a href="${d.admin_url}" target="_blank" class="name-cell shadow-sm hover:bg-blue-50 transition-colors cursor-pointer no-underline text-inherit">
-                        <div class="text-[13px] font-bold text-slate-800 leading-tight mb-1">${d.name}</div>
-                        
-                        <div class="flex flex-wrap gap-1 mb-2">
-                            ${d.responsaveis.map(r => `
-                                <span class="bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded text-[9px] font-medium border border-slate-200">
-                                    👤 ${r.nome}
-                                </span>
-                            `).join('')}
-                        </div>
-
-                        <div class="flex flex-wrap gap-1 mb-2">
-                            ${d.rotulos.map(r => `<span class="px-2 py-0.5 rounded-md text-[8px] font-black uppercase text-white" style="background-color: ${r.cor}">${r.nome}</span>`).join('')}
-                        </div>
-                        <div class="text-[9px] text-slate-500 font-bold italic">📅 ${d.start} - ${d.end}</div>
-                    </a>
-
-                    <div class="flex-1 relative flex items-center min-h-[80px]">
-                        ${Array.from({length: TOTAL_DAYS}).map((_, i) => `<div class="absolute h-full border-r border-slate-100/50" style="left:${(i/TOTAL_DAYS)*100}%"></div>`).join('')}
-                        
-                        <a href="${d.admin_url}" target="_blank" 
-                        class="absolute h-9 rounded shadow-sm flex items-center px-3 text-[11px] font-bold border bar-fill-dynamic hover:scale-[1.02] active:scale-95 transition-transform ${d.custom_class} ${isOutLeft ? 'out-left' : ''} ${isOutRight ? 'out-right' : ''}"
-                        style="left: ${vStart}%; width: ${width}%; --p: ${d.progress}%; z-index: 30; cursor: pointer; text-decoration: none !important;">
-                            <span class="truncate text-white ${isOutLeft ? 'ml-3' : ''}">${d.progress}%</span>
-                        </a>
+            <div class="flex border-b hover:bg-slate-50 transition-colors group">
+                <a href="${d.admin_url}" target="_blank" class="name-cell shadow-sm flex flex-col justify-center no-underline">
+                    <div class="text-[13px] font-bold text-slate-800 leading-tight mb-1">${d.name}</div>
+                    <div class="flex flex-wrap gap-1 mb-2">
+                        ${d.responsaveis.map(r => `<span class="bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded text-[9px] font-medium border border-slate-200">👤 ${r.nome}</span>`).join('')}
                     </div>
-                </div>`;
+                    <div class="flex flex-wrap gap-1">
+                        ${d.rotulos.map(r => `<span class="px-2 py-0.5 rounded text-[8px] font-black text-white" style="background:${r.cor}">${r.nome}</span>`).join('')}
+                    </div>
+                </a>
+                <div class="flex-1 relative flex items-center min-h-[85px]">
+                    ${Array.from({length: TOTAL_DAYS}).map((_, i) => `<div class="absolute h-full border-r border-slate-100/30" style="left:${(i/TOTAL_DAYS)*100}%"></div>`).join('')}
+                    <a href="${d.admin_url}" target="_blank" 
+                       class="absolute h-9 rounded shadow-sm flex items-center px-3 text-[11px] font-bold border bar-fill-dynamic hover:scale-[1.01] transition-transform ${d.custom_class}"
+                       style="left: ${vStart}%; width: ${width}%; --p: ${d.progress}%; z-index: 30;">
+                        <span class="truncate text-white">${d.progress}%</span>
+                    </a>
+                </div>
+            </div>`;
         }).join('');
     }
 
-    async function initGantt() {
-        try {
-            // Agora os dados vêm direto do Django context
-            ALL_DATA = JSON.parse('{{ gantt_data_json|escapejs }}');
+    function initGantt() {
+        const dayWidth = 70;
+        document.getElementById('gantt-canvas').style.width = ((TOTAL_DAYS * dayWidth) + 384) + "px";
 
-            // Configuração visual
-            const dayWidth = 70;
-            const canvas = document.getElementById('gantt-canvas');
-            if(canvas) canvas.style.width = ((TOTAL_DAYS * dayWidth) + 384) + "px";
+        // Preencher Filtros
+        const resps = [...new Set(ALL_DATA.flatMap(d => d.responsaveis.map(r => r.nome)))].sort();
+        const temas = [...new Set(ALL_DATA.map(d => d.tema))].filter(Boolean).sort();
+        const buckets = [...new Set(ALL_DATA.map(d => d.bucket))].filter(Boolean).sort();
 
-            // Popular Filtros Multi-seleção (o restante do seu código permanece igual)
-            const temas = [...new Set(ALL_DATA.map(d => d.tema))].filter(Boolean).sort();
-            const rotulos = [...new Set(ALL_DATA.flatMap(d => d.rotulos.map(r => r.nome)))].sort();
-            const responsaveis = [...new Set(ALL_DATA.flatMap(d => d.responsaveis.map(r => r.nome)))].sort();
-            const buckets = [...new Set(ALL_DATA.map(d => d.bucket))].filter(Boolean).sort();
-            
-
-            const containerTemas = document.getElementById('container-temas');
-            temas.forEach(t => {
-                containerTemas.innerHTML += `
-                    <label class="flex items-center gap-2 p-1 hover:bg-slate-50 cursor-pointer text-sm">
-                        <input type="checkbox" value="${t}" class="filter-tema-cb" onchange="renderGantt()"> ${t}
-                    </label>`;
+        const populate = (id, list, cls) => {
+            const container = document.getElementById(id);
+            list.forEach(item => {
+                container.innerHTML += `<label class="flex items-center gap-2 p-1 hover:bg-slate-50 cursor-pointer text-sm">
+                    <input type="checkbox" value="${item}" class="${cls}" onchange="renderGantt()"> ${item}
+                </label>`;
             });
+        };
 
-            const containerRotulos = document.getElementById('container-rotulos');
-            rotulos.forEach(r => {
-                containerRotulos.innerHTML += `
-                    <label class="flex items-center gap-2 p-1 hover:bg-slate-50 cursor-pointer text-sm">
-                        <input type="checkbox" value="${r}" class="filter-rotulo-cb" onchange="renderGantt()"> ${r}
-                    </label>`;
-            });
+        populate('container-responsaveis', resps, 'filter-resp-cb');
+        populate('container-temas', temas, 'filter-tema-cb');
+        populate('container-buckets', buckets, 'filter-bucket-cb');
 
-            const containerResponsaveis = document.getElementById('container-responsaveis');
-            responsaveis.forEach(r => {
-                containerResponsaveis.innerHTML += `
-                    <label class="flex items-center gap-2 p-1 hover:bg-slate-50 cursor-pointer text-sm">
-                        <input type="checkbox" value="${r}" class="filter-responsavel-cb" onchange="renderGantt()"> ${r}
-                    </label>`;
-            });
-
-            const containerBuckets = document.getElementById('container-buckets');
-            buckets.forEach(b => {
-                containerBuckets.innerHTML += `
-                    <label class="flex items-center gap-2 p-1 hover:bg-slate-50 cursor-pointer text-sm">
-                        <input type="checkbox" value="${b}" class="filter-bucket-cb" onchange="renderGantt()"> ${b}
-                    </label>`;
-            });
-
-
-            // Renderizar Cabeçalho de Dias
-            let dayHtml = '';
-            for(let i=0; i < TOTAL_DAYS; i++) {
-                const curr = new Date(START_VIEW);
-                curr.setDate(curr.getDate() + i);
-                const isWknd = curr.getDay() === 0 || curr.getDay() === 6;
-                dayHtml += `<div class="day-col ${isWknd ? 'weekend text-rose-400' : 'text-slate-500'}">
-                    <span class="block font-bold text-xs">${curr.getDate()}/${curr.getMonth()+1}</span>
-                    <span class="opacity-50 uppercase text-[9px]">${['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][curr.getDay()]}</span>
-                </div>`;
-            }
-            document.getElementById('day-labels').innerHTML = dayHtml;
-
-            // Marcador de Hoje
-            const hojeDate = new Date(HOJE_ISO + "T00:00:00");
-            if (hojeDate >= START_VIEW && hojeDate <= END_VIEW) {
-                const marker = document.getElementById('today-marker');
-                marker.style.left = `calc(${getPos(HOJE_ISO)}% + 384px)`;
-                marker.style.display = 'block';
-            }
-
-            renderGantt();
-        } catch (err) { 
-            console.error("Erro ao inicializar Gantt:", err); 
+        // Render Cabeçalho Dias
+        let dayHtml = '';
+        for(let i=0; i < TOTAL_DAYS; i++) {
+            const curr = new Date(START_VIEW); curr.setDate(curr.getDate() + i);
+            const isWknd = curr.getDay() === 0 || curr.getDay() === 6;
+            dayHtml += `<div class="day-col ${isWknd ? 'weekend text-rose-400' : 'text-slate-500'}">
+                <span class="block font-bold text-xs">${curr.getDate()}/${curr.getMonth()+1}</span>
+                <span class="opacity-50 uppercase text-[9px]">${['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][curr.getDay()]}</span>
+            </div>`;
         }
+        document.getElementById('day-labels').innerHTML = dayHtml;
+
+        // Marcador Hoje
+        const hojeDate = new Date(HOJE_ISO + "T00:00:00");
+        if (hojeDate >= START_VIEW && hojeDate <= END_VIEW) {
+            const marker = document.getElementById('today-marker');
+            marker.style.left = `calc(${getPos(HOJE_ISO)}% + 24rem)`;
+            marker.style.display = 'block';
+        }
+        renderGantt();
     }
-
-
     document.addEventListener('DOMContentLoaded', initGantt);
 </script>
 {% endblock %}
