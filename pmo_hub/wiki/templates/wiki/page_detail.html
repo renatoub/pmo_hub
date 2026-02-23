@@ -1,0 +1,88 @@
+<!-- /pmo_hub/wiki/templates/wiki/page_detail.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ page.title }} - Wiki</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            padding: 50px 0;
+        }
+
+        /* Conteúdo Principal */
+        .main-content {
+            flex: 1;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Menu Lateral Estilo VSCode/Docs */
+        .toc-wrapper {
+            width: 280px;
+            position: sticky;
+            top: 50px;
+            height: fit-content;
+            margin-left: 40px;
+            padding-left: 20px;
+            border-left: 1px solid #eee;
+        }
+
+        .toc-wrapper h4 {
+            margin-top: 0;
+            font-size: 14px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .toc-wrapper ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .toc-wrapper li {
+            margin-bottom: 8px;
+        }
+
+        .toc-wrapper a {
+            text-decoration: none;
+            color: #007acc;
+            font-size: 14px;
+        }
+
+        .toc-wrapper a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        {% load wiki_tags %}
+        {% with result=page.content|render_markdown %}
+
+        <article class="main-content">
+            <h1>{{ page.title }}</h1>
+            <hr>
+            {{ result.content }}
+        </article>
+
+        <aside class="toc-wrapper">
+            <h4>Nesta Página</h4>
+            {{ result.toc }}
+        </aside>
+
+        {% endwith %}
+    </div>
+</body>
+
+</html>

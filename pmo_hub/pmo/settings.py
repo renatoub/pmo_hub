@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "adminsortable2",
     "django_extensions",
+    "markdownx",
+    "wiki",
 ]
 
 MIDDLEWARE = [

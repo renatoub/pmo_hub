@@ -9,8 +9,10 @@ dependencies = [
     "django-admin-sortable2>=2.3.1",
     "django-crum>=0.7.9",
     "django-jazzmin>=3.0.1",
+    "django-markdownx>=4.0.9",
     "django-simple-history>=3.11.0",
     "django-stubs>=5.2.8",
+    "markdown>=3.10.2",
     "whitenoise>=6.11.0",
 ]
 

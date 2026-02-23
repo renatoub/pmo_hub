@@ -11,7 +11,7 @@ from core.views import (
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
@@ -47,7 +47,8 @@ urlpatterns = [
         "",
         RedirectView.as_view(url="admin/", permanent=False),
     ),
-    # path("", dashboard_view, name="dashboard"),
+    path('markdownx/', include('markdownx.urls')), # Necessário para o editor
+    path('wiki/', include('wiki.urls')),
 ]
 
 if settings.DEBUG:
