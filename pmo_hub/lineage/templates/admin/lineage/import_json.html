@@ -1,0 +1,39 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static %}
+
+{% block content %}
+<div id="content-main">
+    <div class="module">
+        <p>Selecione o tipo de metadados que deseja importar e faça o upload do arquivo JSON correspondente.</p>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div style="padding: 20px; background: #fff; border: 1px solid #ddd; border-radius: 4px;">
+                <div style="margin-bottom: 15px;">
+                    {{ form.import_type.label_tag }}<br>
+                    {{ form.import_type }}
+                </div>
+                <div style="margin-bottom: 15px;">
+                    {{ form.json_file.label_tag }}<br>
+                    {{ form.json_file }}
+                </div>
+                
+                <div class="submit-row">
+                    <input type="submit" value="Iniciar Importação" class="default" style="background: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+                    <a href="{% url 'admin:lineage_gcpasset_changelist' %}" class="closelink" style="margin-left: 10px; color: #666;">Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="module" style="margin-top: 30px;">
+        <h3>Instruções de Formato</h3>
+        <ul>
+            <li><strong>Datasets BigQuery</strong>: JSON contendo uma lista de objetos com <code>id</code>, <code>datasetReference</code>, <code>access</code>, etc.</li>
+            <li><strong>Buckets Cloud Storage</strong>: JSON contendo uma lista de objetos com <code>name</code>, <code>storage_url</code>, <code>creation_time</code>, etc.</li>
+            <li><strong>Tabelas / Blobs</strong>: JSON contendo uma lista de objetos com <code>table_catalog</code>, <code>table_schema</code>, <code>table_name</code>, <code>ddl</code>, etc.</li>
+        </ul>
+        <p><small>Nota: Para importar tabelas, os Datasets correspondentes já devem estar cadastrados como Ativos GCP.</small></p>
+    </div>
+</div>
+{% endblock %}

@@ -49,7 +49,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "adminsortable2",
     "django_extensions",
+    "rest_framework",
+    "django_apscheduler",
+    "lineage",
 ]
+
+# APScheduler Settings
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

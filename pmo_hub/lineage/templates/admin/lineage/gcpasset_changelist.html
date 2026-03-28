@@ -1,0 +1,11 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls %}
+
+{% block object-tools-items %}
+    <li>
+        <a href="{% url 'admin:import-gcp-metadata-file' %}" class="addlink" style="background-color: #28a745; color: white;">
+            🚀 Importar Metadados (JSON)
+        </a>
+    </li>
+    {{ block.super }}
+{% endblock %}

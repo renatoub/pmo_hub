@@ -11,11 +11,14 @@ from core.views import (
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
     # Coloque as ações ANTES do admin ou com um nome bem específico
+    path(
+        "lineage-api/", include("lineage.urls")
+    ),  # Rota para a API de ingestão e dados
     path(
         "acoes/status/<int:pk>/<int:situacao_id>/",
         alterar_status_view,
