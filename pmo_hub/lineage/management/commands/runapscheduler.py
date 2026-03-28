@@ -1,5 +1,7 @@
 import logging
+import time
 from django.conf import settings
+from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from django.core.management.base import BaseCommand
@@ -21,12 +23,52 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         db_path = settings.DATABASES['default']['NAME']
-        self.stdout.write(f"Conectado ao banco: {db_path}")
+        self.stdout.write(f"Caminho do Banco: {db_path}")
 
+        # Se for apenas registro, usamos o BackgroundScheduler para não travar
+        if options["register_only"]:
+            self.stdout.write("Modo: Apenas Registro (CI/CD)...")
+            scheduler = BackgroundScheduler(timezone=settings.TIME_ZONE)
+            scheduler.add_jobstore(DjangoJobStore(), "default")
+            
+            # Iniciamos o scheduler em background para ativar a persistência
+            scheduler.start()
+
+            # Registramos os jobs
+            scheduler.add_job(
+                sync_job,
+                trigger=CronTrigger(day=1, hour=3, minute=0),
+                id="sync_gcp_metadata_monthly",
+                max_instances=1,
+                replace_existing=True,
+            )
+            
+            scheduler.add_job(
+                delete_old_job_executions,
+                trigger=CronTrigger(day_of_week="mon", hour="00", minute="00"),
+                id="delete_old_job_executions",
+                max_instances=1,
+                replace_existing=True,
+            )
+
+            # Pequena pausa para garantir que os jobs foram salvos no SQLite
+            time.sleep(2)
+            
+            # Verificação final no banco
+            count = DjangoJob.objects.count()
+            if count > 0:
+                self.stdout.write(self.style.SUCCESS(f"Sucesso! {count} jobs persistidos no banco."))
+            else:
+                self.stdout.write(self.style.ERROR("Erro crítico: O banco continua reportando 0 jobs após tentativa de registro."))
+            
+            scheduler.shutdown()
+            return
+
+        # Modo Normal (Servidor rodando)
         scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
         scheduler.add_jobstore(DjangoJobStore(), "default")
-
-        # 1. Registrar Sincronização Mensal
+        
+        # Garantimos que os jobs estejam lá ao iniciar
         scheduler.add_job(
             sync_job,
             trigger=CronTrigger(day=1, hour=3, minute=0),
@@ -34,9 +76,7 @@ class Command(BaseCommand):
             max_instances=1,
             replace_existing=True,
         )
-        self.stdout.write("Tentativa de registro: sync_gcp_metadata_monthly")
-
-        # 2. Registrar Limpeza Semanal
+        
         scheduler.add_job(
             delete_old_job_executions,
             trigger=CronTrigger(day_of_week="mon", hour="00", minute="00"),
@@ -44,18 +84,6 @@ class Command(BaseCommand):
             max_instances=1,
             replace_existing=True,
         )
-        self.stdout.write("Tentativa de registro: delete_old_job_executions")
-
-        # Verificação direta no banco
-        count = DjangoJob.objects.count()
-
-        if options["register_only"]:
-            if count > 0:
-                self.stdout.write(self.style.SUCCESS(f"Sucesso! {count} jobs confirmados no banco de dados."))
-            else:
-                self.stdout.write(self.style.WARNING("Alerta: Os jobs foram enviados mas o banco ainda reporta 0 registros."))
-                self.stdout.write("Dica: Verifique se as migrações do 'django_apscheduler' foram aplicadas neste banco.")
-            return
 
         try:
             self.stdout.write("Iniciando loop do agendador...")
