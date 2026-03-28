@@ -30,6 +30,13 @@ def delete_old_job_executions(max_age=604_800):
 class Command(BaseCommand):
     help = "Inicia o APScheduler para tarefas do Lineage."
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--register-only",
+            action="store_true",
+            help="Apenas registra os jobs no banco de dados e encerra.",
+        )
+
     def handle(self, *args, **options):
         scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
         scheduler.add_jobstore(DjangoJobStore(), "default")
@@ -42,7 +49,7 @@ class Command(BaseCommand):
             max_instances=1,
             replace_existing=True,
         )
-        logger.info("Agendado: sync_gcp_metadata_monthly (Mensal - Dia 1)")
+        self.stdout.write(self.style.SUCCESS("Agendado: sync_gcp_metadata_monthly"))
 
         # Limpeza semanal de logs de execução
         scheduler.add_job(
@@ -52,12 +59,15 @@ class Command(BaseCommand):
             max_instances=1,
             replace_existing=True,
         )
-        logger.info("Agendado: delete_old_job_executions (Semanal)")
+        self.stdout.write(self.style.SUCCESS("Agendado: delete_old_job_executions"))
+
+        if options["register_only"]:
+            self.stdout.write(self.style.SUCCESS("Jobs registrados com sucesso. Encerrando."))
+            return
 
         try:
-            logger.info("Iniciando scheduler...")
+            self.stdout.write("Iniciando scheduler...")
             scheduler.start()
         except KeyboardInterrupt:
-            logger.info("Parando scheduler...")
+            self.stdout.write("Parando scheduler...")
             scheduler.shutdown()
-            logger.info("Scheduler parado.")
