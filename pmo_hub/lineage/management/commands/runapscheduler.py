@@ -1,31 +1,12 @@
 import logging
-
 from django.conf import settings
-
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
 from django.core.management.base import BaseCommand
 from django_apscheduler.jobstores import DjangoJobStore
-from django_apscheduler.models import DjangoJobExecution
-from django_apscheduler import util
-
-from lineage.services import sync_all_from_gcp
+from lineage.jobs import sync_job, delete_old_job_executions
 
 logger = logging.getLogger(__name__)
-
-def sync_job():
-    logger.info("Iniciando Sincronização Mensal com GCP...")
-    try:
-        sync_all_from_gcp()
-        logger.info("Sincronização com GCP concluída com sucesso.")
-    except Exception as e:
-        logger.error(f"Erro durante a sincronização com GCP: {str(e)}")
-
-@util.close_old_connections
-def delete_old_job_executions(max_age=604_800):
-    """Apaga execuções antigas do banco (padrão 1 semana)."""
-    DjangoJobExecution.objects.delete_old_job_executions(max_age)
-
 
 class Command(BaseCommand):
     help = "Inicia o APScheduler para tarefas do Lineage."
@@ -62,12 +43,12 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("Agendado: delete_old_job_executions"))
 
         if options["register_only"]:
-            self.stdout.write(self.style.SUCCESS("Jobs registrados com sucesso. Encerrando."))
+            self.stdout.write(self.style.SUCCESS("Jobs registrados com sucesso no banco de dados. Encerrando."))
             return
 
         try:
             self.stdout.write("Iniciando scheduler...")
             scheduler.start()
-        except KeyboardInterrupt:
+        except (KeyboardInterrupt, SystemExit):
             self.stdout.write("Parando scheduler...")
             scheduler.shutdown()
