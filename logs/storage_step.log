@@ -1,0 +1,3219 @@
+2026-03-29 14:01:39 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F05E7B0>
+2026-03-29 14:01:41 | WARNING  | STORAGE - Acesso bloqueado por VPC-SC no projeto eqtl-prj-dev-dlk-governance-ia. Pulando...
+2026-03-29 14:01:46 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F171310>
+2026-03-29 14:01:49 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 322, in sync_all_from_gcp
+    for bucket in s_client.list_buckets():
+                  ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 208, in _items_iter
+    for page in self._page_iter(increment=False):
+                ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 244, in _page_iter
+    page = self._next_page()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 373, in _next_page
+    response = self._get_next_page_response()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 432, in _get_next_page_response
+    return self.api_request(
+           ~~~~~~~~~~~~~~~~^
+        method=self._HTTP_METHOD, path=self.path, query_params=params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\storage\_http.py", line 90, in api_request
+    return call()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+        target,
+    ...<3 lines>...
+        on_error=on_error,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+        exc,
+    ...<6 lines>...
+        timeout,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_base.py", line 216, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\_http\__init__.py", line 494, in api_request
+    raise exceptions.from_http_response(response)
+google.api_core.exceptions.BadRequest: 400 GET https://storage.googleapis.com/storage/v1/b?project=eqtl-prj-shd-dlk-governanca&projection=noAcl&prettyPrint=false: Project id: 0 is invalid or not found
+
+2026-03-29 14:01:54 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F0CF750>
+2026-03-29 14:01:55 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 322, in sync_all_from_gcp
+    for bucket in s_client.list_buckets():
+                  ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 208, in _items_iter
+    for page in self._page_iter(increment=False):
+                ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 244, in _page_iter
+    page = self._next_page()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 373, in _next_page
+    response = self._get_next_page_response()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 432, in _get_next_page_response
+    return self.api_request(
+           ~~~~~~~~~~~~~~~~^
+        method=self._HTTP_METHOD, path=self.path, query_params=params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\storage\_http.py", line 90, in api_request
+    return call()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+        target,
+    ...<3 lines>...
+        on_error=on_error,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+        exc,
+    ...<6 lines>...
+        timeout,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_base.py", line 216, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\_http\__init__.py", line 494, in api_request
+    raise exceptions.from_http_response(response)
+google.api_core.exceptions.BadRequest: 400 GET https://storage.googleapis.com/storage/v1/b?project=+eqtl-prj-hml-dlk-gold-cx&projection=noAcl&prettyPrint=false: Project id: 0 is invalid or not found
+
+2026-03-29 14:02:00 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1E6DB950>
+2026-03-29 14:02:07 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1D644B00>
+2026-03-29 14:02:08 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-hml-dlk-bronze'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-hml-dlk-bronze'.
+
+2026-03-29 14:02:13 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F159370>
+2026-03-29 14:02:15 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-hml-dlk-pipeline'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-hml-dlk-pipeline'.
+
+2026-03-29 14:02:19 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F1997B0>
+2026-03-29 14:02:21 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-prd-dlk-gold-cx'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-prd-dlk-gold-cx'.
+
+2026-03-29 14:02:26 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F07FAC0>
+2026-03-29 14:02:27 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 322, in sync_all_from_gcp
+    for bucket in s_client.list_buckets():
+                  ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 208, in _items_iter
+    for page in self._page_iter(increment=False):
+                ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 244, in _page_iter
+    page = self._next_page()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 373, in _next_page
+    response = self._get_next_page_response()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 432, in _get_next_page_response
+    return self.api_request(
+           ~~~~~~~~~~~~~~~~^
+        method=self._HTTP_METHOD, path=self.path, query_params=params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\storage\_http.py", line 90, in api_request
+    return call()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+        target,
+    ...<3 lines>...
+        on_error=on_error,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+        exc,
+    ...<6 lines>...
+        timeout,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_base.py", line 216, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\_http\__init__.py", line 494, in api_request
+    raise exceptions.from_http_response(response)
+google.api_core.exceptions.BadRequest: 400 GET https://storage.googleapis.com/storage/v1/b?project=eqtl-prj-prd-dlk-silver&projection=noAcl&prettyPrint=false: Project id: 0 is invalid or not found
+
+2026-03-29 14:02:33 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F0B7C50>
+2026-03-29 14:02:35 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-prd-dlk-bronze'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-prd-dlk-bronze'.
+
+2026-03-29 14:02:40 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F0B7050>
+2026-03-29 14:02:42 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-prd-dlk-pipeline'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-prd-dlk-pipeline'.
+
+2026-03-29 14:02:47 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F2AA4E0>
+2026-03-29 14:02:53 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F2A89B0>
+2026-03-29 14:02:55 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-dev-dlk-gold-cx'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-dev-dlk-gold-cx'.
+
+2026-03-29 14:03:00 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F29F5B0>
+2026-03-29 14:03:01 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-dev-dlk-silver'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-dev-dlk-silver'.
+
+2026-03-29 14:03:06 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F29ECF0>
+2026-03-29 14:03:08 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-dev-dlk-bronze'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-dev-dlk-bronze'.
+
+2026-03-29 14:03:13 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F0BF790>
+2026-03-29 14:03:19 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F0DF710>
+2026-03-29 14:03:21 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-dev-dlk-pipeline'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-dev-dlk-pipeline'.
+
+2026-03-29 14:16:15 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F06B1D0>
+2026-03-29 14:16:17 | WARNING  | STORAGE - Acesso bloqueado por VPC-SC no projeto eqtl-prj-dev-dlk-governance-ia. Pulando...
+2026-03-29 14:16:23 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1D435440>
+2026-03-29 14:16:25 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 322, in sync_all_from_gcp
+    for bucket in s_client.list_buckets():
+                  ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 208, in _items_iter
+    for page in self._page_iter(increment=False):
+                ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 244, in _page_iter
+    page = self._next_page()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 373, in _next_page
+    response = self._get_next_page_response()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 432, in _get_next_page_response
+    return self.api_request(
+           ~~~~~~~~~~~~~~~~^
+        method=self._HTTP_METHOD, path=self.path, query_params=params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\storage\_http.py", line 90, in api_request
+    return call()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+        target,
+    ...<3 lines>...
+        on_error=on_error,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+        exc,
+    ...<6 lines>...
+        timeout,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_base.py", line 216, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\_http\__init__.py", line 494, in api_request
+    raise exceptions.from_http_response(response)
+google.api_core.exceptions.BadRequest: 400 GET https://storage.googleapis.com/storage/v1/b?project=eqtl-prj-shd-dlk-governanca&projection=noAcl&prettyPrint=false: Project id: 0 is invalid or not found
+
+2026-03-29 14:16:29 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F0DA6D0>
+2026-03-29 14:16:31 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 322, in sync_all_from_gcp
+    for bucket in s_client.list_buckets():
+                  ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 208, in _items_iter
+    for page in self._page_iter(increment=False):
+                ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 244, in _page_iter
+    page = self._next_page()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 373, in _next_page
+    response = self._get_next_page_response()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 432, in _get_next_page_response
+    return self.api_request(
+           ~~~~~~~~~~~~~~~~^
+        method=self._HTTP_METHOD, path=self.path, query_params=params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\storage\_http.py", line 90, in api_request
+    return call()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+        target,
+    ...<3 lines>...
+        on_error=on_error,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+        exc,
+    ...<6 lines>...
+        timeout,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_base.py", line 216, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\_http\__init__.py", line 494, in api_request
+    raise exceptions.from_http_response(response)
+google.api_core.exceptions.BadRequest: 400 GET https://storage.googleapis.com/storage/v1/b?project=+eqtl-prj-hml-dlk-gold-cx&projection=noAcl&prettyPrint=false: Project id: 0 is invalid or not found
+
+2026-03-29 14:16:36 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1EEA3120>
+2026-03-29 14:16:42 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F1887E0>
+2026-03-29 14:16:44 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-hml-dlk-bronze'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-hml-dlk-bronze'.
+
+2026-03-29 14:16:49 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F188730>
+2026-03-29 14:16:51 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-hml-dlk-pipeline'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-hml-dlk-pipeline'.
+
+2026-03-29 14:16:56 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1E6EFE30>
+2026-03-29 14:16:58 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-prd-dlk-gold-cx'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-prd-dlk-gold-cx'.
+
+2026-03-29 14:17:03 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F1F85D0>
+2026-03-29 14:17:05 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 322, in sync_all_from_gcp
+    for bucket in s_client.list_buckets():
+                  ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 208, in _items_iter
+    for page in self._page_iter(increment=False):
+                ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 244, in _page_iter
+    page = self._next_page()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 373, in _next_page
+    response = self._get_next_page_response()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 432, in _get_next_page_response
+    return self.api_request(
+           ~~~~~~~~~~~~~~~~^
+        method=self._HTTP_METHOD, path=self.path, query_params=params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\storage\_http.py", line 90, in api_request
+    return call()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+        target,
+    ...<3 lines>...
+        on_error=on_error,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+        exc,
+    ...<6 lines>...
+        timeout,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_base.py", line 216, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\_http\__init__.py", line 494, in api_request
+    raise exceptions.from_http_response(response)
+google.api_core.exceptions.BadRequest: 400 GET https://storage.googleapis.com/storage/v1/b?project=eqtl-prj-prd-dlk-silver&projection=noAcl&prettyPrint=false: Project id: 0 is invalid or not found
+
+2026-03-29 14:17:09 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1D4B6BA0>
+2026-03-29 14:17:11 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-prd-dlk-bronze'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-prd-dlk-bronze'.
+
+2026-03-29 14:17:16 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1EEA2D00>
+2026-03-29 14:17:18 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-prd-dlk-pipeline'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-prd-dlk-pipeline'.
+
+2026-03-29 14:17:22 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F188470>
+2026-03-29 14:17:29 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1D469910>
+2026-03-29 14:17:30 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-dev-dlk-gold-cx'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-dev-dlk-gold-cx'.
+
+2026-03-29 14:17:35 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F1887E0>
+2026-03-29 14:17:37 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-dev-dlk-silver'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-dev-dlk-silver'.
+
+2026-03-29 14:17:41 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1F188470>
+2026-03-29 14:17:42 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-dev-dlk-bronze'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-dev-dlk-bronze'.
+
+2026-03-29 14:17:47 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD213F6E60>
+2026-03-29 14:17:53 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000001BD1D435180>
+2026-03-29 14:17:55 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-dev-dlk-pipeline'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-dev-dlk-pipeline'.
+
+2026-03-29 16:44:20 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C3E1E510>
+2026-03-29 16:44:22 | WARNING  | STORAGE - Acesso bloqueado por VPC-SC no projeto eqtl-prj-dev-dlk-governance-ia. Pulando...
+2026-03-29 16:44:28 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C401D450>
+2026-03-29 16:44:30 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 322, in sync_all_from_gcp
+    for bucket in s_client.list_buckets():
+                  ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 208, in _items_iter
+    for page in self._page_iter(increment=False):
+                ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 244, in _page_iter
+    page = self._next_page()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 373, in _next_page
+    response = self._get_next_page_response()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 432, in _get_next_page_response
+    return self.api_request(
+           ~~~~~~~~~~~~~~~~^
+        method=self._HTTP_METHOD, path=self.path, query_params=params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\storage\_http.py", line 90, in api_request
+    return call()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+        target,
+    ...<3 lines>...
+        on_error=on_error,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+        exc,
+    ...<6 lines>...
+        timeout,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_base.py", line 216, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\_http\__init__.py", line 494, in api_request
+    raise exceptions.from_http_response(response)
+google.api_core.exceptions.BadRequest: 400 GET https://storage.googleapis.com/storage/v1/b?project=eqtl-prj-shd-dlk-governanca&projection=noAcl&prettyPrint=false: Project id: 0 is invalid or not found
+
+2026-03-29 16:44:35 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C401D950>
+2026-03-29 16:44:36 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 322, in sync_all_from_gcp
+    for bucket in s_client.list_buckets():
+                  ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 208, in _items_iter
+    for page in self._page_iter(increment=False):
+                ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 244, in _page_iter
+    page = self._next_page()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 373, in _next_page
+    response = self._get_next_page_response()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 432, in _get_next_page_response
+    return self.api_request(
+           ~~~~~~~~~~~~~~~~^
+        method=self._HTTP_METHOD, path=self.path, query_params=params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\storage\_http.py", line 90, in api_request
+    return call()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+        target,
+    ...<3 lines>...
+        on_error=on_error,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+        exc,
+    ...<6 lines>...
+        timeout,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_base.py", line 216, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\_http\__init__.py", line 494, in api_request
+    raise exceptions.from_http_response(response)
+google.api_core.exceptions.BadRequest: 400 GET https://storage.googleapis.com/storage/v1/b?project=+eqtl-prj-hml-dlk-gold-cx&projection=noAcl&prettyPrint=false: Project id: 0 is invalid or not found
+
+2026-03-29 16:44:41 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C3EFEFD0>
+2026-03-29 16:44:48 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C3EFF100>
+2026-03-29 16:44:50 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-hml-dlk-bronze'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-hml-dlk-bronze'.
+
+2026-03-29 16:44:55 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C40A0950>
+2026-03-29 16:44:56 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-hml-dlk-pipeline'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-hml-dlk-pipeline'.
+
+2026-03-29 16:45:02 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C409A140>
+2026-03-29 16:45:03 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-prd-dlk-gold-cx'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-prd-dlk-gold-cx'.
+
+2026-03-29 16:45:08 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C4099040>
+2026-03-29 16:45:10 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 322, in sync_all_from_gcp
+    for bucket in s_client.list_buckets():
+                  ~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 208, in _items_iter
+    for page in self._page_iter(increment=False):
+                ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 244, in _page_iter
+    page = self._next_page()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 373, in _next_page
+    response = self._get_next_page_response()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\page_iterator.py", line 432, in _get_next_page_response
+    return self.api_request(
+           ~~~~~~~~~~~~~~~~^
+        method=self._HTTP_METHOD, path=self.path, query_params=params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\storage\_http.py", line 90, in api_request
+    return call()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 294, in retry_wrapped_func
+    return retry_target(
+        target,
+    ...<3 lines>...
+        on_error=on_error,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 156, in retry_target
+    next_sleep = _retry_error_helper(
+        exc,
+    ...<6 lines>...
+        timeout,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_base.py", line 216, in _retry_error_helper
+    raise final_exc from source_exc
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\api_core\retry\retry_unary.py", line 147, in retry_target
+    result = target()
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\google\cloud\_http\__init__.py", line 494, in api_request
+    raise exceptions.from_http_response(response)
+google.api_core.exceptions.BadRequest: 400 GET https://storage.googleapis.com/storage/v1/b?project=eqtl-prj-prd-dlk-silver&projection=noAcl&prettyPrint=false: Project id: 0 is invalid or not found
+
+2026-03-29 16:45:15 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C40F5650>
+2026-03-29 16:45:17 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-prd-dlk-bronze'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-prd-dlk-bronze'.
+
+2026-03-29 16:45:22 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C32E4E50>
+2026-03-29 16:45:23 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-prd-dlk-pipeline'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-prd-dlk-pipeline'.
+
+2026-03-29 16:45:28 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C3EEE4E0>
+2026-03-29 16:45:35 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C3EEED50>
+2026-03-29 16:45:37 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-dev-dlk-gold-cx'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-dev-dlk-gold-cx'.
+
+2026-03-29 16:45:42 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C3EDBD90>
+2026-03-29 16:45:43 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-dev-dlk-silver'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-dev-dlk-silver'.
+
+2026-03-29 16:45:48 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C3EDB5B0>
+2026-03-29 16:45:50 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-dev-dlk-bronze'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-dev-dlk-bronze'.
+
+2026-03-29 16:45:54 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C38913D0>
+2026-03-29 16:46:01 | INFO     | STORAGE - Detalhes storage - <google.cloud.storage.client.Client object at 0x000002C2C3D97A10>
+2026-03-29 16:46:03 | ERROR    | STORAGE - Insert GCPAsset - Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 987, in get_or_create
+    return self.get(**kwargs), False
+           ~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 639, in get
+    raise self.model.DoesNotExist(
+        "%s matching query does not exist." % self.model._meta.object_name
+    )
+lineage.models.GCPAsset.DoesNotExist: GCPAsset matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2128, in get_prep_value
+    return int(value)
+ValueError: invalid literal for int() with base 10: 'eqtl-prj-dev-dlk-pipeline'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\pmo_hub\lineage\services.py", line 330, in sync_all_from_gcp
+    asset, _ = GCPAsset.objects.update_or_create(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        uri=f"gs://{bucket.name}/",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        defaults=defaults,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1029, in update_or_create
+    obj, created = self.select_for_update().get_or_create(
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        create_defaults, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 994, in get_or_create
+    return self.create(**params), True
+           ~~~~~~~~~~~^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj.save(force_insert=True, using=self.db)
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 874, in save
+    self.save_base(
+    ~~~~~~~~~~~~~~^
+        using=using,
+        ^^^^^^^^^^^^
+    ...<2 lines>...
+        update_fields=update_fields,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 966, in save_base
+    updated = self._save_table(
+        raw,
+    ...<4 lines>...
+        update_fields,
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1167, in _save_table
+    results = self._do_insert(
+        cls._base_manager, using, insert_fields, returning_fields, raw
+    )
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\base.py", line 1218, in _do_insert
+    return manager._insert(
+           ~~~~~~~~~~~~~~~^
+        [self],
+        ^^^^^^^
+    ...<3 lines>...
+        raw=raw,
+        ^^^^^^^^
+    )
+    ^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\query.py", line 1918, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1924, in execute_sql
+    for sql, params in self.as_sql():
+                       ~~~~~~~~~~~^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1813, in as_sql
+    field_prepare(field_pre_save(obj)) for obj in self.query.objs
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\sql\compiler.py", line 1742, in prepare_value
+    return field.get_db_prep_save(value, connection=self.connection)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\related.py", line 1189, in get_db_prep_save
+    return self.target_field.get_db_prep_save(value, connection=connection)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 1011, in get_db_prep_save
+    return self.get_db_prep_value(value, connection=connection, prepared=False)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2820, in get_db_prep_value
+    value = self.get_prep_value(value)
+  File "C:\Users\t41452\Desktop\Wordir\Desenvolvimento\pmo_hub\.venv\Lib\site-packages\django\db\models\fields\__init__.py", line 2130, in get_prep_value
+    raise e.__class__(
+        "Field '%s' expected a number but got %r." % (self.name, value),
+    ) from e
+ValueError: Field 'id' expected a number but got 'eqtl-prj-dev-dlk-pipeline'.
+

@@ -1,15 +1,18 @@
 import logging
 import time
-from django.conf import settings
+
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
+from django.conf import settings
 from django.core.management.base import BaseCommand
 from django_apscheduler.jobstores import DjangoJobStore
-from lineage.jobs import sync_job, delete_old_job_executions
 from django_apscheduler.models import DjangoJob
 
+from lineage.jobs import delete_old_job_executions, sync_job
+
 logger = logging.getLogger(__name__)
+
 
 class Command(BaseCommand):
     help = "Inicia o APScheduler para tarefas do Lineage."
@@ -22,7 +25,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        db_path = settings.DATABASES['default']['NAME']
+        db_path = settings.DATABASES["default"]["NAME"]
         self.stdout.write(f"Caminho do Banco: {db_path}")
 
         # Se for apenas registro, usamos o BackgroundScheduler para não travar
@@ -30,19 +33,20 @@ class Command(BaseCommand):
             self.stdout.write("Modo: Apenas Registro (CI/CD)...")
             scheduler = BackgroundScheduler(timezone=settings.TIME_ZONE)
             scheduler.add_jobstore(DjangoJobStore(), "default")
-            
+
             # Iniciamos o scheduler em background para ativar a persistência
             scheduler.start()
 
             # Registramos os jobs
             scheduler.add_job(
                 sync_job,
-                trigger=CronTrigger(day=1, hour=3, minute=0),
+                trigger=CronTrigger(hour=3, minute=0),
                 id="sync_gcp_metadata_monthly",
                 max_instances=1,
                 replace_existing=True,
+                misfire_grace_time=3600,
             )
-            
+
             scheduler.add_job(
                 delete_old_job_executions,
                 trigger=CronTrigger(day_of_week="mon", hour="00", minute="00"),
@@ -53,30 +57,37 @@ class Command(BaseCommand):
 
             # Pequena pausa para garantir que os jobs foram salvos no SQLite
             time.sleep(2)
-            
+
             # Verificação final no banco
             count = DjangoJob.objects.count()
             if count > 0:
-                self.stdout.write(self.style.SUCCESS(f"Sucesso! {count} jobs persistidos no banco."))
+                self.stdout.write(
+                    self.style.SUCCESS(f"Sucesso! {count} jobs persistidos no banco.")
+                )
             else:
-                self.stdout.write(self.style.ERROR("Erro crítico: O banco continua reportando 0 jobs após tentativa de registro."))
-            
+                self.stdout.write(
+                    self.style.ERROR(
+                        "Erro crítico: O banco continua reportando 0 jobs após tentativa de registro."
+                    )
+                )
+
             scheduler.shutdown()
             return
 
         # Modo Normal (Servidor rodando)
         scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
         scheduler.add_jobstore(DjangoJobStore(), "default")
-        
+
         # Garantimos que os jobs estejam lá ao iniciar
         scheduler.add_job(
             sync_job,
-            trigger=CronTrigger(day=1, hour=3, minute=0),
+            trigger=CronTrigger(day_of_week="sun", hour=3, minute=0),
             id="sync_gcp_metadata_monthly",
             max_instances=1,
             replace_existing=True,
+            misfire_grace_time=3600,
         )
-        
+
         scheduler.add_job(
             delete_old_job_executions,
             trigger=CronTrigger(day_of_week="mon", hour="00", minute="00"),

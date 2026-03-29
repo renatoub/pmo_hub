@@ -1,215 +1,149 @@
 import json
-
 from django import forms
 from django.contrib import admin, messages
-from django.shortcuts import redirect, render
-from django.template.response import TemplateResponse
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import path
 from django.utils.html import format_html
+from django.http import JsonResponse
 
-from .models import GCPAsset, GCPTable, ProjetoDesenvolvimento, GCPLocation
-from .services import (
-    ingest_bigquery_metadata,
-    ingest_gcs_metadata,
-    ingest_tables_metadata,
+from .models import (
+    GCPProject, GCPAsset, GCPTable, ProjetoDesenvolvimento, 
+    GCPLocation, GCPETL
 )
+from .services import ingest_bigquery_metadata, ingest_gcs_metadata, ingest_tables_metadata
 
+class LineageBaseAdmin(admin.ModelAdmin):
+    list_filter = ("marcado_para_exclusao_fisica",)
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(excluido_logicamente=False)
+    def has_delete_permission(self, request, obj=None): return True
+    
+    def delete_view(self, request, object_id, extra_context=None):
+        obj = self.get_object(request, object_id)
+        if not obj: return redirect('admin:index')
+        impacted_items = []
+        def collect_impact(item):
+            children = item.get_logical_children()
+            for child in children:
+                if not child.excluido_logicamente and child not in impacted_items:
+                    impacted_items.append(child)
+                    collect_impact(child)
+        collect_impact(obj)
+        if request.method == 'POST':
+            obj.delete()
+            self.message_user(request, f"'{obj}' ocultado com sucesso.")
+            return redirect(f"admin:{obj._meta.app_label}_{obj._meta.model_name}_changelist")
+        context = {**self.admin_site.each_context(request), "object": obj, "impacted_items": impacted_items, "opts": self.model._meta}
+        return render(request, "admin/lineage/delete_confirmation.html", context)
 
-class JsonImportForm(forms.Form):
-    import_type = forms.ChoiceField(
-        choices=[
-            ("assets_bq", "Datasets BigQuery"),
-            ("assets_gcs", "Buckets Cloud Storage"),
-            ("tables", "Tabelas / Blobs (Metadados Detalhados)"),
-        ],
-        label="Tipo de Importação",
-    )
-    json_file = forms.FileField(label="Arquivo JSON")
-
+@admin.register(GCPProject)
+class GCPProjectAdmin(LineageBaseAdmin):
+    list_display = ("project_id", "display_name", "marcado_para_exclusao_fisica")
+    search_fields = ("project_id", "display_name")
 
 @admin.register(ProjetoDesenvolvimento)
-class ProjetoDesenvolvimentoAdmin(admin.ModelAdmin):
-    list_display = ("nome", "descricao")
+class ProjetoDesenvolvimentoAdmin(LineageBaseAdmin):
+    list_display = ("nome", "marcado_para_exclusao_fisica")
     search_fields = ("nome",)
 
-
 @admin.register(GCPLocation)
-class GCPLocationAdmin(admin.ModelAdmin):
+class GCPLocationAdmin(LineageBaseAdmin):
     list_display = ("nome", "codigo")
-    search_fields = ("nome", "codigo")
 
-
-class GCPTableInline(admin.TabularInline):
-    model = GCPTable
-    extra = 0
-    fields = (
-        "table_name",
-        "table_type",
-        "is_insertable_into",
-        "is_typed",
-        "projetos",
-        "creation_time",
+class GCPETLForm(forms.ModelForm):
+    tipos_etl = forms.MultipleChoiceField(
+        choices=GCPETL.TIPO_CHOICES, widget=forms.CheckboxSelectMultiple, required=False
     )
-    filter_horizontal = ("projetos",)
-    autocomplete_fields = ("projetos",)
+    class Meta:
+        model = GCPETL
+        fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.tipos_etl:
+            self.initial['tipos_etl'] = self.instance.tipos_etl
 
-
-@admin.register(GCPTable)
-class GCPTablesAdmin(admin.ModelAdmin):
-    list_display = (
-        "table_name",
-        "table_schema",
-        "table_catalog",
-        "table_type",
-        "is_insertable_into",
-        "is_typed",
-        "creation_time",
-    )
-    list_filter = ("table_type", "is_insertable_into", "is_typed", "table_schema")
-    search_fields = ("table_name", "table_schema", "table_catalog")
-    autocomplete_fields = ("projetos",)
-
+@admin.register(GCPETL)
+class GCPETLAdmin(LineageBaseAdmin):
+    form = GCPETLForm
+    list_display = ("nome_processo", "destino", "marcado_para_exclusao_fisica")
+    readonly_fields = ("nome_processo",)
+    autocomplete_fields = ("fontes", "destino")
 
 @admin.register(GCPAsset)
-class GCPAssetAdmin(admin.ModelAdmin):
-    list_display = ("name", "project_id", "asset_type", "location", "last_imported_at")
-    list_filter = ("project_id", "asset_type", "location")
-    search_fields = ("name", "uri", "project_id")
-    readonly_fields = (
-        "last_imported_at",
-        "formatted_labels",
-        "formatted_access",
-        "formatted_lifecycle",
-        "formatted_policies",
-    )
+class GCPAssetAdmin(LineageBaseAdmin):
+    list_display = ("name", "project", "asset_type", "location")
+    list_filter = ("project", "asset_type", "location", "marcado_para_exclusao_fisica")
+    search_fields = ("name", "project__project_id")
 
-    inlines = [GCPTableInline]
+class GCPTableForm(forms.ModelForm):
+    project = forms.ModelChoiceField(queryset=GCPProject.objects.all(), label="Projeto GCP", required=False)
+    class Meta:
+        model = GCPTable
+        fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.asset:
+            self.initial['project'] = self.instance.asset.project
 
-    actions = ["generate_report"]
-    change_list_template = "admin/lineage/gcpasset_changelist.html"
+@admin.register(GCPTable)
+class GCPTablesAdmin(LineageBaseAdmin):
+    form = GCPTableForm
+    list_display = ("table_name", "get_asset_name", "get_project_id", "table_type", "view_lineage_link", "is_partitioned")
+    list_filter = ("asset__project", "table_type", "is_partitioned", "marcado_para_exclusao_fisica")
+    search_fields = ("table_name", "asset__name")
+    
+    def get_project_id(self, obj): return obj.asset.project.project_id if obj.asset else "-"
+    get_project_id.short_description = "Projeto"
+    def get_asset_name(self, obj): return obj.asset.name if obj.asset else "-"
+    get_asset_name.short_description = "Dataset/Bucket"
+
+    def view_lineage_link(self, obj):
+        return format_html('<a class="btn btn-sm btn-primary" href="lineage-view/"><i class="fas fa-sitemap"></i></a>')
+    view_lineage_link.short_description = "Linhagem"
 
     def get_urls(self):
         urls = super().get_urls()
         custom_urls = [
-            path(
-                "import-metadata-file/",
-                self.admin_site.admin_view(self.import_metadata_view),
-                name="import-gcp-metadata-file",
-            ),
+            path("<path:object_id>/lineage-view/", self.admin_site.admin_view(self.table_lineage_view), name="gcptable_lineage_view"),
+            path("global-map-view/", self.admin_site.admin_view(self.global_lineage_view), name="gcptable_global_map"),
+            path("ajax/load-assets/", self.admin_site.admin_view(self.load_assets), name="ajax_load_assets"),
         ]
         return custom_urls + urls
 
-    def import_metadata_view(self, request):
-        if request.method == "POST":
-            form = JsonImportForm(request.POST, request.FILES)
-            if form.is_valid():
-                import_type = form.cleaned_data["import_type"]
-                json_file = request.FILES["json_file"]
-                try:
-                    data = json.load(json_file)
-                    if import_type == "assets_bq":
-                        count = ingest_bigquery_metadata(data)
-                        self.message_user(
-                            request,
-                            f"Sucesso: {count} datasets BigQuery importados.",
-                            messages.SUCCESS,
-                        )
-                    elif import_type == "assets_gcs":
-                        count = ingest_gcs_metadata(data)
-                        self.message_user(
-                            request,
-                            f"Sucesso: {count} buckets GCS importados.",
-                            messages.SUCCESS,
-                        )
-                    elif import_type == "tables":
-                        count = ingest_tables_metadata(data)
-                        self.message_user(
-                            request,
-                            f"Sucesso: {count} tabelas/blobs importados.",
-                            messages.SUCCESS,
-                        )
+    def load_assets(self, request):
+        project_id = request.GET.get('project_id')
+        assets = GCPAsset.objects.filter(project_id=project_id).values('id', 'name')
+        return JsonResponse(list(assets), safe=False)
 
-                    return redirect("admin:lineage_gcpasset_changelist")
-                except Exception as e:
-                    self.message_user(
-                        request, f"Erro ao processar JSON: {str(e)}", messages.ERROR
-                    )
-        else:
-            form = JsonImportForm()
+    class Media:
+        js = ("admin/js/vendor/jquery/jquery.js", "lineage/js/chained_assets.js")
+
+    def table_lineage_view(self, request, object_id):
+        target_table = get_object_or_404(GCPTable, id=object_id)
+        def get_nodes(table, direction, depth):
+            if depth <= 0: return []
+            nodes = []
+            if direction == 'parents':
+                etls = table.etls_entrada.filter(excluido_logicamente=False)
+                for etl in etls:
+                    for f in etl.fontes.all():
+                        nodes.append({'table': f, 'etl': etl, 'parents': get_nodes(f, 'parents', depth - 1)})
+            else:
+                etls = table.etls_saida.filter(excluido_logicamente=False)
+                for etl in etls:
+                    if etl.destino:
+                        nodes.append({'table': etl.destino, 'etl': etl, 'children': get_nodes(etl.destino, 'children', depth - 1)})
+            return nodes
 
         context = {
             **self.admin_site.each_context(request),
-            "form": form,
-            "title": "Importar Metadados via JSON",
+            "title": f"Linhagem: {target_table.table_name}",
+            "target": target_table,
+            "parents": get_nodes(target_table, 'parents', 2),
+            "children": get_nodes(target_table, 'children', 2),
         }
-        return render(request, "admin/lineage/import_json.html", context)
+        return render(request, "admin/lineage/table_lineage.html", context)
 
-    fieldsets = (
-        (
-            "Informações Básicas",
-            {"fields": ("uri", "asset_type", "project_id", "name", "location")},
-        ),
-        (
-            "Datas e Auditoria",
-            {"fields": ("creation_time", "update_time", "last_imported_at")},
-        ),
-        (
-            "Metadados Estruturados",
-            {
-                "fields": (
-                    "formatted_labels",
-                    "formatted_access",
-                    "formatted_lifecycle",
-                    "formatted_policies",
-                ),
-                "description": "Visualização amigável dos metadados técnicos do ativo.",
-            },
-        ),
-        (
-            "Dados Brutos (JSON)",
-            {
-                "fields": ("labels", "access_config", "lifecycle_rules", "policies"),
-                "classes": ("collapse",),
-            },
-        ),
-    )
-
-    def formatted_json(self, data):
-        if not data:
-            return "Nenhum dado disponível."
-        return format_html(
-            '<pre style="background: #f8f9fa; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: monospace;">{}</pre>',
-            json.dumps(data, indent=2, ensure_ascii=False),
-        )
-
-    def formatted_labels(self, obj):
-        return self.formatted_json(obj.labels)
-
-    formatted_labels.short_description = "Labels / Tags"
-
-    def formatted_access(self, obj):
-        return self.formatted_json(obj.access_config)
-
-    formatted_access.short_description = "Configuração de Acesso"
-
-    def formatted_lifecycle(self, obj):
-        return self.formatted_json(obj.lifecycle_rules)
-
-    formatted_lifecycle.short_description = "Regras de Ciclo de Vida"
-
-    def formatted_policies(self, obj):
-        return self.formatted_json(obj.policies)
-
-    formatted_policies.short_description = "Políticas Adicionais"
-
-    def generate_report(self, request, queryset):
-        opts = self.model._meta
-        context = {
-            **self.admin_site.each_context(request),
-            "title": "Relatório Técnico de Ativos GCP",
-            "assets": queryset,
-            "opts": opts,
-        }
-        return TemplateResponse(request, "admin/lineage/asset_report.html", context)
-
-    generate_report.short_description = "📄 Gerar Relatório de Ativos (Impressão)"
+    def global_lineage_view(self, request):
+        etls = GCPETL.objects.filter(excluido_logicamente=False).prefetch_related('fontes').select_related('destino')
+        return render(request, "admin/lineage/global_lineage.html", {**self.admin_site.each_context(request), "etls": etls})
