@@ -16,3 +16,7 @@ wheels/
 # Local files
 anexos/
 pyrightconfig.json
+
+# logs
+logs/
+*.log
