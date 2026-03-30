@@ -49,7 +49,15 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "adminsortable2",
     "django_extensions",
+    "rest_framework",
+    "django_apscheduler",
+    # "lineage",
+    "gcp",
 ]
+
+# APScheduler Settings
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -150,13 +158,11 @@ JAZZMIN_SETTINGS = {
     # ],
     "topmenu_links": [
         {"name": "Início", "url": "admin:index", "permissions": ["auth.view_user"]},
-        {
-            "name": "Painel PMO",
-            "url": "admin:core_demanda_pmo",
-        },
+        {"name": "Painel PMO", "url": "admin:core_demanda_pmo"},
         {"name": "Linha do Tempo", "url": "/admin/core/demanda/gantt-view/"},
         {"name": "Dashboard Kanban", "url": "admin:core_demanda_dashboard"},
         {"model": "core.Demanda"},
+        {"model": "gcp.GCPTableBlob"},
     ],
     # Menu Lateral
     "show_sidebar": True,
@@ -165,15 +171,64 @@ JAZZMIN_SETTINGS = {
     "hide_models": [],
     # Ícones para os modelos (usando Font Awesome)
     "icons": {
-        "auth.Group": "fas fa-users",
+        # --- Auth ---
         "auth": "fas fa-users-cog",
         "auth.user": "fas fa-user",
-        "core.Demanda": "fas fa-tasks",
+        "auth.Group": "fas fa-users",
+        # --- Core/PMO ---
+        "core.Demanda": "fas fa-briefcase",
         "core.Tema": "fas fa-tags",
+        "core.TipoAtividade": "fas fa-list-ul",
+        "core.Riscos": "fas fa-exclamation-triangle",
+        "core.ResultadosEsperados": "fas fa-bullseye",
         "core.Situacao": "fas fa-check-circle",
-        "core.TipoAtividade": "fas fa-list",
         "core.Contato": "fas fa-address-book",
+        "core.Rotulos": "fas fa-bookmark",
+        "core.AnexoDemanda": "fas fa-paperclip",
+        "core.Tarefas": "fas fa-tasks",
+        "core.Pendencia": "fas fa-hourglass-half",
+        # --- GCP App ---
+        "gcp.GCPAsset": "fas fa-boxes",
+        "gcp.GCPTableBlob": "fas fa-database",
+        "gcp.GCPLocation": "fas fa-map-marker-alt",
+        "gcp.GCPProject": "fas fa-cloud",
+        "gcp.GCPDevProject": "fas fa-code",
+        "gcp.GCPETL": "fas fa-cloud-upload-alt",
+        # --- Django APScheduler ---
+        "django_apscheduler.DjangoJob": "fas fa-clock",
+        "django_apscheduler.DjangoJobExecution": "fas fa-history",
     },
+    # Ordenação do menu lateral
+    "order_with_respect_to": [
+        # 1. Core e Operação PMO (Prioridade Máxima)
+        "core",
+        "core.Demanda",
+        "core.Tarefas",
+        "core.Pendencia",
+        "core.Situacao",
+        # 2. Infraestrutura e Ativos GCP
+        "gcp",
+        "gcp.GCPLocation",
+        "gcp.GCPProject",
+        "gcp.GCPAsset",
+        "gcp.GCPTableBlob",
+        "gcp.GCPETL",
+        "gcp.GCPDevProjects",
+        # 3. Auxiliares e Configurações de Negócio
+        "core.Tema",
+        "core.TipoAtividade",
+        "core.Contato",
+        "core.Riscos",
+        "core.ResultadosEsperados",
+        "core.Rotulos",
+        # 4. Automação e Agendamentos
+        "django_apscheduler",
+        "django_apscheduler.DjangoJob",
+        "django_apscheduler.DjangoJobExecution",
+        # 5. Segurança e Histórico (Base)
+        "auth",
+        "simple_history",
+    ],
     # Configuração de Interface
     "show_ui_builder": True,  # Isso permite que você ajuste o tema em tempo real no painel
     "changeform_format": "horizontal_tabs",  # Organiza os campos em abas se quiser
@@ -212,7 +267,7 @@ JAZZMIN_UI_TWEAKS = {
 if ENVIRONMENT == "localhost":
     JAZZMIN_UI_TWEAKS["navbar"] = "navbar-red navbar-light"
     JAZZMIN_UI_TWEAKS["sidebar"] = "sidebar-red-info"
-    JAZZMIN_UI_TWEAKS["theme"] = "slate"
+    JAZZMIN_UI_TWEAKS["theme"] = "journal"
     JAZZMIN_UI_TWEAKS["brand_colour"] = "navbar-black"
 elif ENVIRONMENT == "dev":
     JAZZMIN_UI_TWEAKS["navbar"] = "navbar-yellow navbar-light"

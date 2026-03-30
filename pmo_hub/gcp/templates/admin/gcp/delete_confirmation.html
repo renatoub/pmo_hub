@@ -1,0 +1,39 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static %}
+
+{% block content %}
+<div class="content">
+    <div class="card card-danger card-outline">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-exclamation-triangle"></i> Confirmar Exclusão</h3>
+        </div>
+        <div class="card-body">
+            <p>Você tem certeza que deseja excluir o item <strong>"{{ object }}"</strong>?</p>
+            <p>Os seguintes itens dependentes também serão <strong>ocultados</strong> do sistema em cascata:</p>
+
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; border: 1px solid #ddd; max-height: 400px; overflow-y: auto;">
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-arrow-right text-danger"></i> <strong>{{ object }}</strong> (Item Principal)</li>
+                    {% for item in impacted_items %}
+                        <li style="margin-left: 25px;">
+                            <i class="fas fa-caret-right text-warning"></i>
+                            {{ item.repr }} <small class="text-muted">({{ item.verbose_name }})</small>
+                        </li>
+                    {% empty %}
+                        <li class="text-muted" style="margin-left: 25px;">Nenhum item dependente encontrado.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="mt-4">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="post" value="yes">
+                    <button type="submit" class="btn btn-danger">Sim, tenho certeza e quero ocultar estes itens</button>
+                    <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-secondary">Cancelar e Voltar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

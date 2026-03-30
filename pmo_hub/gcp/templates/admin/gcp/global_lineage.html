@@ -1,0 +1,63 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    .global-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 20px; padding: 20px; }
+    .etl-flow-card { background: white; border-radius: 10px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #eee; }
+    .flow-container { display: flex; align-items: center; gap: 15px; }
+    .source-list { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+    .flow-table { padding: 8px; background: #f8f9fa; border-radius: 5px; font-size: 0.85rem; border-left: 3px solid #ccc; }
+    .flow-table.dest { border-left-color: #4285f4; }
+    .flow-table.src { border-left-color: #34a853; }
+    .flow-arrow { color: #4285f4; font-size: 1.2rem; }
+    .etl-info { margin-top: 15px; font-size: 0.75rem; color: #666; border-top: 1px dashed #ddd; padding-top: 8px; display: flex; justify-content: space-between; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <div class="module">
+        <div style="padding: 20px; background: white; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
+            <div>
+                <h2 style="margin:0">Mapa Global de Linhagem</h2>
+                <p style="margin:0; color: #777;">Relação entre Processos ETL e Tabelas</p>
+            </div>
+            <a href="{% url 'admin:lineage_gcptable_changelist' %}" class="btn btn-secondary btn-sm">Voltar para Tabelas</a>
+        </div>
+
+        <div class="global-grid">
+            {% for etl in etls %}
+            <div class="etl-flow-card">
+                <div style="font-weight: bold; margin-bottom: 12px; color: #333; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-cog" style="color: #999;"></i> {{ etl.nome_processo }}
+                </div>
+                
+                <div class="flow-container">
+                    <div class="source-list">
+                        {% for f in etl.fontes.all %}
+                        <div class="flow-table src">
+                            <a href="{% url 'admin:lineage_gcptable_lineage_view_action' object_id=f.id %}">{{ f.table_name }}</a>
+                        </div>
+                        {% empty %}<div class="text-muted small">Sem fontes</div>{% endfor %}
+                    </div>
+                    <div class="flow-arrow"><i class="fas fa-chevron-right"></i></div>
+                    <div style="flex: 1;">
+                        <div class="flow-table dest">
+                            {% if etl.destino %}
+                                <a href="{% url 'admin:lineage_gcptable_lineage_view_action' object_id=etl.destino.id %}" style="font-weight: bold;">{{ etl.destino.table_name }}</a>
+                            {% else %}<span class="text-muted">N/A</span>{% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="etl-info">
+                    <span><strong>Tipos:</strong> {{ etl.tipos_etl|join:", " }}</span>
+                    <span><strong>Criado:</strong> {{ etl.data_criacao|date:"d/m/Y" }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

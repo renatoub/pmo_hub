@@ -28,7 +28,7 @@ jobs:
           git config --global --add safe.directory *
           $TIMESTAMP = Get-Date -Format "yyyyMMdd_HHmm"
           echo "BACKUP_DATE=$TIMESTAMP" >> $env:GITHUB_OUTPUT
-          
+
           Write-Host "Parando o serviço $env:SERVICE_NAME..."
           Stop-Service -Name "$env:SERVICE_NAME" -Force -ErrorAction SilentlyContinue
           Start-Sleep -Seconds 3
@@ -57,10 +57,10 @@ jobs:
               Write-Host "Realizando backup de PRODUCAO (MAIN)..."
               $backupDir = "..\backups"
               if (!(Test-Path $backupDir)) { New-Item -ItemType Directory -Path $backupDir }
-              
+
               # Backup do arquivo físico
               Copy-Item -Path "pmo_hub\db.sqlite3" -Destination "$backupDir\db_main_${{ needs.setup_and_stop.outputs.backup_date }}.sqlite3" -Force
-              
+
               # Dump JSON usando uv
               # uv run python .\pmo_hub\manage.py dumpdata --natural-foreign --natural-primary -e contenttypes -e auth.Permission --indent 2 | Out-File -FilePath "$backupDir\dump_main_${{ needs.setup_and_stop.outputs.backup_date }}.json" -Encoding utf8
           }
@@ -123,7 +123,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "action@github.com"
-          
+
           REM --- 1. Commit e Push na branch atual (MAIN ou DEV) ---
           git add pmo_hub/pmo/__init__.py
           git commit -m "chore: bump version [skip ci]"
@@ -132,26 +132,26 @@ jobs:
           REM --- 2. Lógica de Sync: Se estivermos na MAIN, atualiza a DEV ---
           IF "${{ github.ref_name }}" == "main" (
             echo "::notice::Detectado Deploy na MAIN. Iniciando sincronizacao de versao com a DEV..."
-            
+
             REM Garante que temos as referencias da dev
             git fetch origin dev
-            
+
             REM Checkout na dev e pull para garantir que esta atualizado
             git checkout dev
             git pull origin dev
-            
+
             REM Pega o arquivo __init__.py da MAIN (que ja esta atualizado) e joga na DEV
             git checkout origin/main pmo_hub/pmo/__init__.py
-            
+
             REM Commitar na DEV
             git add pmo_hub/pmo/__init__.py
             git commit -m "chore: sync version from main [skip ci]"
-            
+
             REM Enviar para remoto
             git push https://x-access-token:%GH_TOKEN%@github.com/${{ github.repository }}.git dev
-            
+
             echo "::notice::Versao sincronizada com sucesso na branch DEV."
-            
+
             REM Voltar para main para nao quebrar passos subsequentes se houver
             git checkout main
           )
@@ -166,6 +166,7 @@ jobs:
         working-directory: ${{ env.BASE_PATH }}
         run: |
           uv run python pmo_hub\manage.py migrate --noinput
+          uv run python pmo_hub\manage.py runapscheduler --register-only
           uv run python pmo_hub\manage.py collectstatic --clear --noinput
 
   restart:
@@ -179,7 +180,7 @@ jobs:
           Write-Host "Iniciando o serviço $env:SERVICE_NAME..."
           Start-Service -Name "$env:SERVICE_NAME"
           Start-Sleep -Seconds 5
-          if ((Get-Service -Name "$env:SERVICE_NAME").Status -ne "Running") { 
+          if ((Get-Service -Name "$env:SERVICE_NAME").Status -ne "Running") {
             Write-Error "O serviço não iniciou corretamente!"
-            exit 1 
+            exit 1
           }

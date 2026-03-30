@@ -13,9 +13,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from django.views.generic.base import RedirectView
+from gcp.views import get_cron_description
 
 urlpatterns = [
     # Coloque as ações ANTES do admin ou com um nome bem específico
+    # path(
+    #     "lineage-api/", include("lineage.urls")
+    # ),  # Rota para a API de ingestão e dados
     path(
         "acoes/status/<int:pk>/<int:situacao_id>/",
         alterar_status_view,
@@ -46,6 +50,11 @@ urlpatterns = [
     path(
         "",
         RedirectView.as_view(url="admin/", permanent=False),
+    ),
+    path(
+        "gcp/api/cron-description/",
+        get_cron_description,
+        name="cron_api",
     ),
     # path("", dashboard_view, name="dashboard"),
 ]

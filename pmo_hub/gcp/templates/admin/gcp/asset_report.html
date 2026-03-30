@@ -1,0 +1,85 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block extrahead %}
+<style>
+    @media print {
+        body { background: white !important; color: black !important; }
+        .no-print { display: none !important; }
+        .page-break { page-break-after: always; }
+        #header, #footer, .breadcrumbs, .object-tools { display: none !important; }
+    }
+
+    .report-container { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; }
+    .asset-page { border: 1px solid #ddd; padding: 40px; margin-bottom: 20px; background: white; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+
+    .report-header { border-bottom: 3px solid #417690; margin-bottom: 30px; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .report-header h1 { margin: 0; color: #417690; font-size: 24px; }
+
+    .section-title { background: #f0f0f0; color: #868282; padding: 8px 15px; font-weight: bold; border-left: 5px solid #417690; margin: 25px 0 15px 0; text-transform: uppercase; font-size: 14px; }
+
+    .meta-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    .meta-table th { text-align: left; width: 30%; color: #666; padding: 8px; border-bottom: 1px solid #eee; font-size: 13px; font-weight: bold;}
+    .meta-table td { padding: 8px; border-bottom: 1px solid #eee; font-size: 14px; font-weight: 500; color: #666; }
+
+    .json-box { background: #f9f9f9; padding: 15px; border: 1px dashed #ccc; font-family: monospace; font-size: 12px; white-space: pre-wrap; color: #333; line-height: 1.4; border-radius: 4px; }
+
+    .print-button { position: fixed; top: 20px; right: 20px; z-index: 1000; background: #28a745; color: white; border: none; padding: 10px 25px; border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="report-container">
+    <button class="print-button no-print" onclick="window.print();">🖨️ Imprimir Relatório</button>
+
+    {% for asset in assets %}
+    <div class="asset-page {% if not forloop.last %}page-break{% endif %}">
+        <div class="report-header">
+            <div>
+                <h1>Ativo GCP: {{ asset.name }}</h1>
+                <small>URI: {{ asset.uri }}</small>
+            </div>
+            <div style="text-align: right;">
+                <span class="badge" style="background: #417690; color: white; padding: 5px 10px; border-radius: 4px;">{{ asset.get_asset_type_display }}</span><br>
+                <small>Importado em: {{ asset.last_imported_at|date:"d/m/Y H:i" }}</small>
+            </div>
+        </div>
+
+        <div class="section-title">Dados Gerais</div>
+        <table class="meta-table">
+            <tr><th>Projeto</th><td>{{ asset.project_id }}</td></tr>
+            <tr><th>Localização</th><td>{{ asset.location|default:"-" }}</td></tr>
+            <tr><th>Data de Criação</th><td>{{ asset.creation_time|date:"d/m/Y H:i"|default:"Desconhecido" }}</td></tr>
+            <tr><th>Última Atualização</th><td>{{ asset.update_time|date:"d/m/Y H:i"|default:"-" }}</td></tr>
+        </table>
+
+        {% if asset.labels %}
+        <div class="section-title">Labels / Tags</div>
+        <div class="json-box">{{ asset.labels|pprint }}</div>
+        {% endif %}
+
+        {% if asset.access_config %}
+        <div class="section-title">Configuração de Acesso (IAM)</div>
+        <div class="json-box">
+            {% for item in asset.access_config %}
+- Papel: {{ item.role }}
+  Usuário/Grupo: {% firstof item.userByEmail item.groupByEmail item.specialGroup item.domain "-" %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if asset.lifecycle_rules %}
+        <div class="section-title">Regras de Ciclo de Vida</div>
+        <div class="json-box">{{ asset.lifecycle_rules|pprint }}</div>
+        {% endif %}
+
+        {% if asset.policies %}
+        <div class="section-title">Políticas e Configurações Adicionais</div>
+        <div class="json-box">{{ asset.policies|pprint }}</div>
+        {% endif %}
+    </div>
+    {% empty %}
+    <p>Nenhum ativo selecionado para o relatório.</p>
+    {% endfor %}
+</div>
+{% endblock %}

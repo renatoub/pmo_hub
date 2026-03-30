@@ -8,6 +8,7 @@ wheels/
 
 # Virtual environments
 .venv
+.env
 
 # DB local
 *.sqlite3
@@ -15,3 +16,7 @@ wheels/
 # Local files
 anexos/
 pyrightconfig.json
+
+# logs
+logs/
+*.log

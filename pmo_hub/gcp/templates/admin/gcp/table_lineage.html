@@ -1,0 +1,48 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static %}
+
+{% block content %}
+<div id="content-main">
+    <div class="module">
+        <div style="padding: 20px; background: white; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="margin:0">Linhagem: {{ target.table_name }}</h2>
+            <div class="actions">
+                <a href="{% url 'admin:gcptable_global_map' %}" class="btn btn-info btn-sm">Mapa Global</a>
+                <a href="{% url 'admin:lineage_gcptable_changelist' %}" class="btn btn-secondary btn-sm">Voltar</a>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 40px; padding: 40px; background: #f4f6f9; overflow-x: auto;">
+            <!-- PAIS -->
+            <div style="display: flex; flex-direction: column; gap: 20px; min-width: 250px;">
+                {% for p1 in parents %}
+                <div style="background: white; padding: 15px; border-left: 5px solid #34a853; border-radius: 8px; position: relative;">
+                    <small style="color:#777">{{ p1.table.asset.project.project_id }}</small><br>
+                    <strong>{{ p1.table.table_name }}</strong>
+                    <a href="{% url 'admin:gcptable_lineage_view' object_id=p1.table.id %}" style="position: absolute; right: -10px; top: 40%; background: white; border: 1px solid #ddd; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px;"><i class="fas fa-chevron-left"></i></a>
+                </div>
+                {% empty %}<div class="text-muted text-center">Sem fontes</div>{% endfor %}
+            </div>
+
+            <!-- ALVO -->
+            <div style="display: flex; flex-direction: column; gap: 20px; min-width: 250px;">
+                <div style="background: white; padding: 20px; border-left: 8px solid #4285f4; border-radius: 8px; transform: scale(1.1); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                    <small style="color:#777">{{ target.asset.project.project_id }} / {{ target.asset.name }}</small><br>
+                    <strong style="font-size: 1.1rem;">{{ target.table_name }}</strong>
+                </div>
+            </div>
+
+            <!-- FILHOS -->
+            <div style="display: flex; flex-direction: column; gap: 20px; min-width: 250px;">
+                {% for c1 in children %}
+                <div style="background: white; padding: 15px; border-left: 5px solid #fbbc05; border-radius: 8px; position: relative;">
+                    <small style="color:#777">{{ c1.table.asset.project.project_id }}</small><br>
+                    <strong>{{ c1.table.table_name }}</strong>
+                    <a href="{% url 'admin:gcptable_lineage_view' object_id=c1.table.id %}" style="position: absolute; left: -10px; top: 40%; background: white; border: 1px solid #ddd; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 10px;"><i class="fas fa-chevron-right"></i></a>
+                </div>
+                {% empty %}<div class="text-muted text-center">Sem destinos</div>{% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
