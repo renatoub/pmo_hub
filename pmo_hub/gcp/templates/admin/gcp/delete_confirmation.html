@@ -10,14 +10,14 @@
         <div class="card-body">
             <p>Você tem certeza que deseja excluir o item <strong>"{{ object }}"</strong>?</p>
             <p>Os seguintes itens dependentes também serão <strong>ocultados</strong> do sistema em cascata:</p>
-            
+
             <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; border: 1px solid #ddd; max-height: 400px; overflow-y: auto;">
                 <ul class="list-unstyled">
                     <li><i class="fas fa-arrow-right text-danger"></i> <strong>{{ object }}</strong> (Item Principal)</li>
                     {% for item in impacted_items %}
                         <li style="margin-left: 25px;">
-                            <i class="fas fa-caret-right text-warning"></i> 
-                            {{ item }} <small class="text-muted">({{ item._meta.verbose_name }})</small>
+                            <i class="fas fa-caret-right text-warning"></i>
+                            {{ item.repr }} <small class="text-muted">({{ item.verbose_name }})</small>
                         </li>
                     {% empty %}
                         <li class="text-muted" style="margin-left: 25px;">Nenhum item dependente encontrado.</li>

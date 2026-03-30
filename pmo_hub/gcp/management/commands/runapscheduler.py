@@ -9,7 +9,7 @@ from django.core.management.base import BaseCommand
 from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJob
 
-from lineage.jobs import delete_old_job_executions, sync_job
+from gcp.jobs import sync_job
 
 logger = logging.getLogger(__name__)
 
@@ -41,19 +41,19 @@ class Command(BaseCommand):
             scheduler.add_job(
                 sync_job,
                 trigger=CronTrigger(hour=3, minute=0),
-                id="sync_gcp_metadata_monthly",
+                id="sync_gcp_metadata",
                 max_instances=1,
                 replace_existing=True,
                 misfire_grace_time=3600,
             )
 
-            scheduler.add_job(
-                delete_old_job_executions,
-                trigger=CronTrigger(day_of_week="mon", hour="00", minute="00"),
-                id="delete_old_job_executions",
-                max_instances=1,
-                replace_existing=True,
-            )
+            # scheduler.add_job(
+            #     delete_old_job_executions,
+            #     trigger=CronTrigger(day_of_week="mon", hour="00", minute="00"),
+            #     id="delete_old_job_executions",
+            #     max_instances=1,
+            #     replace_existing=True,
+            # )
 
             # Pequena pausa para garantir que os jobs foram salvos no SQLite
             time.sleep(2)
@@ -82,19 +82,19 @@ class Command(BaseCommand):
         scheduler.add_job(
             sync_job,
             trigger=CronTrigger(day_of_week="sun", hour=3, minute=0),
-            id="sync_gcp_metadata_monthly",
+            id="sync_gcp_metadata",
             max_instances=1,
             replace_existing=True,
             misfire_grace_time=3600,
         )
 
-        scheduler.add_job(
-            delete_old_job_executions,
-            trigger=CronTrigger(day_of_week="mon", hour="00", minute="00"),
-            id="delete_old_job_executions",
-            max_instances=1,
-            replace_existing=True,
-        )
+        # scheduler.add_job(
+        #     delete_old_job_executions,
+        #     trigger=CronTrigger(day_of_week="mon", hour="00", minute="00"),
+        #     id="delete_old_job_executions",
+        #     max_instances=1,
+        #     replace_existing=True,
+        # )
 
         try:
             self.stdout.write("Iniciando loop do agendador...")
