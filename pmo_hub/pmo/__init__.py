@@ -1,3 +1,3 @@
 # pmo_hub/pmo/__init__.py
-# major
-__version__ = "0.13.17"
+
+__version__ = "1.0.0"
