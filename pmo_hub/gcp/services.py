@@ -2,7 +2,7 @@ import os
 import sys
 import traceback
 
-from google.cloud import bigquery, storage
+from google.cloud import bigquery, resourcemanager_v3, storage
 from loguru import logger
 
 from .models import GCPAsset, GCPLocation, GCPProject, GCPTableBlob
@@ -224,122 +224,117 @@ def discover_gcs_logical_tables(bucket_name, project_id, asset_obj):
         etl_storage_task(f"Insert GCPTableBlob {defaults}")
 
 
-def sync_all_from_gcp():
-    """Sincronização global via APIs do Google."""
-    master_client = bigquery.Client()
-    projects = list(master_client.list_projects())
+def scheduled_job_wrapper(func):
+    """Decorator para garantir rastreabilidade no DjangoJobExecution."""
 
-    for project_item in projects:
-        project_id = project_item.project_id
-        project_name = (project_item.friendly_name or project_id).lower()
-
-        bq_client = bigquery.Client(project=project_id)
-
-        project_obj, created = GCPProject.all_objects.update_or_create(
-            project_id=project_id,
-            defaults={
-                "name": project_name,
-                # location pode ser extraído via metadados adicionais se necessário
-            },
-        )
-
-        if "eqtl" in str(project_id):
-            etl_project_task(
-                f"Sincronizado - project_id={project_item.project_id} | friendly_name={project_item.friendly_name}"
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            logger.bind(task="SYSTEM").error(
+                f"Erro fatal no Job: {traceback.format_exc()}"
             )
-            project_obj = GCPProject.all_objects.filter(
-                project_id=project_item.project_id
-            ).first()
+            raise e
+
+    return wrapper
+
+
+def get_all_accessible_projects():
+    """Lista IDs de projetos ativos via Resource Manager API."""
+    try:
+        client = resourcemanager_v3.ProjectsClient()
+        search_request = resourcemanager_v3.SearchProjectsRequest(query="state:ACTIVE")
+        projects = client.search_projects(request=search_request)
+        # Filtra apenas projetos que contenham 'eqtl' no ID
+        return [
+            p.project_id.lower() for p in projects if "eqtl" in p.project_id.lower()
+        ]
+    except Exception as e:
+        logger.error(f"Falha ao listar via Resource Manager: {e}")
+        return [os.getenv("GOOGLE_CLOUD_PROJECT")]
+
+
+@scheduled_job_wrapper
+def sync_all_from_gcp():
+    """Sincronização global refatorada para usar a descoberta do Resource Manager."""
+
+    # resolution_content: Agora iteramos sobre a lista REAL de projetos acessíveis
+    target_project_ids = get_all_accessible_projects()
+
+    etl_project_task(
+        f"Iniciando varredura em: {', '.join(pid for pid in target_project_ids if pid)}"
+    )
+
+    for project_id in target_project_ids:
+        try:
+            # Forçamos o cliente do BQ a olhar para o projeto específico da iteração
+            bq_client = bigquery.Client(project=project_id)
+            # Atualiza ou cria o objeto do projeto no Django
+            project_obj, _ = GCPProject.all_objects.update_or_create(
+                project_id=project_id,
+                defaults={"name": project_id.lower()},
+            )
+
+            etl_project_task(f"Processando Projeto: {project_id}")
 
             # --- BQ DATASETS ---
-            try:
-                for dataset_item in list(bq_client.list_datasets()):
-                    ds = bq_client.get_dataset(dataset_item.dataset_id)
-                    etl_bigquery_task(
-                        f"Dados de datasource carregado {ds.full_dataset_id}"
-                    )
+            for dataset_item in list(bq_client.list_datasets()):
+                ds = bq_client.get_dataset(dataset_item.dataset_id)
+                etl_bigquery_task(f"Dataset carregado: {ds.full_dataset_id}")
 
-                    defaults = {
-                        "asset_types": "BQ",
-                        "project": project_obj,
-                        "name": ds.dataset_id,
-                        "location": get_location_obj(ds.location),
-                        "uri": f"bq://{project_obj.project_id}/{ds.dataset_id}",
+                asset_defaults = {
+                    "asset_types": "BQ",
+                    "project": project_obj,
+                    "name": ds.dataset_id,
+                    "location": get_location_obj(ds.location),
+                    "uri": f"bq://{project_id}/{ds.dataset_id}",
+                }
+
+                asset, _ = GCPAsset.objects.update_or_create(
+                    project=project_obj,
+                    name=ds.dataset_id,
+                    defaults=asset_defaults,
+                )
+
+                # --- BQ TABLES ---
+                for t_item in bq_client.list_tables(ds):
+                    t = bq_client.get_table(t_item)
+
+                    is_part = False
+                    p_cols = []
+                    if t.time_partitioning:
+                        is_part = True
+                        p_cols.append(t.time_partitioning.field or "_PARTITIONTIME")
+                    if t.range_partitioning:
+                        is_part = True
+                        p_cols.append(t.range_partitioning.field)
+
+                    table_defaults = {
+                        "asset": asset,
+                        "table_type": t.table_type,
+                        "is_partitioned": is_part,
+                        "partitions_fields": p_cols if p_cols else None,
+                        "creation_time": t.created,
+                        "ddl": t.view_query,
+                        "metadata_raw": {
+                            "description": t.description,
+                            "num_rows": t.num_rows,
+                            "num_bytes": t.num_bytes,
+                            "location": t.location,
+                        },
                     }
 
-                    asset, _ = GCPAsset.objects.update_or_create(
-                        project=project_obj,
-                        name=ds.dataset_id,
-                        defaults=defaults,
+                    GCPTableBlob.objects.update_or_create(
+                        table_name=t.table_id,
+                        defaults=table_defaults,
                     )
 
-                    etl_bigquery_task(f"Insert GCPAsset - {defaults}")
-
-                    # --- BQ TABLES ---
-                    try:
-                        for t_item in bq_client.list_tables(ds):
-                            t = bq_client.get_table(t_item)
-
-                            etl_bigquery_task(f"Detalhes get_table - {t}")
-
-                            # Detecção de tipo refinada
-                            t_type = (
-                                t.table_type
-                            )  # TABLE, VIEW, EXTERNAL, MATERIALIZED_VIEW
-
-                            etl_bigquery_task(
-                                f"Tipo de Partição - {t.partitioning_type} | Tipo da tabela - {t_type}"
-                            )
-
-                            # Detecção de Particionamento BQ
-                            is_part = False
-                            p_cols = []
-                            if t.time_partitioning:
-                                is_part = True
-                                p_cols.append(
-                                    t.time_partitioning.field or "_PARTITIONTIME"
-                                )
-                            if t.range_partitioning:
-                                is_part = True
-                                p_cols.append(t.range_partitioning.field)
-
-                            if p_cols == []:
-                                p_cols = None
-
-                            defaults = {
-                                "asset": asset,
-                                "table_type": t_type,
-                                "is_partitioned": is_part,
-                                "partitions_fields": p_cols,
-                                "creation_time": t.created,
-                                "ddl": t.view_query,
-                                "metadata_raw": {
-                                    "description": t.description,
-                                    "num_rows": t.num_rows,
-                                    "num_bytes": t.num_bytes,
-                                    "location": t.location,
-                                    "table_type": t.table_type,
-                                },
-                            }
-
-                            GCPTableBlob.objects.update_or_create(
-                                table_name=t.table_id,
-                                defaults=defaults,
-                            )
-
-                            etl_bigquery_task(f"Insert GCPTableBlob {defaults}")
-                    except Exception:
-                        etl_bigquery_task(f"Insert Table - {traceback.print_exc()}")
-
-            except Exception:
-                etl_bigquery_task(
-                    f"Insert GCPAsset - {traceback.format_exc()}", "error"
-                )
-        else:
+        except Exception as e:
             etl_project_task(
-                f"Ignorado - project_id={project_item.project_id} | friendly_name={project_item.friendly_name}",
-                "warning",
+                f"Erro ao processar projeto {project_id}: {str(e)}", "error"
             )
+            # Continuamos para o próximo projeto em caso de erro em um específico
+            continue
 
         # # --- GCS BUCKETS ---
         # try:

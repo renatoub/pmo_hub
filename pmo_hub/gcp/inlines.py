@@ -1,7 +1,9 @@
 import random
+import re
 
 from django.contrib import admin
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 
 from .models import (
     # GCPProject,
@@ -54,21 +56,21 @@ class GCPTableBlobInline(admin.TabularInline):
 
     @admin.display(description="Colunas particionadas")
     def display_partitioned_columns(self, obj):
-        if not obj.partitions_fields:
+        if not obj.partitions_fields or obj.partitions_fields == "[]":
             return "-"
 
         columns = [
-            col.strip() for col in obj.partitions_fields.split(";") if col.strip()
+            col.strip()
+            for col in re.sub(r"[\[\]']", "", obj.partitions_fields).split(",")
+            if col.strip()
         ]
 
-        return format_html(
-            "{}",
-            "".join(
-                [
-                    f'<span style="background:{get_random_color()}; color:white; '
-                    f"padding:2px 6px; border-radius:4px; margin-right:5px; "
-                    f'font-size:10px; display:inline-block; margin-bottom:2px;">{col}</span>'
-                    for col in columns
-                ]
-            ),
+        html = "".join(
+            [
+                f'<span style="background:{get_random_color()}; color:white; '
+                f"padding:2px 6px; border-radius:4px; margin-right:5px; "
+                f'display:inline-block; margin-bottom:2px;">{col}</span>'
+                for col in columns
+            ],
         )
+        return format_html("{}", mark_safe(html))
